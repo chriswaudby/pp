@@ -104,7 +104,9 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 
 ## 1H,13C correlation experiments
 
-- [ ] `hmqcgpphpr.cw` - 13C HMQC
+- [ ] `hmqcgpphpr.cw` - 1H,13C HMQC
+- [x] `hsqcctetgpsp.cw` - 1H,13C constant-time HSQC
+- [x] `hisqcctetgpsp.cw` 1H,13C constant-time refocused (in-phase) HSQC
 - [ ] `sfhmqcf2gpph.nuws.cw` - 1H,13C SOFAST-HMQC with NUWS
 - [x] `sfhmqcf2et.nuws.cw` - 1H,13C gradient-selected SOFAST-HMQC
 
@@ -132,6 +134,7 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 - [x] `13Cm_CEST.cw` - 13C methyl CEST
 - [x] `13Cm_CEST_B1cal.cw` - B1 calibration for 13C methyl CEST
 - [x] `cest_1H_zzstart.cw` - 1HN CEST
+- [x] `cest_13Cali.cw` - 13Cali CEST
 - [x] `cest_1HA.cw` - 1HA CEST
 - [x] `cest_caconh.cw` - 13CA CEST
 - [ ] `sfhmqcf3gpph_1H_cest.cw` - crude 1H CEST
