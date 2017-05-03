@@ -13,7 +13,7 @@
 
 # git quickstart
 
-## Create a local clone of the pp repository
+## Creating a local clone of the pp repository
 
 ```
 git clone https://github.com/chriswaudby/pp.git
@@ -35,10 +35,17 @@ git config --list
 git pull
 ```
 
-This will _fetch_ and _merge_ remote changes.
+This will *fetch* and *merge* remote changes.
 
 
-## Making changes (based on http://rogerdudler.github.io/git-guide/)
+## Making changes
+Based on http://rogerdudler.github.io/git-guide/
+
+0. Check current repo status:
+
+```
+git status
+```
 
 1. Add new files to the index:
 
@@ -79,6 +86,8 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 
 # Pulse programs
 
+Checkmarks indicate a tested sequence.
+
 ## Calibration
 
 - [x] `zg490.cw` - 1H 90 calibration
@@ -90,13 +99,13 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 
 ## Basic experiments
 
-- [ ] `zgesgp.cw` - 1H 1D (excitation sculpting)
+- [x] `zgesgp.cw` - 1H 1D (excitation sculpting)
 - [ ] `zgpr.cw` - 1H 1D (presaturation)
 
 ## 1H,15N correlation experiments
 
-- [ ] `hsqcetfpf3gpsi2.cw` - 1H,15N sensitivity-improved HSQC
-- [ ] `fhsqcf3gpph.cw` - 1H,15N FHSQC
+- [x] `hsqcetfpf3gpsi2.cw` - 1H,15N sensitivity-improved HSQC
+- [x] `fhsqcf3gpph.cw` - 1H,15N FHSQC
 - [ ] `sfhmqcf3gpph.cw` - 1H,15N SOFAST-HMQC
 - [ ] `sfhmqcf3gpphpr1d.cw` - 15N filtered/edited 1D SOFAST with presaturation
 - [ ] `sfhmqcf3gpph.nuws.cw` - 1H,15N SOFAST-HMQC with NUWS
@@ -129,10 +138,13 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 
 ### CEST
 
-- [ ] `cest_15N.cw` - 15N CEST
-- [ ] `cest_15N_B1cal.cw` - B1 calibration for 15N CEST
+- [x] `cest_15N.cw` - 15N CEST
+- [x] `cest_15N_B1cal.cw` - B1 calibration for 15N CEST
 - [x] `13Cm_CEST.cw` - 13C methyl CEST
 - [x] `13Cm_CEST_B1cal.cw` - B1 calibration for 13C methyl CEST
+- [ ] `cest_zz_H.cw` - 1HN CEST (zz saturation)
+- [ ] `cest_zz_H_B1cal.cw`
+- [ ] `cest_zz_H_B1cal.1d.cw`
 - [x] `cest_1H_zzstart.cw` - 1HN CEST
 - [x] `cest_13Cali.cw` - 13Cali CEST
 - [x] `cest_1HA.cw` - 1HA CEST

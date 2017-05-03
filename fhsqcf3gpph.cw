@@ -1,7 +1,8 @@
-; Crushing equm 15N magnetisation
-; Delays adjusted for zero first-order phase correction
-;
 ;fhsqcf3gpph
+; Crushing equm 15N magnetisation
+; Delays adjusted for (90,180) phase correction
+; option for 13C decoupling during acquisition (-DDUAL_DECOUPLING)
+;
 ;avance-version (07/04/04)
 ;2D H-1/X correlation via double inept transfer
 ;phase sensitive
@@ -31,7 +32,9 @@
 
 
 "in0=inf1/2"
-"d0=3u"
+
+"d0=in0-0.5*larger(p2,p14)-0.6366*p21"
+
 
 "DELTA=d19-p22/2"
 "DELTA1=d26-p16-d16-p27*3-d19*5-p1*2/PI"
@@ -86,22 +89,22 @@ baseopt_echo
   ; t1 evolution
 
   (p21 ph3):f3
-  DELTA3
-  (p22 ph3):f3
-  DELTA4
+;  DELTA3
+;  (p22 ph3):f3
+;  DELTA4
   d0
 
-# ifdef LABEL_CN
-   (center (p2 ph5):f1 (p14:sp3 ph1):f2 )
-# else
-  (p2 ph5):f1
-# endif /*LABEL_CN*/
+#   ifdef LABEL_CN
+  (center (p2 ph5) (p14:sp3 ph1):f2 )
+#   else
+  (p2 ph5)
+#   endif /*LABEL_CN*/
 
-d0
-DELTA4
-(p22 ph4):f3
-DELTA3
-(p21 ph4):f3
+  d0
+;  DELTA4
+;  (p22 ph4):f3
+;  DELTA3
+  (p21 ph4):f3
 
   ; zz filter
   4u
