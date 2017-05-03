@@ -43,7 +43,7 @@
 ### CPMG relaxation dispersion
 
 - [ ] `hsqcrexfpf3gpsi_TS32.cw` - 15N SQ CW-CPMG
-- [ ]` ch3_mq_cpmg.cw` - 13C MQ CPMG for 13CH3 methyls (thanks to Vitali Tugarinov)
+- [ ] `ch3_mq_cpmg.cw` - 13C MQ CPMG for 13CH3 methyls (thanks to Vitali Tugarinov)
 - [ ] `CHD2_1H_CPMG.cw` - 1H SQ CPMG for 13CHD2 methyls
 - [ ] `C13_CHD2_METmethylCPMG.cw` - 13C SQ CPMG for 13CHD2 methyls (thanks to Goran Carlstrom, Lund)
 
