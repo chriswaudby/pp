@@ -1,6 +1,6 @@
 # Chris Waudby's pulse program library
 
-* Use at your own risk!
+* These sequences have been uploaded for my own convenience in synchronising work across multiple spectrometers. Some experiments remain under development. Use at your own risk!
 * Please acknowledge the use of sequences from this library.
 * With thanks to John Kirkpatrick on whose work many sequences are based. 
 * Contact: c.waudby@ucl.ac.uk
