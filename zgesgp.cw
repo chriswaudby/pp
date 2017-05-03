@@ -1,4 +1,5 @@
 ;zgesgp.cw
+;using baseopt
 ;avance-version (07/10/04)
 ;1D sequence
 ;water suppression using excitation sculpting with gradients

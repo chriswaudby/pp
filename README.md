@@ -131,6 +131,9 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 - [ ] `cest_15N_B1cal.cw` - B1 calibration for 15N CEST
 - [x] `13Cm_CEST.cw` - 13C methyl CEST
 - [x] `13Cm_CEST_B1cal.cw` - B1 calibration for 13C methyl CEST
+- [ ] `cest_zz_H.cw` - 1HN CEST (zz saturation)
+- [ ] `cest_zz_H_B1cal.cw`
+- [ ] `cest_zz_H_B1cal.1d.cw`
 - [x] `cest_1H_zzstart.cw` - 1HN CEST
 - [x] `cest_1HA.cw` - 1HA CEST
 - [x] `cest_caconh.cw` - 13CA CEST
