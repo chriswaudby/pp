@@ -91,7 +91,7 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 ## 1H,15N correlation experiments
 
 - [x] `hsqcetfpf3gpsi2.cw` - 1H,15N sensitivity-improved HSQC
-- [ ] `fhsqcf3gpph.cw` - 1H,15N FHSQC
+- [x] `fhsqcf3gpph.cw` - 1H,15N FHSQC
 - [ ] `sfhmqcf3gpph.cw` - 1H,15N SOFAST-HMQC
 - [ ] `sfhmqcf3gpphpr1d.cw` - 15N filtered/edited 1D SOFAST with presaturation
 - [ ] `sfhmqcf3gpph.nuws.cw` - 1H,15N SOFAST-HMQC with NUWS
