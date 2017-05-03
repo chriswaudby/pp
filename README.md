@@ -13,7 +13,7 @@
 
 # git quickstart
 
-## Create a local clone of the pp repository
+## Creating a local clone of the pp repository
 
 ```
 git clone https://github.com/chriswaudby/pp.git
@@ -35,10 +35,17 @@ git config --list
 git pull
 ```
 
-This will _fetch_ and _merge_ remote changes.
+This will *fetch* and *merge* remote changes.
 
 
-## Making changes (based on http://rogerdudler.github.io/git-guide/)
+## Making changes
+Based on http://rogerdudler.github.io/git-guide/
+
+0. Check current repo status:
+
+```
+git status
+```
 
 1. Add new files to the index:
 
@@ -78,6 +85,8 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 
 
 # Pulse programs
+
+Checkmarks indicate a tested sequence.
 
 ## Calibration
 
@@ -127,8 +136,8 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 
 ### CEST
 
-- [ ] `cest_15N.cw` - 15N CEST
-- [ ] `cest_15N_B1cal.cw` - B1 calibration for 15N CEST
+- [x] `cest_15N.cw` - 15N CEST
+- [x] `cest_15N_B1cal.cw` - B1 calibration for 15N CEST
 - [x] `13Cm_CEST.cw` - 13C methyl CEST
 - [x] `13Cm_CEST_B1cal.cw` - B1 calibration for 13C methyl CEST
 - [ ] `cest_zz_H.cw` - 1HN CEST (zz saturation)

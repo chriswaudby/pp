@@ -83,7 +83,7 @@ d1
 10u pl3:f3
 (p21 ph0):f3
 5u
-p16:gp6
+p16:gp9
 200u
 
 ;------- first INEPT Hz-> 2HxNz -------------------------
@@ -138,7 +138,7 @@ DELTA5
 190u
 p25:gp5*EA ; 1ms
 10u
-(center (p2 ph0):f1 (p22 ph7):f3)
+(center (p2 ph0):f1 (p22 ph9):f3)
 10u
 p25:gp5*EA*-1 ; 1ms
 190u
@@ -208,6 +208,7 @@ ph5= 1 1 1 1
 ph6= 1 1 3 3
 ph7= 1 3
 ph8= 0
+ph9= 1 3
 ph31=1 3 3 1
 
 
@@ -255,16 +256,23 @@ ph31=1 3 3 1
 ;p25: 1000u Echo/Anti-echo half-encoding gradient
 
 ;for z-only gradients
-;gpz10: -1.5%
+;gpz0: 3%
+;gpz1: 2%
 ;gpz2: -5%
 ;gpz3: -0.5%
 ;gpz4: 40%
 ;gpz5: 40%
-;gpz0: 3%
-;gpz1: 2%
 ;gpz6: 30%
 ;gpz7: -50%
 ;gpz8: 77%
+;gpz9: 40%
+
+;gpnam4 SINE.10
+;gpnam5 SINE.10
+;gpnam6 SINE.50
+;gpnam7 SINE.10
+;gpnam8 SMSQ10.100
+;gpnam9 SMSQ10.100
 
 ;gpnam4 SINE.10
 ;gpnam5 SINE.10

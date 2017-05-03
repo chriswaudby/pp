@@ -36,6 +36,8 @@ define list<frequency> N15sat = <$FQ3LIST>
 "DELTA7=2.65m"
 
 "l2=1" ; loop counter for saturation list
+"l6=td1"
+"l3=td2/2"
 ; used to identify first point as the reference spectrum,
 ; and to activate temperature compensation for this point
 
@@ -61,8 +63,8 @@ aqseq 312
 
 ;---------temperature compensation and d1 recovery delay---------
 
-; apply temperature compensation immediately after 1st point (reference with no spinlock)
-if "l2==2" ; i.e. if following the first FID
+; apply temperature compensation for 1st point (reference with no spinlock)
+if "l2==1"
 {
     10u LOCKH_ON
     10u fq=cnst19(bf ppm):f1 ; put 1H on amides
@@ -273,18 +275,21 @@ ph31=1 3 3 1
 ;p25: 1000u Echo/Anti-echo half-encoding gradient
 
 ;for z-only gradients
-;gpz10: -1.5%
+;gpz0: 3%
+;gpz1: 2%
 ;gpz2: -5%
 ;gpz3: -0.5%
 ;gpz4: 40%
 ;gpz5: 40%
-;gpz0: 3%
-;gpz1: 2%
 ;gpz6: 30%
 ;gpz7: -50%
 ;gpz8: 77%
+;gpz9: 40%
 
 ;gpnam4 SINE.10
 ;gpnam5 SINE.10
 ;gpnam6 SINE.50
 ;gpnam7 SINE.10
+;gpnam8 SMSQ10.100
+;gpnam9 SMSQ10.100
+
