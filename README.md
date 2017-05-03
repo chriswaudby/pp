@@ -19,15 +19,17 @@
 
 - [ ] `zgesgp.cw` - 1H 1D (excitation sculpting)
 - [ ] `zgpr.cw` - 1H 1D (presaturation)
-- [ ] `hmqcgpphpr.cw` - 13C HMQC
 
 ## 1H,15N correlation experiments
 
-- [ ] `sfhmqcf3gpphpr1d.cw` - 1D 15N SOFAST with presaturation
+- [ ] `hsqcetfpf3gpsi2.cw` - 1H,15N sensitivity-improved HSQC
+- [ ] `fhsqcf3gpph.cw` - 1H,15N FHSQC
+- [ ] `sfhmqcf3gpphpr1d.cw` - 15N filtered/edited 1D SOFAST with presaturation
 - [ ] `sfhmqcf3gpph.nuws.cw` - 1H,15N SOFAST-HMQC with NUWS
 
 ## 1H,13C correlation experiments
 
+- [ ] `hmqcgpphpr.cw` - 13C HMQC
 - [ ] `sfhmqcf2gpph.nuws.cw` - 1H,13C SOFAST-HMQC with NUWS
 - [x] `sfhmqcf2et.nuws.cw` - 1H,13C gradient-selected SOFAST-HMQC
 
@@ -35,6 +37,7 @@
 
 - [x] `stebpgp1s19.cw` - 1H STE (watergate)
 - [ ] `stebpgp1spr.cw` - 1H STE (presaturation)
+- [ ] `stebpgp1s19xn.4.cw` - 15N XSTE
 - [x] `sordid_pureZ.2pt.cw` - 15N SORDID
 
 
@@ -55,10 +58,11 @@
 
 ### CCR
 
-- [ ] `hmqcgpphpr_HHdipCC.cw`
+- [ ] `tract.cw` - TRACT
+- [ ] `hmqcgpphpr_HHdipCC.cw` - 'forbidden' double quantum buildup for 13CH3 order parameters
 
 
 ## Misc
 
 - [x] `zgesgp.kinetics.cw` - 1H 1D for real-time measurements
-
+- [ ] `sfhmqcf3gpph.3d.cw` - 1H,15N SOFAST-HMQC for real-time measurements
