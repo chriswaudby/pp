@@ -5,6 +5,11 @@
 * With thanks to John Kirkpatrick on whose work many sequences are based. 
 * Contact: c.waudby@ucl.ac.uk
 
+## Table of Contents
+* [git quickstart](#git-quickstart)
+* [syntax highlighting in vim](#bruker-syntax-highlighting-in-vim)
+* [pulse programs](#pulse-programs)
+
 
 # git quickstart
 
