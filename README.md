@@ -5,11 +5,74 @@
 * With thanks to John Kirkpatrick on whose work many sequences are based. 
 * Contact: c.waudby@ucl.ac.uk
 
-## Bruker syntax highlighting in vim
+
+# git quickstart
+
+## Create a local clone of the pp repository
+
+```
+git clone https://github.com/chriswaudby/pp.git
+# move `pp` directory to required location
+# then within `pp`, configure git:
+git config user.name "Chris Waudby"
+git config user.email "c.waudby@ucl.ac.uk"
+git config color.ui true
+git config color.status auto
+git config color.branch auto
+git config core.editor vim
+git config merge.tool vimdiff
+git config --list
+```
+
+## Updating local repo
+
+```
+git pull
+```
+
+This will _fetch_ and _merge_ remote changes.
+
+
+## Making changes (based on http://rogerdudler.github.io/git-guide/)
+
+1. Add new files to the index:
+
+```
+git add <filename>
+git add *
+```
+
+2. Commit changes:
+
+```
+git commit -m "Commit message"
+```
+
+Now file is committed in local repo but not in remote.
+
+3. Push changes to remote:
+
+```
+git push origin master
+```
+
+Here `origin` refers to the remote repo (from which we originally cloned the repository) and
+`master` is the branch to which changes should be pushed.
+
+
+
+
+
+# Bruker syntax highlighting in vim
 
 * Place `syntax` folder in `~/.vim`
 * In vim: `set syntax=bruker`
 
+
+
+
+
+# Pulse programs
 
 ## Calibration
 
@@ -78,4 +141,6 @@
 
 - [x] `zgesgp.kinetics.cw` - 1H 1D for real-time measurements
 - [ ] `sfhmqcf3gpph.3d.cw` - 1H,15N SOFAST-HMQC for real-time measurements
+
+
 
