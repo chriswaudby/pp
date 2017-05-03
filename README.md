@@ -85,12 +85,12 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 
 ## Basic experiments
 
-- [ ] `zgesgp.cw` - 1H 1D (excitation sculpting)
+- [x] `zgesgp.cw` - 1H 1D (excitation sculpting)
 - [ ] `zgpr.cw` - 1H 1D (presaturation)
 
 ## 1H,15N correlation experiments
 
-- [ ] `hsqcetfpf3gpsi2.cw` - 1H,15N sensitivity-improved HSQC
+- [x] `hsqcetfpf3gpsi2.cw` - 1H,15N sensitivity-improved HSQC
 - [ ] `fhsqcf3gpph.cw` - 1H,15N FHSQC
 - [ ] `sfhmqcf3gpph.cw` - 1H,15N SOFAST-HMQC
 - [ ] `sfhmqcf3gpphpr1d.cw` - 15N filtered/edited 1D SOFAST with presaturation

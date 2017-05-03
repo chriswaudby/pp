@@ -50,6 +50,7 @@ prosol relations=<triple>
 "DELTA1=p16+d16+8u+de-0.6366*p1"
 "DELTA2=d24-p19-d16"
 "DELTA3=d26-p16-d16"
+"acqt0=de"
 
 #   ifdef LABEL_CN
 "DELTA=p16+d16+larger(p2,p8)+d0*4+20u"
