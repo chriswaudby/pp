@@ -11,7 +11,7 @@
 ;first line in file 'Hz sfo'
 ;second line in file should be zero, indicating the reference plane
 ;give values in Hz relative to sfo3
-define list<frequency> N15sat = <$FQ3LIST>
+;define list<frequency> N15sat = <$FQ3LIST>
 
 ;38 points in steps of 45 Hz:
 ;define list<frequency> N15sat = {0  -810.0 -765.0 -720.0 -675.0 -630.0 -585.0 -540.0 -495.0 -450.0 -405.0 -360.0 -315.0 -270.0 -225.0 -180.0 -135.0 -90.0 -45.0 0.0 45.0 90.0 135.0 180.0 225.0 270.0 315.0 360.0 405.0 450.0 495.0 540.0 585.0 630.0 675.0 720.0 765.0 810.0}
@@ -19,7 +19,9 @@ define list<frequency> N15sat = <$FQ3LIST>
 ;define list<frequency> N15sat = {0}
 
 
-"in0=inf2*0.5"
+;"in0=inf2*0.5"
+"d18=1u"
+"in18=inf1" ; nutation time increment
 
 "p2=p1*2"
 "p22=p21*2"
@@ -35,9 +37,6 @@ define list<frequency> N15sat = <$FQ3LIST>
 "DELTA5=2.65m-p25-200u"
 "DELTA7=2.65m"
 
-"l2=1" ; loop counter for saturation list
-; used to identify first point as the reference spectrum,
-; and to activate temperature compensation for this point
 
 "DELTA6=30u+p2" ; for zero phase correction
 
@@ -45,8 +44,7 @@ define list<frequency> N15sat = <$FQ3LIST>
 ;"cnst19=8.2"
 
 
-aqseq 312
-
+"acqt0=0"
 
 1 ze
   1m
@@ -61,16 +59,14 @@ aqseq 312
 ;---------temperature compensation and d1 recovery delay---------
 
 ; apply temperature compensation immediately after 1st point (reference with no spinlock)
-if "l2==2" ; i.e. if following the first FID
-{
-    10u LOCKH_ON
-    10u fq=cnst19(bf ppm):f1 ; put 1H on amides
-    10u pl8:f1
-    d18 cpds1:f1
-    10u do:f1
-    10u fq=0:f1 ; put 1H back on water
-    10u LOCKH_OFF
-}
+;    10u LOCKH_ON
+;    10u fq=cnst19(bf ppm):f1 ; put 1H on amides
+;    10u pl8:f1
+;    d18 cpds1:f1
+;    10u do:f1
+;    10u fq=0:f1 ; put 1H back on water
+;    10u LOCKH_OFF
+
 ; purge water before recycle delay
 10u pl1:f1
 (p1 ph0):f1
@@ -119,16 +115,15 @@ p16:gp6  ; cleaning gradient
 ;------15N T1 relaxation period--------------------------
 5u pl8:f1 pl18:f3
 
-if "l2==1" goto 77
-
 5u LOCKH_ON
-5u N15sat:f3
+;5u N15sat:f3
+5u fq=cnst18(bf ppm):f3
 5u fq=cnst19(bf ppm):f1
 d18 cpds1:f1 cw:f3 ph0
 5u do:f1 do:f3
 5u LOCKH_OFF
 
-77 5u pl1:f1 pl3:f3
+ 5u pl1:f1 pl3:f3
    5u fq=0:f1
    5u fq=0:f3
 
@@ -190,21 +185,17 @@ go=2 ph31 cpds3:f3
 500u do:f3
 d11 wr #0 if #0 zd
 
-; loop over CEST frequencies
-1m N15sat.inc
-1m iu2
-lo to 3 times l6
+; nutation time evolution (t1)
+1m id18
+lo to 5 times l3
 
 ; Echo/Anti-echo
-1m ip8*2
-1m igrad EA
-1m ru2
-1m N15sat.res
-lo to 4 times 2
+;1m ip8*2
+;1m igrad EA
+;1m ru2
+;1m N15sat.res
+;lo to 4 times 2
 
-; t1 evolution
-1m id0
-lo to 5 times l3
 
 1m do:f3
 1m BLKGRAD

@@ -1,132 +1,153 @@
-;calib13C.cw
-;based on hsqcetgp
-;avance-version (12/01/11)
+; 13C 90 calibration
+; adjust p20/pl20 for null, transmitter at cnst20 (ppm)
+;
+;hsqcphpr
+;avance-version (07/04/04)
 ;HSQC
 ;2D H-1/X correlation via double inept transfer
-;phase sensitive using Echo/Antiecho-TPPI gradient selection
+;phase sensitive
 ;with decoupling during acquisition
-;using trim pulses in inept transfer
+;
+;G. Bodenhausen & D.J. Ruben, Chem. Phys. Lett. 69, 185 (1980)
 ;
 ;$CLASS=HighRes
-;$DIM=1D
+;$DIM=2D
 ;$TYPE=
 ;$SUBTYPE=
 ;$COMMENT=
 
 
 #include <Avance.incl>
-#include <Grad.incl>
 #include <Delay.incl>
+#include <Grad.incl>
 
 
 "p2=p1*2"
+"d2=p2"
 "p4=p3*2"
+"p22=p21*2"
 "d4=1s/(cnst2*4)"
 "d11=30m"
+"d12=20u"
+"d13=4u"
 
-"d0=3u"
+"DELTA2=d4-larger(p2,p4)/2-p16-d16-4u"
+"acqt0=p1*0.6366"
 
-
-
-"DELTA1=d4-p16-de+p1*2/PI-8u"
-
-
-"DELTA=p16+d16+p2+d0*2"
-
-
-
-1 ze
-  d11 pl1:f1 pl12:f2
-2 d1 do:f2 
-3 (p1 ph1)
-  d4 pl2:f2
-  (center (p2 ph1) (p4 ph6):f2 )
-  d4 UNBLKGRAD
-  (p1 ph2)
-p16:gp3
-d16
-# ifdef CAL_C
-4u pl20:f2
-(p20 ph1):f2
-p16:gp3*1.33
-d16 pl2:f2
-# endif /*CAL_C*/
-
-(p3 ph3):f2
-  3u
-  (p2 ph5)
-  3u
-  p16:gp1*EA
-  d16
-  (p4 ph4):f2
-  DELTA
-  (ralign (p1 ph1) (p3 ph4):f2 )
-  d4
-  (center (p2 ph1) (p4 ph1):f2 )
+1 ze 
+  d11 pl12:f2
+2 d11 do:f2
+3 d12 pl9:f1
+  d1 cw:f1 ph29
+  d13 do:f1
+  d12 pl1:f1 pl2:f2 UNBLKGRAD
+  p1 ph1
   4u
-  p16:gp2
-  DELTA1 pl12:f2
-  4u BLKGRAD
-  go=2 ph31 cpd2:f2
-  d1 do:f2 mc #0 to 2 
-exit
-   
+  p16:gp1
+  d16
+  DELTA2 
+  (center (p2 ph2) (p4 ph5):f2 )
+  DELTA2 
+  p16:gp1
+  d16
+  4u
+  (p1 ph3) 
+  4u
+  p16:gp2 ; zz purge
+  d16
 
-ph1=0 
-ph2=1
-ph3=0 2
-ph4=0 0 0 0 2 2 2 2
-ph5=0 0 2 2
-ph6=0
-ph31=0 2 0 2 2 0 2 0
+# ifdef CALIB_C
+4u pl20:f2 fq=cnst20 (bf ppm):f2
+(p20 ph1):f2
+p16:gp2*1.3
+d16
+4u pl2:f2 fq=0:f2
+# endif /* CALIB_C */
+
+  (p3 ph6):f2
+3u  
+# ifdef LABEL_CN
+  (center (p2 ph8) (p22 ph8):f3 )
+# else
+  (p2 ph8)
+# endif /*LABEL_CN*/
+3u
+  (p3 ph7):f2
+  4u
+  p16:gp3
+  d16
+  (p1 ph4) 
+  4u
+  p16:gp4
+  d16
+  DELTA2 
+  (center (p2 ph2) (p4 ph5):f2 )
+  DELTA2 
+  p16:gp4
+  d16 BLKGRAD
+  4u pl12:f2
+  go=2 ph31 cpd2:f2 
+  d11 do:f2 mc #0 to 2 F0(zd)
+exit 
   
+
+ph1=0
+ph2=0
+ph3=1
+ph4=1
+ph5=0 
+ph6=0 2
+ph7=0 0 0 0 2 2 2 2
+ph8=0 0 2 2
+ph29=0
+ph31=0 2 0 2 2 0 2 0
+
 
 ;pl1 : f1 channel - power level for pulse (default)
 ;pl2 : f2 channel - power level for pulse (default)
-;pl3 : f3 channel - power level for pulse (default)
+;pl9 : f1 channel - power level for presaturation
 ;pl12: f2 channel - power level for CPD/BB decoupling
+;sp3 : f2 channel - adiabatic inversion
 ;p1 : f1 channel -  90 degree high power pulse
 ;p2 : f1 channel - 180 degree high power pulse
 ;p3 : f2 channel -  90 degree high power pulse
 ;p4 : f2 channel - 180 degree high power pulse
-;p16: homospoil/gradient pulse
-;p22: f3 channel - 180 degree high power pulse
-;p28: f1 channel - trim pulse
-;d0 : incremented delay (2D)                  [3 usec]
+;d0 : incremented delay (2D)                         [3 usec]
 ;d1 : relaxation delay; 1-5 * T1
 ;d4 : 1/(4J)XH
 ;d11: delay for disk I/O                             [30 msec]
-;d16: delay for homospoil/gradient recovery
+;d12: delay for power switching                      [20 usec]
+;d13: short delay                                    [4 usec]
 ;cnst2: = J(XH)
+;cnst20: 13C chemical shift of peak for calibration
 ;inf1: 1/SW(X) = 2 * DW(X)
 ;in0: 1/(2 * SW(X)) = DW(X)
 ;nd0: 2
-;ns: 1 * n
-;ds: >= 16
+;NS: 4 * n
+;DS: 16
 ;td1: number of experiments
-;FnMODE: echo-antiecho
+;FnMODE: States-TPPI, TPPI, States or QSEQ
 ;cpd2: decoupling according to sequence defined by cpdprg2
 ;pcpd2: f2 channel - 90 degree pulse for decoupling sequence
 
-
-;use gradient ratio:	gp 1 : gp 2
-;			  80 : 20.1    for C-13
-;			  80 :  8.1    for N-15
-
 ;for z-only gradients:
-;gpz1: 80%
-;gpz2: 20.1% for C-13, 8.1% for N-15
+;gpz1: 7 %
+;gpz2: 50 %
+;gpz3: 35 %
+;gpz4: 13 %
 
-;use gradient files:   
-;gpnam1: SMSQ10.100
-;gpnam2: SMSQ10.100
-
+;use gradient files:
+;gpnam1: SINE.100
+;gpnam2: SINE.100
+;gpnam3: SINE.100
+;gpnam4: SINE.100
 
                                           ;preprocessor-flags-start
-;LABEL_CN: for C-13 and N-15 labeled samples start experiment with 
+;LABEL_CN: for C-13 and N-15 labeled samples start experiment with
 ;             option -DLABEL_CN (eda: ZGOPTNS)
+;HALFDWELL: for initial sampling delay of half a dwell-time with
+;           option -DHALFDWELL (eda: ZGOPTNS)
                                           ;preprocessor-flags-end
 
 
-
-;$Id: hsqcetgp,v 1.5.4.1.4.1 2012/01/31 17:56:32 ber Exp $
+;$Id: hsqcphpr,v 1.4 2007/04/11 13:34:30 ber Exp $
