@@ -1,8 +1,11 @@
-;fhsqcf3gpph
-; Crushing equm 15N magnetisation
-; Delays adjusted for (90,180) phase correction
-; option for 13C decoupling during acquisition (-DDUAL_DECOUPLING)
+; With option for (off-res) presat
 ;
+; Without refocusing for 0,0 phase correction
+; Option for either (90,-180) or (180,-360) phase correction
+; Crushing equm 15N magnetisation
+; Delays adjusted for zero first-order phase correction
+;
+;fhsqcf3gpph
 ;avance-version (07/04/04)
 ;2D H-1/X correlation via double inept transfer
 ;phase sensitive
@@ -31,46 +34,47 @@
 "d26=1s/(cnst4*4)"
 
 
-"in0=inf1/2"
-
-"d0=in0-0.5*larger(p2,p14)-0.6366*p21"
-
+"in0=inf1"
 
 "DELTA=d19-p22/2"
-"DELTA1=d26-p16-d16-p27*3-d19*5-p1*2/PI"
-"DELTA2=d26-p16-d16-p27*2-p0-d19*5-de-8u"
-"DELTA4=p21*2/3.1416"
-# ifdef LABEL_CN
-"DELTA3=d0+larger(p2,p14)/2"
-# else
-"DELTA3=d0+p2/2"
-# endif /*LABEL_CN*/
-
+"DELTA1=d26-p16-d16-p27*3-d19*5-0.6366*p1"
+"DELTA2=d26-p16-d16-p27*2-p0-d19*5-8u-de"
+"acqt0=de"
 
 "TAU=d26-p16-4u"
 
+#   ifdef SINGLEDWELL
+    "d0=in0-1.27324*p21"
+#   else
+    "d0=in0/2-1.27324*p21"
+#   endif /*SINGLEDWELL*/
 
-"acqt0=0"
-baseopt_echo
 
+1 ze 
+  d11 pl16:f3
+2 d11 do:f3
 
-1 ze
-  d11 pl16:f3 pl12:f2
-2 d11 do:f3 do:f2
+# ifdef OFFRES_PRESAT
+
+  30u fq=cnst21(bf hz):f1
+  d12 pl9:f1
+  d13 cw:f1 ph1
+  d1
+  d13 do:f1
+  30u fq=0:f1
+
+# else
 
   d1
 
+# endif /*OFFRES_PRESAT*/
+
 3 d12 pl1:f1 pl3:f3
   50u UNBLKGRAD
-
-  ; crush equilibrium 15N
   p16:gp4*0.7
-  d16
   (p21 ph1):f3
   p16:gp4
-  d16
-
-  ; begin HSQC
+  d16*2
   (p1 ph1)
   4u
   p16:gp1
@@ -79,40 +83,32 @@ baseopt_echo
   4u
   p16:gp1
   TAU
-  (p1 ph2)
-
-  ; zz filter
+  (p1 ph2) 
   4u
   p16:gp2
   d16
 
-  ; t1 evolution
+# ifdef LABEL_CN
 
-  (p21 ph3):f3
-;  DELTA3
-;  (p22 ph3):f3
-;  DELTA4
-  d0
+  if "d0 < p14"
+  {
+   ( center (p21 ph3 d0 p21 ph4):f3 (p2 ph5):f1 )
+  }
+  else
+  {
+   ( center (p21 ph3 d0 p21 ph4):f3 (p2 ph5):f1 (p14:sp3 ph1):f2 )
+  }
 
-#   ifdef LABEL_CN
-  (center (p2 ph5) (p14:sp3 ph1):f2 )
-#   else
-  (p2 ph5)
-#   endif /*LABEL_CN*/
+# else
 
-  d0
-;  DELTA4
-;  (p22 ph4):f3
-;  DELTA3
-  (p21 ph4):f3
+  ( center (p21 ph3 d0 p21 ph4):f3 (p2 ph5):f1 )
 
-  ; zz filter
+# endif /*LABEL_CN*/
+
   4u
   p16:gp2
   d16
-
-  ; back transfer
-  (p1 ph7)
+  (p1 ph7) 
   DELTA1
   p16:gp3
   d16 pl18:f1
@@ -133,20 +129,11 @@ baseopt_echo
   p16:gp3
   d16
   4u BLKGRAD
-
-  ; acquitision with dual decoupling
-# ifdef DUAL_DECOUPLING
-  DELTA2 pl12:f2 pl16:f3
-  go=2 ph31 cpd2:f2 cpd3:f3
-  d11 do:f2 do:f3 mc #0 to 2 F1PH(ip3 & ip6, id0)
-# else
   DELTA2 pl16:f3
   go=2 ph31 cpd3:f3
   d11 do:f3 mc #0 to 2 F1PH(ip3 & ip6, id0)
-# endif /*LABEL_CN*/
-
-exit
-
+exit 
+  
 
 ph1=0
 ph2=1
@@ -201,7 +188,7 @@ ph31=0 2 0 2 2 0 2 0
 ;gpz3: 31%
 ;gpz4: 53%
 
-;use gradient files:
+;use gradient files:   
 ;gpnam1: SMSQ10.100
 ;gpnam2: SMSQ10.100
 ;gpnam3: SMSQ10.100
@@ -209,7 +196,7 @@ ph31=0 2 0 2 2 0 2 0
 
 
                                           ;preprocessor-flags-start
-;LABEL_CN: for C-13 and N-15 labeled samples start experiment with
+;LABEL_CN: for C-13 and N-15 labeled samples start experiment with 
 ;             option -DLABEL_CN (eda: ZGOPTNS)
                                           ;preprocessor-flags-end
 

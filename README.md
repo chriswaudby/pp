@@ -109,11 +109,14 @@ Checkmarks indicate a tested sequence.
 - [ ] `sfhmqcf3gpph.cw` - 1H,15N SOFAST-HMQC
 - [ ] `sfhmqcf3gpphpr1d.cw` - 15N filtered/edited 1D SOFAST with presaturation
 - [ ] `sfhmqcf3gpph.nuws.cw` - 1H,15N SOFAST-HMQC with NUWS
+- [x] `hetsofast.cw` - based on IBS-HETSOFAST
 - [ ] `hzdqcf3.cw`
 
 ## 1H,13C correlation experiments
 
 - [ ] `hmqcgpphpr.cw` - 1H,13C HMQC
+- [ ] `hmqcgpphpr_2.cw` - 1H,13C HMQC with purge element
+- [ ] `hmqcgpphpr_2_wet.cw` - with WET solvent suppression
 - [x] `hsqcctetgpsp.cw` - 1H,13C constant-time HSQC
 - [x] `hisqcctetgpsp.cw` 1H,13C constant-time refocused (in-phase) HSQC
 - [ ] `sfhmqcf2gpph.nuws.cw` - 1H,13C SOFAST-HMQC with NUWS
@@ -154,7 +157,12 @@ Checkmarks indicate a tested sequence.
 ### CCR
 
 - [ ] `tract.cw` - TRACT
-- [ ] `hmqcgpphpr_HHdipCC.cw` - 'forbidden' double quantum buildup for 13CH3 order parameters
+- [ ] `fab_nnh_tr_noSE.cw` - N/HN CCR (symmetric reconversion method)
+- [x] `hmqcgpphpr_HHHH.cw` - HH/HH CCR (2Q or 3Q) for methyl order parameters
+- [ ] `hsqcphpr_1Hcoupled.cw` - 1H,13C HSQC (F1-coupled)
+- [ ] `adaptive_hsqcphpr.2d.cw`
+- [ ] `adaptive_hsqcphpr.cw`
+- [x] `best_trosy_ccr.cw` - formerly v.7
 
 
 ## Misc
