@@ -48,21 +48,26 @@
 
 "in0=inf2/2"
 
-#   ifdef HALFDWELL
-    "d0=in0/2-0.63662*p3-p1"
-#   else
+#   ifdef SINGLEDWELL
     "d0=in0-0.63662*p3-p1"
-#   endif /*HALFDWELL*/
+#   else
+    "d0=in0/2-0.63662*p3-p1"
+#   endif /*SINGLEDWELL*/
 
 "DELTA1=2*d2-p16-d16"
 "DELTA2=2*d2-p16-d16-d12-de+0.6366*p1-p3-0.1u"
 "DELTA3=d3-p16-d16-larger(p1,p3)"
+
+define delay vdmin
+"vdmin=4*(p19+d16+p3+0.5*p1)"
+
 "acqt0=de"
 
 aqseq 312
 
 
 1 ze 
+  vdmin
 2 d11 do:f2
 
   d12
@@ -194,6 +199,7 @@ ph31=0 2 0 2 0 2 0 2
 
 ;pl1 : f1 channel - power level for pulse (default)
 ;pl2 : f2 channel - power level for pulse (default)
+;pl8 : f1 channel - 10 kHz (purge)
 ;pl9 : f1 channel - power level for presaturation
 ;pl12: f2 channel - power level for CPD/BB decoupling
 ;sp2: f1 channel - shaped pulse  90 degree (on H2O)
@@ -213,6 +219,7 @@ ph31=0 2 0 2 0 2 0 2
 ;d13: short delay                                    [4 usec]
 ;d16: delay for homospoil/gradient recovery
 ;vd : variable delay, taken from vd-list
+;cnst21: frequency for off-resonance decoupling (bf Hz)
 ;inf1: 1/SW(X) = 2 * DW(X)
 ;in0: 1/(2 * SW(X)) = DW(X)
 ;nd0: 2
@@ -232,19 +239,23 @@ ph31=0 2 0 2 0 2 0 2
 ;gpz2: -36%
 ;gpz3: 18%
 ;gpz4: 7%
+;gpz5: 30%
+;gpz6: 37%
 
 ;use gradient files:
 ;gpnam1: SINE.10
 ;gpnam2: SINE.10
 ;gpnam3: SINE.10
 ;gpnam4: SINE.10
+;gpnam5: SMSQ10.100
+;gpnam6: SMSQ10.100
 
 
                                           ;preprocessor-flags-start
-;HALFDWELL: for initial sampling delay of half a dwell-time with 
-;	    option -DHALFDWELL (eda: ZGOPTNS)
-;DOUBLE_QUANTUM: for measurement of build-up of DQ coherence with
-;	    option -DDOUBLE_QUANTUM (eda: ZGOPTNS)
+;SINGLEDWELL: for initial sampling delay of half a dwell-time with 
+;	    option -DSINGLEDWELL (eda: ZGOPTNS)
+;DQ/TQ: for measurement of build-up of DQ / TQ coherence with
+;	    option -DDQ / -DTQ (eda: ZGOPTNS)
                                           ;preprocessor-flags-end
 
 
