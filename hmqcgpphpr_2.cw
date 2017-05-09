@@ -44,31 +44,18 @@
 
 "in0=inf1/2"
 
-# ifndef ONE_D
-
-#   ifdef LABEL_CN
-    "p22=p21*2"
-#   ifdef SINGLEDWELL
-    "d0=in0-0.63662*p3-larger(p1,p21)"
-#   else
-    "d0=in0/2-0.63662*p3-larger(p1,p21)"
-#   endif /*SINGLEDWELL*/
-#   else
 #   ifdef SINGLEDWELL
     "d0=in0-0.63662*p3-p1"
 #   else
     "d0=in0/2-0.63662*p3-p1"
 #   endif /*SINGLEDWELL*/
-#   endif /*LABEL_CN*/
-
-# endif /*ONE_D*/
 
 
 "DELTA1=d2-p16-d16"
 "DELTA2=d2-p16-d16-d12-4u-de+0.6366*p1"
 
 
-"acqt0=0"
+"acqt0=de"
 baseopt_echo
 
 
@@ -110,16 +97,11 @@ d16
 d3
 p17:gp3
 d16
-;  (p3 ph6):f2
 (center (p2 ph1):f1 (p3 ph6):f2 )
 ;end purge element
 
   d0
-#   ifdef LABEL_CN
-  (center (p2 ph5):f1 (p22 ph2):f3 )
-#   else
   (p2 ph5):f1
-#   endif /*LABEL_CN*/
   d0
 
   (p3 ph4):f2
@@ -130,8 +112,8 @@ d16
   DELTA2
   go=2 ph31 cpd2:f2 
   d11 do:f2 mc #0 to 2
-       ;F2PH(ip3 & ip29, id0)
-       F1PH(calph(ph4, +90) & calph(ph29, +90), caldel(d0, +in0))
+       F1PH(ip4 & ip29, id0)
+       ;F1PH(calph(ph4, +90) & calph(ph29, +90), caldel(d0, +in0))
   4u BLKGRAD
 exit 
   
@@ -178,9 +160,6 @@ ph31=0 2 0 2 2 0 2 0
 ;cpd2: decoupling according to sequence defined by cpdprg2
 ;pcpd2: f2 channel - 90 degree pulse for decoupling sequence
 
-;use gradient ratio:    gp 1 : gp 2
-;                         31 :   7
-
 
 ;for z-only gradients:
 ;gpz1: 31%
@@ -190,11 +169,9 @@ ph31=0 2 0 2 2 0 2 0
 ;use gradient files:
 ;gpnam1: SMSQ10.100
 ;gpnam2: SMSQ10.100
-
+;gpnam3: SMSQ10.32
 
                                           ;preprocessor-flags-start
-;LABEL_CN: for C-13 and N-15 labeled samples start experiment with
-;             option -DLABEL_CN (eda: ZGOPTNS)
 ;SINGLEDWELL: for initial sampling delay of one dwell-time with 
 ;	    option -DSINGLEDWELL (eda: ZGOPTNS)
 ;OFFRES_PRESAT: for off-resonance presaturation, set cnst21=o1(water)
