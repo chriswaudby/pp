@@ -5,10 +5,13 @@
 * With thanks to John Kirkpatrick on whose work many sequences are based. 
 * Contact: c.waudby@ucl.ac.uk
 
-## Table of Contents
+
+
+# Table of Contents
 * [git quickstart](#git-quickstart)
 * [syntax highlighting in vim](#bruker-syntax-highlighting-in-vim)
 * [pulse programs](#pulse-programs)
+
 
 
 # git quickstart
@@ -88,6 +91,15 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 
 Checkmarks indicate a tested sequence.
 
+* [Calibration](#calibration)
+* [Basic experiments](#basic-experiments)
+* [1H,15N correlation experiments](#1H,15N-correlation-experiments)
+* [1H,13C correlation experiments](#1H,13C-correlation-experiments)
+* [Diffusion](#diffusion)
+* [Relaxation](#relaxation)
+* [Miscellaneous](#misc)
+
+
 ## Calibration
 
 - [x] `zg490.cw` - 1H 90 calibration
@@ -132,6 +144,12 @@ Checkmarks indicate a tested sequence.
 
 ## Relaxation
 
+* [CPMG relaxation dispersion](#cpmg-relaxation-dispersion)
+* [CEST](#cest)
+* [15N CCR](#15n-ccr)
+* [methyl](#methyl)
+
+
 ### CPMG relaxation dispersion
 
 - [ ] `hsqcrexfpf3gpsi_TS32.cw` - 15N SQ CW-CPMG
@@ -154,17 +172,22 @@ Checkmarks indicate a tested sequence.
 - [x] `cest_caconh.cw` - 13CA CEST
 - [ ] `sfhmqcf3gpph_1H_cest.cw` - crude 1H CEST
 
-### CCR
+### 15N CCR
 
 - [ ] `tract.cw` - TRACT
 - [ ] `fab_nnh_tr_noSE.cw` - N/HN CCR (symmetric reconversion method)
-- [x] `hmqcgpphpr_HHHH.cw` - HH/HH CCR (2Q or 3Q) for methyl order parameters
+- [x] `best_trosy_ccr.cw` - formerly v.7
+
+### methyl 
+
+- [x] `hmqcgpphpr_1HT2.cw` - methyl 1H relaxation (L2 line, Tugarinov 2006)
+- [x] `hmqcgpphpr_1HT2.2.cw` - methyl 1H relaxation (L1+L3 lines, Tugarinov 2006)
+- [x] `hmqcgpphpr_1HT2.3.cw` - methyl 1H relaxation (L1-L3 lines, Tugarinov 2006)
+- [x] `hmqcgpphpr_HHHH.cw` - HH/HH CCR (2Q or 3Q) for methyl order parameters (Tugarinov 2007, Sun 2011)
 - [ ] `hmqcgpphpr_HHHC.cw` - HH/HC CCR for methyl order parameters
 - [x] `hsqcphpr_1Hcoupled.cw` - 1H,13C HSQC (F1-coupled)
 - [ ] `adaptive_hsqcphpr.2d.cw`
 - [ ] `adaptive_hsqcphpr.cw`
-- [x] `best_trosy_ccr.cw` - formerly v.7
-
 
 ## Misc
 
