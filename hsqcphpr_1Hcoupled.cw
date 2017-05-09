@@ -44,6 +44,10 @@
 "DELTA2=d4-p19-d16-p10-p1-12u"
 "acqt0=0"
 
+; calculate offset for WFB
+"spoff1=cnst21-o1"
+
+
 1 ze
   d11 pl12:f2
 2 d11 do:f2

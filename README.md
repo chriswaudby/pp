@@ -159,7 +159,7 @@ Checkmarks indicate a tested sequence.
 - [ ] `tract.cw` - TRACT
 - [ ] `fab_nnh_tr_noSE.cw` - N/HN CCR (symmetric reconversion method)
 - [x] `hmqcgpphpr_HHHH.cw` - HH/HH CCR (2Q or 3Q) for methyl order parameters
-- [ ] `hsqcphpr_1Hcoupled.cw` - 1H,13C HSQC (F1-coupled)
+- [x] `hsqcphpr_1Hcoupled.cw` - 1H,13C HSQC (F1-coupled)
 - [ ] `adaptive_hsqcphpr.2d.cw`
 - [ ] `adaptive_hsqcphpr.cw`
 - [x] `best_trosy_ccr.cw` - formerly v.7
