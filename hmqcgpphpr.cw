@@ -108,9 +108,9 @@
   d0
 
 #   ifdef LABEL_CN
-  (center (p2 ph2):f1 (p22 ph2):f3 )
+  (center (p2 ph5):f1 (p22 ph2):f3 )
 #   else
-  (p2 ph2):f1
+  (p2 ph5):f1
 #   endif /*LABEL_CN*/
 
   d0
@@ -133,12 +133,13 @@ ph1=0
 ph2=0 
 ph3=0 2
 ph4=0 0 2 2
+ph5=0 0 0 0 1 1 1 1
 ph29=0
 
 # ifdef FILTERED
-ph31=0
+ph31=0 0 0 0 2 2 2 2
 # else
-ph31=0 2 2 0
+ph31=0 2 2 0 2 0 0 2
 # endif /*FILTERED*/
 
 

@@ -1,5 +1,5 @@
 ; 13C 90 calibration
-; adjust p20/pl20 for null, transmitter at cnst20 (ppm)
+; set -DCALIB_C, adjust p20/pl20 for null, transmitter at cnst20 (ppm)
 ;
 ;hsqcphpr
 ;avance-version (07/04/04)

@@ -114,7 +114,7 @@ Checkmarks indicate a tested sequence.
 
 ## 1H,13C correlation experiments
 
-- [ ] `hmqcgpphpr.cw` - 1H,13C HMQC
+- [x] `hmqcgpphpr.cw` - 1H,13C HMQC
 - [ ] `hmqcgpphpr_2.cw` - 1H,13C HMQC with purge element
 - [ ] `hmqcgpphpr_2_wet.cw` - with WET solvent suppression
 - [x] `hsqcctetgpsp.cw` - 1H,13C constant-time HSQC
