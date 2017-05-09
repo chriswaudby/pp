@@ -186,6 +186,8 @@ Checkmarks indicate a tested sequence.
 - [x] `hmqcgpphpr_HHHH.cw` - HH/HH CCR (2Q or 3Q) for methyl order parameters (Tugarinov 2007, Sun 2011)
 - [ ] `hmqcgpphpr_HHHC.cw` - HH/HC CCR for methyl order parameters
 - [x] `hsqcphpr_1Hcoupled.cw` - 1H,13C HSQC (F1-coupled)
+- [x] `13C_T1.cw` - 13C T1
+- [x] `13C_NOE.cw` - 13C NOE
 - [ ] `adaptive_hsqcphpr.2d.cw`
 - [ ] `adaptive_hsqcphpr.cw`
 
