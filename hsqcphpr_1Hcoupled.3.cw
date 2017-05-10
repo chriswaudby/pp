@@ -1,18 +1,12 @@
 ; 13C HSQC with 1H coupling during t1 for measurement of CCR
 ; with filtration of methyl multiplet components (Kontaxis & Bax 2001 J Biomol NMR)
-;
-; options:
-;               delay   phase
-;    -DFILTA      0       x
-;    -DFILTB     1/6J     y
-;    -DFILTC     1/3J     -x
-;    -DFILTD     1/2J     -y
+; run as pseudo-3D, set td1=4
 ;
 ; to separate into sub-components:
 ;   aaa = A + 2B + 2C + D
 ;   aab = A +  B -  C - D
 ;   abb = A -  B -  C + D
-;   bbb = A - 2B + 2C - D
+;   bbb = A - 2B + 2C - D 
 ;
 ; May 2017
 ;
@@ -52,20 +46,12 @@
 "d13=4u"
 
 
-#ifdef FILTA
-"TAU=0.1u"
-#endif
-#ifdef FILTB
-"TAU=1s/(cnst2*12)-0.6366*p3-larger(p1,p3)"
-#endif
-#ifdef FILTC
-"TAU=1s/(cnst2*6)-0.6366*p3-larger(p1,p3)"
-#endif
-#ifdef FILTD
-"TAU=1s/(cnst2*4)-0.6366*p3-larger(p1,p3)"
-#endif
+"TAU1=0.1u"
+"TAU2=1s/(cnst2*12)-0.6366*p3-larger(p1,p3)"
+"TAU3=1s/(cnst2*6)-0.6366*p3-larger(p1,p3)"
+"TAU4=1s/(cnst2*4)-0.6366*p3-larger(p1,p3)"
 
-"in0=inf1"
+"in0=inf2"
 "d0=in0/2-2*0.6366*p3"
 
 "DELTA=d4-p16-d16-larger(p1,p3)-0.6366*p1"
@@ -76,6 +62,10 @@
 ; calculate offset for WFB
 "spoff1=cnst21-o1"
 
+; loop counter for interleaving
+"l0=0"
+
+aqseq 312
 
 1 ze
   d11 pl12:f2
@@ -112,9 +102,33 @@
   d16
 
   ; multiplet filter
+  if "l0 % 4 == 0"
+  {
   (p3 ph1):f2
-  (center (p1 ph2 p2 ph1 p1 ph2):f1 (TAU p4 ph1 TAU):f2 )
-  (p3 ph12):f2
+  (center (p1 ph2 p2 ph1 p1 ph2):f1 (TAU1 p4 ph1 TAU1):f2 )
+  (p3 ph1):f2
+  }
+
+  if "l0 % 4 == 1"
+  {
+  (p3 ph1):f2
+  (center (p1 ph2 p2 ph1 p1 ph2):f1 (TAU2 p4 ph1 TAU2):f2 )
+  (p3 ph2):f2
+  }
+
+  if "l0 % 4 == 2"
+  {
+  (p3 ph1):f2
+  (center (p1 ph2 p2 ph1 p1 ph2):f1 (TAU3 p4 ph1 TAU3):f2 )
+  (p3 ph3):f2
+  }
+
+  if "l0 % 4 == 3"
+  {
+  (p3 ph1):f2
+  (center (p1 ph2 p2 ph1 p1 ph2):f1 (TAU4 p4 ph1 TAU4):f2 )
+  (p3 ph4):f2
+  }
 
   ; 13C t1
   (p3 ph13):f2
@@ -142,9 +156,9 @@
   4u pl12:f2
 
   go=2 ph31 cpd2:f2
-  d11 do:f2 mc #0 to 2 F1PH(ip13, id0)
-
-999 4u
+  d11 do:f2 mc #0 to 2
+      F1QF(iu0)
+      F2PH(ip13, id0)
 
 exit
 
@@ -152,19 +166,8 @@ exit
 ph1=0
 ph2=1
 ph3=2
+ph4=3
 ph11=1 1 1 1 3 3 3 3
-#ifdef FILTA
-ph12=0
-#endif
-#ifdef FILTB
-ph12=1
-#endif
-#ifdef FILTC
-ph12=2
-#endif
-#ifdef FILTD
-ph12=3
-#endif
 ph13=0 2
 ph14=0 0 2 2
 ph31=0 2 2 0 2 0 0 2
