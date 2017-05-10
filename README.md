@@ -190,6 +190,7 @@ Checkmarks indicate a tested sequence.
 - [x] `hsqcphpr_1Hcoupled.3.cw` - 1H,13C HSQC (F1-coupled) with multiplet selection (pseudo-3D)
 - [x] `13C_T1.cw` - 13C T1
 - [x] `13C_NOE.cw` - 13C NOE
+- [x] `hsqcphpr_1Hcoupled_T1p.cw` - 13C T1p (with multiplet editing)
 - [ ] `adaptive_hsqcphpr.2d.cw`
 - [ ] `adaptive_hsqcphpr.cw`
 
