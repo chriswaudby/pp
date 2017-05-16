@@ -1,4 +1,4 @@
-;hsqcctetgpsp
+;hsqcctetgpsp.cw
 ;avance-version (15/02/27)
 ;HSQC
 ;2D H-1/X correlation via double inept transfer
@@ -72,16 +72,16 @@ baseopt_echo
   DELTA2 pl2:f2 
   p16:gp4
   d16
-#ifdef ZZ1
+#ifdef NOZZ1
+  (p1 ph2) (p3 ph3):f2
+#else
   (p1 ph2)
   ; zz filter
   4u
   p16:gp3*-0.8
   d16
   (p3 ph3):f2
-#else
-  (p1 ph2) (p3 ph3):f2
-#endif /*ZZ1*/
+#endif /*NOZZ1*/
   ; t1 evolution
   d0
   (center (p2 ph5) (p14:sp5 ph1):f2 (p22 ph1):f3 )
@@ -95,16 +95,16 @@ baseopt_echo
   4u
   d12 pl2:f2
 
-#ifdef ZZ2
+#ifdef NOZZ2
+  (ralign (p1 ph1) (p3 ph4):f2 )
+#else
   (p3 ph4):f2
   ; zz filter
   4u
   p16:gp3
   d16
   (p1 ph1)
-#else
-  (ralign (p1 ph1) (p3 ph4):f2 )
-#endif /*ZZ2*/
+#endif /*NOZZ2*/
   ; back-transfer
   4u
   p16:gp5
@@ -169,14 +169,10 @@ ph31=0 2 0 2 2 0 2 0
 ;pcpd2: f2 channel - 90 degree pulse for decoupling sequence
 
 
-;use gradient ratio:    gp 1 : gp 2
-;                         80 : 20.1    for C-13
-;                         80 :  8.1    for N-15
-
 ;for z-only gradients:
 ;gpz1: 80%
 ;gpz2: 30.1% for C-13
-;gpz3: 35% (zz filters)
+;gpz3: 55% (zz filters)
 ;gpz4: 13% (180 refocusing)
 ;gpz5: 10% (180 refocusing)
 
