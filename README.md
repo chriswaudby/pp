@@ -107,6 +107,7 @@ Checkmarks indicate a tested sequence.
 - [x] `zgfb.cw` - 1H water flip-back
 - [x] `calib_15n.cw` - 15N high-power 90 calibration
 - [x] `calib_13c.cw` - 13C high-power 90 calibration
+- [ ] `calib_1h_nut.cw` - 1H calibration (2d array of pulse lengths)
 - [x] `zg2h.cw` - 2H 1D/calibration
 
 ## Basic experiments
@@ -168,6 +169,7 @@ Checkmarks indicate a tested sequence.
 - [ ] `cest_zz_H_B1cal.1d.cw`
 - [x] `cest_1H_zzstart.cw` - 1HN CEST
 - [x] `cest_13Cali.cw` - 13Cali CEST
+- [ ] `cest_13Cali_B1cal.cw`
 - [x] `cest_1HA.cw` - 1HA CEST
 - [x] `cest_caconh.cw` - 13CA CEST
 - [ ] `sfhmqcf3gpph_1H_cest.cw` - crude 1H CEST
