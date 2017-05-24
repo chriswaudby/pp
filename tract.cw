@@ -22,7 +22,8 @@ prosol relations=<triple>
 "d11=30m"
 "d12=20u"
 ;"d13=4u"
-"d26=1s/(cnst4*4)"
+;"d26=1s/(cnst4*4)"
+"d26=2.7m" ; 1/4J
 
 
 "DELTA1=d26-p19-d16-p11-2*d12"

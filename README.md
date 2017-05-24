@@ -95,6 +95,7 @@ Checkmarks indicate a tested sequence.
 * [Basic experiments](#basic-experiments)
 * [1H,15N correlation experiments](#1H,15N-correlation-experiments)
 * [1H,13C correlation experiments](#1H,13C-correlation-experiments)
+* [Assignment](#assignment)
 * [Diffusion](#diffusion)
 * [Relaxation](#relaxation)
 * [Miscellaneous](#misc)
@@ -142,6 +143,10 @@ Checkmarks indicate a tested sequence.
 - [ ] `stebpgp1s19xn.4.cw` - 15N XSTE
 - [x] `sordid_pureZ.2pt.cw` - 15N SORDID
 
+## Assignment
+ - [ ] `hbhaconhgp3d.cw` - HBHACONH
+ - [x] `hccconhgpwg3d2.cw` - H(CCCO)NH TOCSY
+ - [x] `hcchdigp3d.cw` - HC(C)H TOCSY
 
 ## Relaxation
 
@@ -176,7 +181,7 @@ Checkmarks indicate a tested sequence.
 
 ### 15N CCR
 
-- [ ] `tract.cw` - TRACT
+- [x] `tract.cw` - TRACT
 - [ ] `fab_nnh_tr_noSE.cw` - N/HN CCR (symmetric reconversion method)
 - [x] `best_trosy_ccr.cw` - formerly v.7
 
