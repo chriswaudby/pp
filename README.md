@@ -144,6 +144,12 @@ Checkmarks indicate a tested sequence.
 - [x] `sordid_pureZ.2pt.cw` - 15N SORDID
 
 ## Assignment
+ - [x] `b_hncogp3d.2` - BEST-HNCO (TS3.5pl6 library)
+ - [x] `b_hncacogp3d` - BEST-HNCACO (TS3.5pl6 library)
+ - [x] `b_hncocacbgp3d.2` - BEST-HNCOCACB (TS3.5pl6 library)
+ - [x] `b_hncacbgp3d.2` - BEST-HNCACB (TS3.5pl6 library)
+ - [x] `ccconhgp3d.2` - CCCONH TOCSY (TS3.5pl6 library)
+ - [x] `hcchcogp3d` - HC(C)H COSY (TS3.5pl6 library)
  - [ ] `hbhaconhgp3d.cw` - HBHACONH
  - [x] `hccconhgpwg3d2.cw` - H(CCCO)NH TOCSY
  - [x] `hcchdigp3d.cw` - HC(C)H TOCSY

@@ -52,6 +52,8 @@ prosol relations=<triple>
 
 
 ;"td1=tdmax(td1,d20*2,in20)"
+define loopcounter td1max
+"td1max=2*d20/in20" ; max td
 
 
 "DELTA1=d4-larger(p2,p8)/2-p16-de-8u"
@@ -71,6 +73,10 @@ baseopt_echo
 
 
 1 ze 
+
+77 4u
+  lo to 77 times td1max ; use td1max so it appears in ased
+
   d11 pl12:f2 pl3:f3
 2 d1 do:f2
 
