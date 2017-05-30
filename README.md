@@ -132,6 +132,7 @@ Checkmarks indicate a tested sequence.
 - [x] `hmqcgpphpr_2.cw` - 1H,13C HMQC with purge element
 - [ ] `hmqcgpphpr_2_wet.cw` - with WET solvent suppression
 - [x] `hsqcctetgpsp.cw` - 1H,13C constant-time HSQC
+- [x] `hisqcetgpsp.cw` - 1H,13C non-CT refocused (in-phase) HSQC
 - [x] `hisqcctetgpsp.cw` 1H,13C constant-time refocused (in-phase) HSQC
 - [ ] `sfhmqcf2gpph.nuws.cw` - 1H,13C SOFAST-HMQC with NUWS
 - [x] `sfhmqcf2et.nuws.cw` - 1H,13C gradient-selected SOFAST-HMQC
@@ -179,8 +180,9 @@ Checkmarks indicate a tested sequence.
 - [ ] `cest_zz_H_B1cal.cw`
 - [ ] `cest_zz_H_B1cal.1d.cw`
 - [x] `cest_1H_zzstart.cw` - 1HN CEST
-- [x] `cest_13Cali.cw` - 13Cali CEST
-- [ ] `cest_13Cali_B1cal.cw`
+- [x] `cest_13Cali.cw` - 13Cali CEST (constant time t1 evolution)
+- [x] `cest_13Cali_nonCT.cw` - 13Cali CEST (non-constant time)
+- [x] `cest_13Cali_B1cal.cw`
 - [x] `cest_1HA.cw` - 1HA CEST
 - [x] `cest_caconh.cw` - 13CA CEST
 - [ ] `sfhmqcf3gpph_1H_cest.cw` - crude 1H CEST
