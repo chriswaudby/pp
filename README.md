@@ -95,6 +95,7 @@ Checkmarks indicate a tested sequence.
 * [Basic experiments](#basic-experiments)
 * [1H,15N correlation experiments](#1H,15N-correlation-experiments)
 * [1H,13C correlation experiments](#1H,13C-correlation-experiments)
+* [Assignment](#assignment)
 * [Diffusion](#diffusion)
 * [Relaxation](#relaxation)
 * [Miscellaneous](#misc)
@@ -107,6 +108,7 @@ Checkmarks indicate a tested sequence.
 - [x] `zgfb.cw` - 1H water flip-back
 - [x] `calib_15n.cw` - 15N high-power 90 calibration
 - [x] `calib_13c.cw` - 13C high-power 90 calibration
+- [ ] `calib_1h_nut.cw` - 1H calibration (2d array of pulse lengths)
 - [x] `zg2h.cw` - 2H 1D/calibration
 
 ## Basic experiments
@@ -141,6 +143,16 @@ Checkmarks indicate a tested sequence.
 - [ ] `stebpgp1s19xn.4.cw` - 15N XSTE
 - [x] `sordid_pureZ.2pt.cw` - 15N SORDID
 
+## Assignment
+ - [x] `b_hncogp3d.2` - BEST-HNCO (TS3.5pl6 library)
+ - [x] `b_hncacogp3d` - BEST-HNCACO (TS3.5pl6 library)
+ - [x] `b_hncocacbgp3d.2` - BEST-HNCOCACB (TS3.5pl6 library)
+ - [x] `b_hncacbgp3d.2` - BEST-HNCACB (TS3.5pl6 library)
+ - [x] `ccconhgp3d.2` - CCCONH TOCSY (TS3.5pl6 library)
+ - [x] `hcchcogp3d` - HC(C)H COSY (TS3.5pl6 library)
+ - [ ] `hbhaconhgp3d.cw` - HBHACONH
+ - [x] `hccconhgpwg3d2.cw` - H(CCCO)NH TOCSY
+ - [x] `hcchdigp3d.cw` - HC(C)H TOCSY
 
 ## Relaxation
 
@@ -168,13 +180,14 @@ Checkmarks indicate a tested sequence.
 - [ ] `cest_zz_H_B1cal.1d.cw`
 - [x] `cest_1H_zzstart.cw` - 1HN CEST
 - [x] `cest_13Cali.cw` - 13Cali CEST
+- [ ] `cest_13Cali_B1cal.cw`
 - [x] `cest_1HA.cw` - 1HA CEST
 - [x] `cest_caconh.cw` - 13CA CEST
 - [ ] `sfhmqcf3gpph_1H_cest.cw` - crude 1H CEST
 
 ### 15N CCR
 
-- [ ] `tract.cw` - TRACT
+- [x] `tract.cw` - TRACT
 - [ ] `fab_nnh_tr_noSE.cw` - N/HN CCR (symmetric reconversion method)
 - [x] `best_trosy_ccr.cw` - formerly v.7
 
