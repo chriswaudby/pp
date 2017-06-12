@@ -125,7 +125,7 @@ Checkmarks indicate a tested sequence.
 ## 1H experiments
 
 - [ ] `project.cw` - PROJECT (T2 relaxation via perfect echo)
-- [ ] `stddiffesgp.cw` - STD (saturation transfer difference)
+- [x] `stddiffesgp.cw` - STD (saturation transfer difference)
 
 
 ## 1H,15N correlation experiments

@@ -141,19 +141,20 @@ ph31=0 2 2 0 2 0 0 2
 
 ;pl0 : 120dB
 ;pl1 : f1 channel - power level for pulse (default)
-;pl2 : f2 channel - power level for pulse (default)       [120 dB]
-;pl10: f1 channel - power level for TOCSY-spinlock & trim pulse
+;pl2 : f1 channel - power level for pulse (default)       [120 dB]
+;pl10: f1 channel - power level for trim pulse (80 us)
 ;sp1 : f1 channel - shaped pulse 180 degree
-;sp13: f2 channel - shaped pulse  for saturation          [40 - 60 dB]
+;sp13: f1 channel - shaped pulse  for saturation          [40 - 60 dB]
+;spnam13: f1 channel - shaped pulse for saturation (gaus1.1000)
 ;p1 : f1 channel -  90 degree high power pulse
 ;p2 : f1 channel - 180 degree high power pulse
 ;p12: f1 channel - 180 degree shaped pulse (Squa100.1000) [2 msec]
-;p13: f2 channel -  shaped pulse for saturation           [50 msec]
+;p13: f1 channel -  shaped pulse for saturation           [50 msec]
 ;p16: homospoil/gradient pulse
 ;p17: f1 channel - trim pulse                             [2.5 msec]
 ;p29: f1 channel - spin-lock pulse
 ;p30: gradient pulse                                      [3 msec]
-;d1 : relaxation delay; 1-5 * T1
+;d1 : relaxation delay; 1-5 * T1 (including saturation time)
 ;d11: delay for disk I/O                                  [30 msec]
 ;d12: delay for power switching                           [20 usec]
 ;d16: delay for homospoil/gradient recovery
@@ -167,7 +168,7 @@ ph31=0 2 2 0 2 0 0 2
 ;td1: number of experiments
 ;NBL: NBL = number of irradiation frequencies
 
-;define FQ2LIST (irradiation frequencies)
+;define FQ1LIST (irradiation frequencies)
 ;               (list has to be stored in "/u/exp/stan/nmr/lists/f1")
 
 
