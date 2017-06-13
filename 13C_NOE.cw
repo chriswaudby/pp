@@ -2,6 +2,8 @@
 ; 13C het-NOE measurement
 ; starting with equilibrium 13Cz magnetisation
 ;
+; with option for pseudo-2D measurement (-DONE_D), set td2=1
+;
 ;avance-version (15/02/27)
 ;HSQC
 ;2D H-1/X correlation via double inept transfer
@@ -38,10 +40,18 @@ prosol relations=<triple>
 
 
 "in0=inf2"
+#ifdef ONE_D
+"d0=0.1u"
+#else
 "d0=in0/2-p3*0.6366"
+#endif
 
 "DELTA1=d3-4u-p17-d16-larger(p1,p3)"
 "DELTA2=d4-4u-p16-d16-larger(p1,p3)"
+
+
+; calculate offset for WFB
+"spoff1=cnst21-o1"
 
 ; loop counters for NOE during recycle period
 "l0=1"
@@ -94,6 +104,10 @@ baseopt_echo
   p16:gp3
   d16
 
+  ; water flip-back
+  (p11:sp1 ph3):f1
+  4u pl1:f1
+
   ; second INEPT back-transfer
   (p1 ph1):f1
   4u
@@ -117,6 +131,7 @@ exit
 
 ph1 =0
 ph2 =1
+ph3 =2
 ph11=0 2
 ph12=1 1 3 3
 ph31=0 2 2 0
@@ -126,6 +141,7 @@ ph31=0 2 2 0
 ;pl1 : f1 channel - power level for pulse (default)
 ;pl2 : f2 channel - power level for pulse (default)
 ;pl12: f2 channel - power level for CPD/BB decoupling
+;sp1 : f1 channel - 90 degree WFB
 ;sp3 : f2 channel - shaped pulse 180 degree (on resonance)
 ;sp5 : f2 channel - shaped pulse 180 degree (off resonance)
 ;sp13: f2 channel - shaped pulse 180 degree (adiabatic)
@@ -133,6 +149,7 @@ ph31=0 2 2 0
 ;p2 : f1 channel - 180 degree high power pulse
 ;p3 : f2 channel -  90 degree high power pulse
 ;p8 : f2 channel - 180 degree shaped pulse for inversion (adiabatic)
+;p11: f1 channel - 90 degree WFB
 ;p14: f2 channel - 180 degree shaped pulse
 ;p16: homospoil/gradient pulse
 ;p17: gradient pulse [300 usec]
@@ -144,7 +161,7 @@ ph31=0 2 2 0
 ;d12: delay for power switching                      [20 usec]
 ;d16: delay for homospoil/gradient recovery
 ;cnst2: = J(XH)
-;cnst21: CO chemical shift (offset, in ppm)
+;cnst21: off-resonance presat frequency (bf hz)
 ;inf1: 1/SW(X) = 2 * DW(X)
 ;in0: 1/(SW(X)) = DW(X)
 ;ns: 4 * n
