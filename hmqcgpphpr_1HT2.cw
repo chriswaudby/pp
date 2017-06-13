@@ -181,12 +181,13 @@ ph31=0 2
 ;gpz1: 31%
 ;gpz2: 7%
 ;gpz3: -40%
+;gpz4: 29%
 
 ;use gradient files:
 ;gpnam1: SMSQ10.100
 ;gpnam2: SMSQ10.100
 ;gpnam3: SMSQ10.32
-
+;gpnam4: SMSQ10.32
                                           ;preprocessor-flags-start
 ;SINGLEDWELL: for initial sampling delay of one dwell-time with 
 ;	    option -DSINGLEDWELL (eda: ZGOPTNS)
