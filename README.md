@@ -198,6 +198,7 @@ Checkmarks indicate a tested sequence.
 ### methyl 
 
 - [x] `hmqcgpphpr_1HT2.cw` - methyl 1H relaxation (L2 line, Tugarinov 2006)
+- [x] `hmqcgpphpr_1HT2.1.cw` - methyl 1H relaxation (all lines)
 - [x] `hmqcgpphpr_1HT2.2.cw` - methyl 1H relaxation (L1+L3 lines, Tugarinov 2006)
 - [x] `hmqcgpphpr_1HT2.3.cw` - methyl 1H relaxation (L1-L3 lines, Tugarinov 2006)
 - [x] `hmqcgpphpr_HHHH.cw` - HH/HH CCR (2Q or 3Q) for methyl order parameters (Tugarinov 2007, Sun 2011)
