@@ -157,9 +157,11 @@ Checkmarks indicate a tested sequence.
 
 - [x] `stebpgp1s.cw` - 1H/19F STE (no solvent suppression)
 - [x] `stebpgp1s19.cw` - 1H STE (watergate)
-- [ ] `stebpgp1spr.cw` - 1H STE (presaturation)
-- [ ] `stebpgp1s19xn.4.cw` - 15N XSTE
+- [x] `stebpgp1spr.cw` - 1H STE (presaturation)
+- [x] `stebpgp1spr_13c.cw` - 1H STE (presat) with 13C decoupling during acquisition
+- [x] `stebpgp1s19xn.4.cw` - 15N XSTE
 - [x] `sordid_pureZ.2pt.cw` - 15N SORDID
+- [x] `stebpgp1sprxc_dec.3.cw` - 13C XSTE
 
 
 ## Assignment
