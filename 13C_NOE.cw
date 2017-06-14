@@ -46,8 +46,8 @@ prosol relations=<triple>
 "d0=in0/2-p3*0.6366"
 #endif
 
-"DELTA1=d3-4u-p17-d16-larger(p1,p3)"
-"DELTA2=d4-4u-p16-d16-larger(p1,p3)"
+"DELTA1=d3-4u-p17-d16-larger(p2,p3)"
+"DELTA2=d4-4u-p17-d16-larger(p1,p3)"
 
 
 ; calculate offset for WFB
@@ -89,10 +89,10 @@ baseopt_echo
 
   ; back-transfer
   4u do:f1
-  p17:gp2
+  p17:gp1
   d16
   DELTA1 pl1:f1
-  (center (p2 ph1) (p4 ph1):f2 )
+  (center (p1 ph2 p2 ph1 p1 ph2) (p4 ph1):f2 )
   4u
   DELTA1
   p17:gp2
@@ -111,12 +111,12 @@ baseopt_echo
   ; second INEPT back-transfer
   (p1 ph1):f1
   4u
-  p16:gp4
+  p17:gp4
   d16
   DELTA2
   (center (p2 ph1) (p4 ph1):f2 )
   DELTA2
-  p16:gp4
+  p17:gp5
   d16 pl12:f2
   4u BLKGRAD
 
@@ -177,18 +177,18 @@ ph31=0 2 2 0
 ;                         80 :  8.1    for N-15
 
 ;for z-only gradients:
-;gpz1: 80%
-;gpz2: 30.1% for C-13
+;gpz1: 60%
+;gpz2: -20%
 ;gpz3: 35% (zz filters)
-;gpz4: 13% (180 refocusing)
-;gpz5: 10% (180 refocusing)
+;gpz4: 13%
+;gpz5: 33.1%
 
 ;use gradient files:
-;gpnam1: SMSQ10.100
-;gpnam2: SMSQ10.100
+;gpnam1: SMSQ10.32
+;gpnam2: SMSQ10.32
 ;gpnam3: SMSQ10.100
-;gpnam4: SMSQ10.100
-;gpnam5: SMSQ10.100
+;gpnam4: SMSQ10.32
+;gpnam5: SMSQ10.32
 
 
 
