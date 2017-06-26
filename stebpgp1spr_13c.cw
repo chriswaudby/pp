@@ -1,3 +1,4 @@
+;with 13C CPD during acquisition
 ;With added presaturation (during recycle delay only)
 ;Zero first-order phase correction
 ;
@@ -37,7 +38,8 @@ define list<gradient> diff=<Difframp>
 "acqt0=de"
 
 1 ze
-2 d11
+  4u pl12:f2
+2 d11 do:f2
   d12 pl9:f1
   d1 cw:f1 ph29
   d13 do:f1
@@ -59,10 +61,10 @@ define list<gradient> diff=<Difframp>
   d16
   p2 ph2
   p30:gp6*-1*diff
-  d16
+  d16 pl12:f2
   8u BLKGRAD
-  go=2 ph31 
-  d11 mc #0 to 2 F1QF(igrad diff)
+  go=2 ph31 cpd2:f2 
+  d11 do:f2 mc #0 to 2 F1QF(igrad diff)
 exit
 
 

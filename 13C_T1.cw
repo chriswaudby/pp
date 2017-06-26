@@ -1,6 +1,9 @@
 ;13C_T1
 ; 13C T1 measurement
 ; starting with equilibrium 13Cz magnetisation
+; T1 time = vc * 5ms
+;
+; with option for pseudo-2D measurement (-DONE_D), set td2=1
 ;
 ;avance-version (15/02/27)
 ;HSQC
@@ -38,7 +41,11 @@ prosol relations=<triple>
 
 
 "in0=inf2"
+#ifdef ONE_D
+"d0=0.1u"
+#else
 "d0=in0/2-p3*0.6366"
+#endif
 
 "DELTA1=d3-4u-p17-d16-larger(p1,p3)"
 "DELTA2=d4-4u-p16-d16-larger(p1,p3)"
@@ -139,8 +146,8 @@ ph31=0 2 2 0 2 0 0 2
 ;p16: homospoil/gradient pulse
 ;p17: gradient pulse [300 usec]
 ;d0 : incremented delay (2D)
-;d1 : relaxation delay; 1-5 * T1
-;d31: saturation period
+;d1 : relaxation delay; 1-5 * T1 (excluding NOE buildup)
+;d31: saturation period for NOE enhancement
 ;d4 : 1/(4J)XH
 ;d11: delay for disk I/O                             [30 msec]
 ;d12: delay for power switching                      [20 usec]

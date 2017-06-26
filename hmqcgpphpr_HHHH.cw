@@ -8,6 +8,8 @@
 ; Use DQ flag to record DQ build-up experiment (ns % 16)
 ; Otherwise, sequence measures decay of 1H SQ magnetisation (ns % 16)
 
+; can be run as pseudo-2D with -DONE_D (set td2=1)
+
 ; Delays adjusted for zero first-order phase correction
 ; With options for 90,-180 or 180,-360 phase corr.
 ;_____________________________________________________________
@@ -132,13 +134,17 @@ aqseq 312
   p16:gp4
   d16
   DELTA3
-  (p3 ph5):f2
-  
+
+#ifdef ONE_D
+  (center (p2 ph11):f1 (p3 ph5 1u p3 ph6):f2 )
+#else
+  (p3 ph5):f2 
   d0
   p2 ph11
   d0
-
   (p3 ph6):f2
+#endif
+
   4u
   p2 ph11
 

@@ -92,12 +92,13 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 Checkmarks indicate a tested sequence.
 
 * [Calibration](#calibration)
-* [Basic experiments](#basic-experiments)
+* [1Ds](#1Ds)
+* [1H experiments](#1H-experiments)
 * [1H,15N correlation experiments](#1H,15N-correlation-experiments)
 * [1H,13C correlation experiments](#1H,13C-correlation-experiments)
 * [Assignment](#assignment)
 * [Diffusion](#diffusion)
-* [Relaxation](#relaxation)
+* [Relaxation and dynamics](#relaxation-and-dynamics)
 * [Miscellaneous](#misc)
 
 
@@ -111,20 +112,34 @@ Checkmarks indicate a tested sequence.
 - [ ] `calib_1h_nut.cw` - 1H calibration (2d array of pulse lengths)
 - [x] `zg2h.cw` - 2H 1D/calibration
 
-## Basic experiments
+
+## 1Ds
 
 - [x] `zgesgp.cw` - 1H 1D (excitation sculpting)
-- [ ] `zgpr.cw` - 1H 1D (presaturation)
+- [x] `zgpr.cw` - 1H 1D (presaturation)
+- [ ] `zg_doublesolventsuppression.cw` - 1H 1D (2x solvent flipdowns)
+- [x] `cpmgpr1d` - 1H CPMG with presat (TS3.5pl5 library)
+- [x] `zgpg30` - 13C 1D (two-level cpd during d1 and acquisition, TS3.5pl5 library)
+
+
+## 1H experiments
+
+- [ ] `project.cw` - PROJECT (T2 relaxation via perfect echo)
+- [x] `stddiffesgp.cw` - STD (saturation transfer difference)
+
 
 ## 1H,15N correlation experiments
 
 - [x] `hsqcetfpf3gpsi2.cw` - 1H,15N sensitivity-improved HSQC
+- [ ] `hsqcfpf3gpphwg.cw` - 1H,15N HSQC (NB try this instead of fhsqc)
 - [x] `fhsqcf3gpph.cw` - 1H,15N FHSQC
 - [ ] `sfhmqcf3gpph.cw` - 1H,15N SOFAST-HMQC
+- [ ] `trosyetf3gpsi.cw` - 1H,15N TROSY
 - [ ] `sfhmqcf3gpphpr1d.cw` - 15N filtered/edited 1D SOFAST with presaturation
 - [ ] `sfhmqcf3gpph.nuws.cw` - 1H,15N SOFAST-HMQC with NUWS
 - [x] `hetsofast.cw` - based on IBS-HETSOFAST
 - [ ] `hzdqcf3.cw`
+
 
 ## 1H,13C correlation experiments
 
@@ -137,12 +152,17 @@ Checkmarks indicate a tested sequence.
 - [ ] `sfhmqcf2gpph.nuws.cw` - 1H,13C SOFAST-HMQC with NUWS
 - [x] `sfhmqcf2et.nuws.cw` - 1H,13C gradient-selected SOFAST-HMQC
 
+
 ## Diffusion
 
+- [x] `stebpgp1s.cw` - 1H/19F STE (no solvent suppression)
 - [x] `stebpgp1s19.cw` - 1H STE (watergate)
-- [ ] `stebpgp1spr.cw` - 1H STE (presaturation)
-- [ ] `stebpgp1s19xn.4.cw` - 15N XSTE
+- [x] `stebpgp1spr.cw` - 1H STE (presaturation)
+- [x] `stebpgp1spr_13c.cw` - 1H STE (presat) with 13C decoupling during acquisition
+- [x] `stebpgp1s19xn.4.cw` - 15N XSTE
 - [x] `sordid_pureZ.2pt.cw` - 15N SORDID
+- [x] `stebpgp1sprxc_dec.3.cw` - 13C XSTE
+
 
 ## Assignment
  - [x] `b_hncogp3d.2` - BEST-HNCO (TS3.5pl6 library)
@@ -155,13 +175,42 @@ Checkmarks indicate a tested sequence.
  - [x] `hccconhgpwg3d2.cw` - H(CCCO)NH TOCSY
  - [x] `hcchdigp3d.cw` - HC(C)H TOCSY
 
-## Relaxation
 
+## Relaxation and dynamics
+
+* [15N](#15n-relaxation)
+* [methyl](#methyl)
 * [CPMG relaxation dispersion](#cpmg-relaxation-dispersion)
 * [CEST](#cest)
-* [15N CCR](#15n-ccr)
-* [methyl](#methyl)
+* [EXSY](#exsy)
 
+### 15N relaxation
+
+- [ ] `T1N15_tr.cw` - 15N T1 (TROSY)
+- [ ] `T1rhoN15_tr.cw` - 15N T1rho (TROSY)
+- [ ] `T1rhoN15_tr_calib.cw`
+- [ ] `N15HetNoe_tr.cw` - 15N heteronuclear NOE (TROSY)
+- [ ] `hsqcfpf3gpphwg_T2.cw` - amide 1H T2 measurement (for PREs)
+- [x] `tract.cw` - TRACT
+- [ ] `fab_nnh_tr_noSE.cw` - N/HN CCR (symmetric reconversion method)
+- [x] `best_trosy_ccr.cw` - formerly v.7
+
+### methyl 
+
+- [x] `hmqcgpphpr_1HT2.cw` - methyl 1H relaxation (L2 line, Tugarinov 2006)
+- [x] `hmqcgpphpr_1HT2.1.cw` - methyl 1H relaxation (all lines)
+- [x] `hmqcgpphpr_1HT2.2.cw` - methyl 1H relaxation (L1+L3 lines, Tugarinov 2006)
+- [x] `hmqcgpphpr_1HT2.3.cw` - methyl 1H relaxation (L1-L3 lines, Tugarinov 2006)
+- [x] `hmqcgpphpr_HHHH.cw` - HH/HH CCR (2Q or 3Q) for methyl order parameters (Tugarinov 2007, Sun 2011)
+- [ ] `hmqcgpphpr_HHHC.cw` - HH/HC CCR for methyl order parameters
+- [x] `hsqcphpr_1Hcoupled.cw` - 1H,13C HSQC (F1-coupled)
+- [x] `hsqcphpr_1Hcoupled.2.cw` - 1H,13C HSQC (F1-coupled) with multiplet selection
+- [x] `hsqcphpr_1Hcoupled.3.cw` - 1H,13C HSQC (F1-coupled) with multiplet selection (pseudo-3D)
+- [x] `13C_T1.cw` - 13C T1
+- [x] `13C_NOE.cw` - 13C NOE
+- [x] `hsqcphpr_1Hcoupled_T1p.cw` - 13C T1p (with multiplet editing)
+- [ ] `adaptive_hsqcphpr.2d.cw`
+- [ ] `adaptive_hsqcphpr.cw`
 
 ### CPMG relaxation dispersion
 
@@ -187,27 +236,10 @@ Checkmarks indicate a tested sequence.
 - [x] `cest_caconh.cw` - 13CA CEST
 - [ ] `sfhmqcf3gpph_1H_cest.cw` - crude 1H CEST
 
-### 15N CCR
+### EXSY
 
-- [x] `tract.cw` - TRACT
-- [ ] `fab_nnh_tr_noSE.cw` - N/HN CCR (symmetric reconversion method)
-- [x] `best_trosy_ccr.cw` - formerly v.7
+- [ ] `hsqc_Nz_exsy.cw` - 15N EXSY
 
-### methyl 
-
-- [x] `hmqcgpphpr_1HT2.cw` - methyl 1H relaxation (L2 line, Tugarinov 2006)
-- [x] `hmqcgpphpr_1HT2.2.cw` - methyl 1H relaxation (L1+L3 lines, Tugarinov 2006)
-- [x] `hmqcgpphpr_1HT2.3.cw` - methyl 1H relaxation (L1-L3 lines, Tugarinov 2006)
-- [x] `hmqcgpphpr_HHHH.cw` - HH/HH CCR (2Q or 3Q) for methyl order parameters (Tugarinov 2007, Sun 2011)
-- [ ] `hmqcgpphpr_HHHC.cw` - HH/HC CCR for methyl order parameters
-- [x] `hsqcphpr_1Hcoupled.cw` - 1H,13C HSQC (F1-coupled)
-- [x] `hsqcphpr_1Hcoupled.2.cw` - 1H,13C HSQC (F1-coupled) with multiplet selection
-- [x] `hsqcphpr_1Hcoupled.3.cw` - 1H,13C HSQC (F1-coupled) with multiplet selection (pseudo-3D)
-- [x] `13C_T1.cw` - 13C T1
-- [x] `13C_NOE.cw` - 13C NOE
-- [x] `hsqcphpr_1Hcoupled_T1p.cw` - 13C T1p (with multiplet editing)
-- [ ] `adaptive_hsqcphpr.2d.cw`
-- [ ] `adaptive_hsqcphpr.cw`
 
 ## Misc
 
