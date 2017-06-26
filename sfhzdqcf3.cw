@@ -1,3 +1,7 @@
+;SOFAST-H(Z/D)QC
+;run as pseudo-3D (td1 = 2), add and subtract to obtain Z/D components
+;TODO check which is Z and D!
+;
 ;Added option for off-resonance presat (e.g. to suppress urea signal), 21/6/15
 ;
 ;With option for 1D (first row)
@@ -33,7 +37,7 @@ prosol relations=<triple>
 "d21=1s/(cnst4*2)"
 
 
-"in0=inf1"
+"in0=inf2"
 
 # ifdef ONE_D
 "d0=6u"
@@ -59,8 +63,8 @@ prosol relations=<triple>
 "spoff24=bf1*(cnst19/1000000)-o1"
 
 
-"l2=td2/2" ; number of complex points
-;"nbl=2"
+"td1=2"
+"l0=1"
 
 aqseq 312
 
@@ -88,76 +92,50 @@ aqseq 312
 3 d12 pl3:f3
   50u UNBLKGRAD
 
+  ; purge Nz
+  (p21 ph1):f3
   p16:gp2
   d16
 
-  (p39:sp23 ph1):f1
+  ; begin main sequence
+  (p39:sp23 ph11):f1
   p16:gp1
   d16
 
   if "l0 %2 == 1"
      {
-  (lalign (DELTA3 p40:sp24 ph2) (DELTA1 p21 ph3 d0 p21 ph4 DELTA1):f3 )
+  (lalign (DELTA3 p40:sp24 ph1) (DELTA1 p21 ph12 d0 p21 ph1 DELTA1):f3 )
      }
   else
      {
-  (ralign (p40:sp24 ph2 DELTA3 ) (DELTA1 p21 ph3 d0 p21 ph4 DELTA1):f3 )
+  (ralign (p40:sp24 ph1 DELTA3 ) (DELTA1 p21 ph12 d0 p21 ph1 DELTA1):f3 )
      }
-
-  (center (p40:sp24 ph2):f1 (DELTA1 p21 ph3 d0 p21 ph4 DELTA1):f3 )
 
   DELTA2
   p16:gp1
   d16 pl26:f3
   4u BLKGRAD
 
-;  go=2 ph31 cpd3:f3 
-;  10m do:f3 mc #0 to 2 
-;     F1PH(ip3, id0)
-
-  gosc ph31 cpd3:f3
-  30u do:f3
-  ; collect half of phase cycle
-  ;lo to 2 times 2
-
-  ; store data and move to next buffer
-  30u st
-  lo to 3 times nbl
-
-  30u
-  lo to 4 times ns
-
-  ; save buffer contents to disk
-  d11 wr #0 if #0
-  30u zd
-
-  ; inner loop (echo/anti-echo)
-  30u iu0
-  lo to 5 times 2
-
-  ; outer loop (d0)
-  30u id0
-  lo to 6 times l2
-
+  go=2 ph31 cpd3:f3 
+  10m do:f3 mc #0 to 2 
+     F1QF(ip12)
+     F2EA(rp12 & iu0, id0)
 
 exit 
   
 
 ph1=0 
 ph2=0 
-ph3=0 2
-ph4=0 0 2 2 
-ph29=0
-ph31=0 2 2 0
+ph11=0 
+ph12=0 2 
+ph31=0 2
 
 
 ;pl3 : f3 channel - power level for pulse (default)
 ;pl26: f3 channel - power level for CPD/BB decoupling (low power)
-;sp13: f2 channel - shaped pulse 180 degree (adiabatic)
 ;sp23: f1 channel - shaped pulse 120 degree 
 ;                   (Pc9_4_120.1000 or Q5.1000)
 ;sp24: f1 channel - shaped pulse 180 degree (Rsnob.1000)
-;p8 : f2 channel - 180 degree shaped pulse for inversion (adiabatic)
 ;p16: homospoil/gradient pulse                       [1 msec]
 ;p21: f3 channel -  90 degree high power pulse
 ;p39: f1 channel - 120 degree shaped pulse for excitation

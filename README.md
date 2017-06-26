@@ -117,7 +117,7 @@ Checkmarks indicate a tested sequence.
 
 - [x] `zgesgp.cw` - 1H 1D (excitation sculpting)
 - [x] `zgpr.cw` - 1H 1D (presaturation)
-- [ ] `zg_doublesolventsuppression.cw` - 1H 1D (2x solvent flipdowns)
+- [x] `zg_doublesolventsuppression.cw` - 1H 1D (2x solvent flipdowns)
 - [x] `cpmgpr1d` - 1H CPMG with presat (TS3.5pl5 library)
 - [x] `zgpg30` - 13C 1D (two-level cpd during d1 and acquisition, TS3.5pl5 library)
 
@@ -138,7 +138,8 @@ Checkmarks indicate a tested sequence.
 - [ ] `sfhmqcf3gpphpr1d.cw` - 15N filtered/edited 1D SOFAST with presaturation
 - [ ] `sfhmqcf3gpph.nuws.cw` - 1H,15N SOFAST-HMQC with NUWS
 - [x] `hetsofast.cw` - based on IBS-HETSOFAST
-- [ ] `hzdqcf3.cw`
+- [x] `hzdqcf3.cw`
+- [x] `sfhzdqcf3.cw`
 
 
 ## 1H,13C correlation experiments
