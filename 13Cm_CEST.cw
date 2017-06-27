@@ -204,7 +204,7 @@ aqseq 312
   30u iu2
   lo to 3 times l6
 
-  ; Echo/Anti-echo
+  ; States-TPPI
   30u ip12
   30u ru2
   30u C13sat.res
