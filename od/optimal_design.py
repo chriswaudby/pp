@@ -1,14 +1,31 @@
 import sys
 import numpy as np
+import matplotlib.pyplot as plt
+
 from math import pi
 from scipy import optimize, linalg
 
 import response_surface as rs
 import information_matrix as im
 
+# debugging
+PLOT = True
 
 
 def estimate_theta(yobs, tau, phi, omega, theta):
+    # debugging
+    print('yobs shape')
+    print(yobs.shape)
+    print('tau shape')
+    print(tau.shape)
+    print('omega shape')
+    print(omega.shape)
+    print('omega size')
+    print(omega.size)
+    print('theta shape')
+    print(theta.shape)
+#    exit()
+
     # hard code parameter limits:
     N = omega.size
     llim = np.zeros(3*N)
@@ -45,6 +62,15 @@ def estimate_theta(yobs, tau, phi, omega, theta):
         print("Theta_hat will not be updated.")
         sigma = np.zeros_like(theta)
         theta_hat = theta
+
+    if PLOT:
+        tpred = np.linspace(0,tau.max())
+        ypred = rs.y(tpred, tpred*0, theta_hat, omega)
+        for i in range(N):
+            plt.subplot(2,3,i+1)
+            plt.plot(1000*tau, yobs[:,i],'o')
+            plt.plot(1000*tpred, ypred[:,i],'-')
+        plt.show()
 
     return (theta_hat, sigma)
 

@@ -39,7 +39,7 @@ TAU = 0.5 / J
 @jit
 def calc_DELTA(S2tc):
     """Compute relaxation during INEPT transfers due to CH/CH and CH/HH dipole/dipole CCR (in macromolecular limit)."""
-    return np.exp(-TAU * c_CHCH * S2tc) * np.cosh(TAU * c_HHHC * S2tc);
+    return np.exp(-TAU * c_HHHH * S2tc) * np.cosh(TAU * c_HHHC * S2tc);
 
 @jit
 def y(tau,phi,theta,omega):
@@ -78,13 +78,48 @@ def y(tau,phi,theta,omega):
     A = parameter_matrix[0,:].reshape((1,-1))
     lam = parameter_matrix[1,:].reshape((1,-1))
     S2tc = parameter_matrix[2,:].reshape((1,-1))
-    
+
+#    print('theta:')
+#    print(theta)
+#    print('parameter_matrix')
+#    print(parameter_matrix)
+#    print('amplitudes:')
+#    print(A)
+#    print('lambda:')
+#    print(lam)
+#    print('S2tc:')
+#    print(S2tc)
+#    print('omega:')
+#    print(omega)
+#    print('tau:')
+#    print(tau)
+#    print('t:')
+#    print(t)
+
     sigma = c_CHCH * S2tc
     eta = c_CHC * S2tc
 
     DELTA = calc_DELTA(S2tc)
-    Iinner = 3 + 3*DELTA
-    Iouter = 3 - DELTA
+    Iouter = 3 + 3*DELTA
+    Iinner = 3 - DELTA
+
+#    print('sigma')
+#    print(sigma)
+#    print('eta')
+#    print(eta)
+#    print('c_HHHC*S2tc')
+#    print(c_HHHC*S2tc)
+
+#    print('DELTA')
+#    print(DELTA)
+#    print('Iinner')
+#    print(Iinner)
+#    print('Iouter')
+#    print(Iouter)
+
+#    print( np.exp(-lam*t) )
+#    print(Iouter*np.exp((-3*sigma - 2*eta)*t)*np.cos((omega + 3*piJ)*t + ph))
+#    print(Iinner*np.exp((sigma - 2*eta/3)*t)*np.cos((omega + piJ)*t + ph))
 
     return A * np.exp(-lam*t) * ( \
         Iouter*np.exp((-3*sigma - 2*eta)*t)*np.cos((omega + 3*piJ)*t + ph) \

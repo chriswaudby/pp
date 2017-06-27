@@ -70,21 +70,23 @@ def savevar(x, name):
 print("analyse_results.py - Input files:")
 
 omega = np.array(loadvar('omega')).reshape((1,-1))
-utils.pprint_array(omega, label='omega')
 
 yobs = np.array(loadvar('integrals'))
 yobs = yobs / yobs.max() * 10.
-utils.pprint_array(yobs, label='integrals')
-
 taus = np.array(loadvar('taus'))#.reshape((-1,1))
-utils.pprint_array(taus, label='taus')
-
-#phases = np.array(loadvar('phases')).reshape((-1,1)) * np.pi / 180 # convert to rad
 phases = np.array(loadvar('phases')) * np.pi / 180 # convert to rad
-utils.pprint_array(phases, label='phases')
-
 theta_0 = np.array(loadvar('theta0')).ravel()
-utils.pprint_array(theta_0, 'theta0')
+
+# select just first spin for debugging
+#yobs = yobs[:,0]
+#omega = omega[:,0:2]
+#theta_0 = theta_0[::5]
+
+#utils.pprint_array(omega, label='omega')
+#utils.pprint_array(yobs, label='integrals')
+#utils.pprint_array(taus, label='taus')
+#utils.pprint_array(phases, label='phases')
+#utils.pprint_array(theta_0, 'theta0')
 
 
 # calculate current estimate of parameters
