@@ -1,5 +1,3 @@
-#from __future__ import division
-
 import sys
 import numpy as np
 from math import pi
@@ -48,7 +46,7 @@ def estimate_theta(yobs, tau, phi, omega, theta):
         sigma = np.zeros_like(theta)
         theta_hat = theta
 
-    return (theta_hat, sigma, pcov)
+    return (theta_hat, sigma)
 
 
 

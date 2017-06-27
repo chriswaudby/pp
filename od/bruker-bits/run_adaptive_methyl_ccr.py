@@ -17,7 +17,7 @@ PLOTDISPERSION = False
 # path to scripts for numerical analysis in proper python
 analysis_script_path = '/home/nmrsu/pp_cw/od/'
 
-BF2 = 176.072974
+BF2 = 201.2230230
 
 dlg_title = 'Adaptive methyl CCR measurement' # default title for dialogs
 
@@ -27,23 +27,23 @@ def split_csv(inputstring):
     return [float(x) for x in tmp]
 
 # get experiment
-experiment_name = 'chris_adaptive_methyl_ccr_020816'
-proton_template_expt = 91
-diffusion_template_expt = 93
-hmqc_template_expt = 92
-first_expt = 100
+experiment_name = 'chris_ccr_750ile_adapt_270717'
+proton_template_expt = 2
+diffusion_template_expt = 999
+hmqc_template_expt = 7
+first_expt = 20
 result = INPUT_DIALOG(title=dlg_title,
     header='Please input the experiment name and IDs of reference experiments.',
     items=['Experiment folder = ',
      '1D template = ',
-     'Diffusion template = ',
      'HMQC template = ',
+#     'Diffusion template = ',
      'First output experiment = '
     ],
     values=[experiment_name,
      str(proton_template_expt),
-     str(diffusion_template_expt),
      str(hmqc_template_expt),
+#     str(diffusion_template_expt),
      str(first_expt)
     ])
 if result is None:
@@ -52,9 +52,9 @@ if result is None:
 else: # unpack results
     experiment_name = result[0]
     proton_template_expt = int(result[1])
-    diffusion_template_expt = int(result[2])
-    hmqc_template_expt = int(result[3])
-    first_expt = int(result[4])
+    hmqc_template_expt = int(result[2])
+#    diffusion_template_expt = int(result[3])  # NB change 3 to 4 below when uncommenting!
+    first_expt = int(result[3])
 
 # set working directory for temporary files to current experiment
 working_directory = "/opt/topspin3.5pl2/data/jc/nmr/%s/" % experiment_name
@@ -86,20 +86,20 @@ result = INPUT_DIALOG(title=dlg_title,
         'Peak positions (1H, ppm, comma separated) = ',
         'Peak positions (13C, ppm, comma separated) = ',
         'Relative amplitudes (comma separated) = ',
-        'lambda (s-1, comma separated) = ',
+        '13C R2 (s-1, comma separated) = ',
         'S2tc (ns, comma separated) = ',
-        'Evolution times for priming experiments (s, comma separated, 20us min) = ',
+        'Evolution times for priming experiments (ms, comma separated, 0.02ms min) = ',
         '13C excitation phase for priming experiments (0 to 359 degrees) = ',
         'Width of integration regions (ppm) = '],
     values=['11',
-        '0.2967, 0.1137, -0.3779',
-        '11.035, 11.523, 10.6495',
-        '1, 1, 1',
-        '15, 15, 15',
-        '10, 10, 10',
-        '0.00002, 0.005, 0.01, 0.04',
-        '0, 0, 0, 0',
-        '0.025']
+        '0.7208, 0.6319, 0.3828, 0.1734, -0.2803',
+        '11.8041, 10.76, 10.967, 11.3704, 10.4062',
+        '1, 1, 1, 1, 1',
+        '15, 15, 15, 15',
+        '10, 10, 10, 10',
+        '0.00002, 0.005, 0.010, 0.040, 0.100',
+        '0, 0, 0, 0, 0',
+        '0.03']
     )
 if result is None:
     MSG('Setup and acquisition aborted!', title=dlg_title)
@@ -126,7 +126,7 @@ savevar(theta, 'theta0')
 # calculate offsets
 omega = []
 for pp in peak_positions_13C:
-    omega.append(2*math.pi*BF2*(offset_13C-pp))
+    omega.append(2*math.pi*BF2*(pp-offset_13C))
     
 # save offsets to disk for later analysis
 savevar(omega, 'omega')
@@ -145,13 +145,13 @@ savevar(omega, 'omega')
 
 # get total number of experiments
 result = INPUT_DIALOG(title=dlg_title,
-    header='Please input the number of CCR observations to acquire.',
-    items=['Number of experiments = '],
+    header='Please input the total number of CCR observations to acquire.',
+    items=['Number of experiments (incl. seed) = '],
     values=[str(10)])
 if result is None:
     MSG('Setup and acquisition aborted!', title=dlg_title)
     EXIT()
-N_experiments = int(result[0])
+N_experiments = int(result[0]) - len(priming_times)
 
 # confirm before starting acquisition
 if CONFIRM(message="Begin acqusition?", title=dlg_title) == 0:
@@ -187,6 +187,7 @@ def prepare_ccr_expt(expt, tau, phase=0):
 def analyse_expt(expt):
     re(expt)
     EFP()
+    # TODO - baseline correction
     y = []
     for x in peak_positions_1H:
         from_ppm = x - 0.5*integration_width
@@ -203,10 +204,10 @@ current_expt = first_expt - 1
 for tau, phase in zip(priming_times, priming_phases):
     current_expt += 1
     prepare_ccr_expt(current_expt, tau, phase)
-    print('Running experiment %i: tau = %g, phase = %g' % (current_expt, tau, phase))
+    print('Running seed experiment %i: tau = %g, phase = %g' % (current_expt, tau, phase))
     #XCMD('zg', WAIT_TILL_DONE) # BUG - this doesn't actually wait until execution is finished!
     XCMD('au_zgonly', WAIT_TILL_DONE) # solution - run indirectly via AU program
-    print('Finished experiment %i!' % (current_expt))
+    print('Finished seed experiment %i!' % (current_expt))
     analyse_expt(current_expt)
 
 for iteration in range(N_experiments):
@@ -256,7 +257,7 @@ savevar(theta, 'theta')
 output = Popen(["/home/nmrsu/pp_cw/od/analyse_results.py",
                 working_directory], \
                stdout=PIPE).communicate()[0]
-print("Fit results:")
+print("Fit results (final):")
 print(output)
 
 print("FINISHED!")

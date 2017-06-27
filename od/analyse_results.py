@@ -23,21 +23,35 @@ Example (N.B. final slash is essential):
 
 """
 
-#from __future__ import division
-
 import sys
 import json
 import numpy as np
-from scipy import optimize, linalg
-import pandas as pd
+#from scipy import optimize, linalg
+#import pandas as pd
 
-import response_surface_reduced as rs
-import optimal_design_reduced as od
-import information_matrix_reduced as im
+import response_surface as rs
+import optimal_design as od
+import information_matrix as im
+import utils
+import parameters
+
+max_aq_time = 0.2
 
 # parse command line arguments
 working_directory = sys.argv[1]
 print("Working directory: " + working_directory)
+
+
+def print_estimate(theta_hat, sigma, label='ESTIMATE'):
+    n_spins = len(theta_hat) // 3
+    for spin in range(n_spins):
+        print('{:s}\t{:d}\tamp\t{:.3f}\t{:.3f}'.format(label, spin+1,theta_hat[spin],sigma[spin]))
+    for spin in range(n_spins):
+        print('{:s}\t{:d}\tR2\t{:.3f}\t{:.3f}'.format(label, spin+1,theta_hat[spin+n_spins],sigma[spin+n_spins]))
+    for spin in range(n_spins):
+        print('{:s}\t{:d}\tS2tc\t{:.3f}\t{:.3f}'.format(label, spin+1,theta_hat[spin+2*n_spins],sigma[spin+2*n_spins]))
+
+
 
 def loadvar(name):
     # Load parameter from json file in working directory.
@@ -53,32 +67,36 @@ def savevar(x, name):
     f.close()
 
 # load in integrals, tau, theta, omega from json files...
-print "analyse_results.py - Input files:"
+print("analyse_results.py - Input files:")
+
 omega = np.array(loadvar('omega')).reshape((1,-1))
-print omega
+utils.pprint_array(omega, label='omega')
+
 yobs = np.array(loadvar('integrals'))
-yobs = yobs / yobs.max()
-print yobs
+yobs = yobs / yobs.max() * 10.
+utils.pprint_array(yobs, label='integrals')
+
 taus = np.array(loadvar('taus'))#.reshape((-1,1))
-print taus
+utils.pprint_array(taus, label='taus')
+
 #phases = np.array(loadvar('phases')).reshape((-1,1)) * np.pi / 180 # convert to rad
 phases = np.array(loadvar('phases')) * np.pi / 180 # convert to rad
-print phases
+utils.pprint_array(phases, label='phases')
+
 theta_0 = np.array(loadvar('theta0')).ravel()
-print theta_0
+utils.pprint_array(theta_0, 'theta0')
+
 
 # calculate current estimate of parameters
-theta_hat, sigma, pcov = od.estimate_theta(yobs, taus, phases, omega, theta_0)
-print "analyse_results.py - Current parameter estimate:"
-#print np.column_stack((theta_hat, sigma))
-relerr = 100 * sigma / theta_hat
-print pd.DataFrame( \
-            zip(theta_hat.tolist(), sigma.tolist(), relerr.tolist()), \
-            columns=['fit','err','rel. err (%)'])
+theta_hat, sigma = od.estimate_theta(yobs, taus, phases, omega, theta_0)
+print("analyse_results.py - Current parameter estimate:")
+print_estimate(theta_hat, sigma)
 
 # get next point
-(new_tau, new_phase) = od.direct_search_next_point(yobs, taus, phases, omega, theta_hat)
+(new_tau, new_phase) = od.direct_search_next_point(yobs, taus, phases, omega, theta_hat, tau_max=max_aq_time)
 new_phase = int(np.round(new_phase * 180 / np.pi)) # convert to degrees
+
+print("analyse_results.py - Optimal acquistion time = {:.6f} s, phase = {:.1f}".format(new_tau, new_phase))
 
 # save results
 theta_hat = theta_hat.reshape((3,-1)).tolist()
