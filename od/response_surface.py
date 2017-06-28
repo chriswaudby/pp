@@ -160,8 +160,8 @@ def jac(t,phi,theta,omega):
         sigma = c_CHCH * S2tc
         eta = c_CHC * S2tc
         DELTA = calc_DELTA(S2tc)
-        Iinner = 3 + 3*DELTA
-        Iouter = 3 - DELTA
+        Iouter = 3 + 3*DELTA
+        Iinner = 3 - DELTA
 
         w = omega[0,n]
 
@@ -183,19 +183,19 @@ def jac(t,phi,theta,omega):
             + Iinner*x2 \
             + Iinner*x3 \
             + Iouter*x4)
-        # dy/d(S2tc)
+        # dy/d(S2tc)   # TODO check CHCH and HHHH are correct!
         F[3*n+2,n] = A * exp_lam * ( \
             np.exp((-3*sigma - 2*eta)*t) * \
-               (TAU*c_CHCH*DELTA + (DELTA-3)*(3*c_CHCH+2*c_CHC)*t - TAU*c_HHHC*np.exp(-TAU*c_CHCH*S2tc)*np.sinh(TAU*c_HHHC*S2tc) ) * \
-               np.cos((w + 3*piJ)*t + phi) \
+                ((3+3*DELTA)*(-2*eta-3*sigma)*t - 3*TAU*DELTA*c_HHHH + 3*np.exp(-TAU*c_HHHH*S2tc)*TAU*c_HHHC*np.sinh(TAU*c_HHHC*S2tc)) * \
+                np.cos((w + 3*piJ)*t + phi) \
             + np.exp((sigma - 2*eta/3)*t) * \
-               (-3*TAU*c_CHCH*DELTA + (DELTA+1)*(3*c_CHCH-2*c_CHC)*t + 3*TAU*c_HHHC*np.exp(-TAU*c_CHCH*S2tc)*np.sinh(TAU*c_HHHC*S2tc) ) * \
-               np.cos((w + piJ)*t + phi) \
+                ((3-DELTA)*(-2/3*eta+sigma)*t + TAU*DELTA*c_HHHH - np.exp(-TAU*c_HHHH*S2tc)*TAU*c_HHHC*np.sinh(TAU*c_HHHC*S2tc)) * \
+                np.cos((w + piJ)*t + phi) \
             + np.exp((sigma + 2*eta/3)*t) * \
-               (-3*TAU*c_CHCH*DELTA + (DELTA+1)*(3*c_CHCH+2*c_CHC)*t + 3*TAU*c_HHHC*np.exp(-TAU*c_CHCH*S2tc)*np.sinh(TAU*c_HHHC*S2tc) ) * \
-               np.cos((w - piJ)*t + phi) \
+                ((3-DELTA)*(2/3*eta+sigma)*t + TAU*DELTA*c_HHHH - np.exp(-TAU*c_HHHH*S2tc)*TAU*c_HHHC*np.sinh(TAU*c_HHHC*S2tc)) * \
+                np.cos((w - piJ)*t + phi) \
             + np.exp((-3*sigma + 2*eta)*t) * \
-               (TAU*c_CHCH*DELTA + (DELTA-3)*(3*c_CHCH-2*c_CHC)*t - TAU*c_HHHC*np.exp(-TAU*c_CHCH*S2tc)*np.sinh(TAU*c_HHHC*S2tc) ) * \
-               np.cos((w - 3*piJ)*t + phi) )
+                ((3+3*DELTA)*(2*eta-3*sigma)*t - 3*TAU*DELTA*c_HHHH + 3*np.exp(-TAU*c_HHHH*S2tc)*TAU*c_HHHC*np.sinh(TAU*c_HHHC*S2tc)) * \
+                np.cos((w - 3*piJ)*t + phi) )
 
     return F

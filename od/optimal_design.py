@@ -9,22 +9,11 @@ import response_surface as rs
 import information_matrix as im
 
 # debugging
-PLOT = True
+PLOT = False
 
 
 def estimate_theta(yobs, tau, phi, omega, theta):
     # debugging
-    print('yobs shape')
-    print(yobs.shape)
-    print('tau shape')
-    print(tau.shape)
-    print('omega shape')
-    print(omega.shape)
-    print('omega size')
-    print(omega.size)
-    print('theta shape')
-    print(theta.shape)
-#    exit()
 
     # hard code parameter limits:
     N = omega.size
@@ -66,10 +55,24 @@ def estimate_theta(yobs, tau, phi, omega, theta):
     if PLOT:
         tpred = np.linspace(0,tau.max())
         ypred = rs.y(tpred, tpred*0, theta_hat, omega)
+        ypred45 = rs.y(tpred, tpred*0+np.pi/4, theta_hat, omega)
+        ypred90 = rs.y(tpred, tpred*0+np.pi/2, theta_hat, omega)
+        ypred135 = rs.y(tpred, tpred*0+3*np.pi/4, theta_hat, omega)
+        idx0 = abs(phi-0.) < 0.05
+        idx45 = abs(phi-np.pi/4) < 0.05
+        idx90 = abs(phi-np.pi/2) < 0.05
+        idx135 = abs(phi-3*np.pi/4) < 0.05
+        
         for i in range(N):
             plt.subplot(2,3,i+1)
-            plt.plot(1000*tau, yobs[:,i],'o')
-            plt.plot(1000*tpred, ypred[:,i],'-')
+            plt.plot(1000*tau[idx0], yobs[idx0,i],'ob')
+            plt.plot(1000*tau[idx45], yobs[idx45,i],'og')
+            plt.plot(1000*tau[idx90], yobs[idx90,i],'or')
+            plt.plot(1000*tau[idx135], yobs[idx135,i],'om')
+            plt.plot(1000*tpred, ypred[:,i],'-b')
+            plt.plot(1000*tpred, ypred45[:,i],'-g')
+            plt.plot(1000*tpred, ypred90[:,i],'-r')
+            plt.plot(1000*tpred, ypred135[:,i],'-m')
         plt.show()
 
     return (theta_hat, sigma)
