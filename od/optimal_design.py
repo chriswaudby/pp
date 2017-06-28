@@ -53,7 +53,7 @@ def estimate_theta(yobs, tau, phi, omega, theta):
         theta_hat = theta
 
     if PLOT:
-        tpred = np.linspace(0,tau.max())
+        tpred = np.linspace(0,tau.max(),1000)
         ypred = rs.y(tpred, tpred*0, theta_hat, omega)
         ypred45 = rs.y(tpred, tpred*0+np.pi/4, theta_hat, omega)
         ypred90 = rs.y(tpred, tpred*0+np.pi/2, theta_hat, omega)
