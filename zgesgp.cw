@@ -31,10 +31,12 @@ prosol relations=<triple>
 1 ze
 2 30m
 #ifdef PRESAT
+  d12 fq=cnst19(bf ppm):f1 ; off-resonance decoupling
   d12 pl9:f1 BLKGRAD
   d1 cw:f1
   4u do:f1
   4u pl1:f1
+  d12 fq=0:f1 ; restore 1H frequency
 #else
   d12 pl1:f1 BLKGRAD
   d1
