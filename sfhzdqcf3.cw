@@ -152,6 +152,7 @@ ph31=0 2
 ;cnst4: = J(NH)
 ;cnst19: H(N) chemical shift (offset, in ppm)
 ;cnst39: compensation of chemical shift evolution during p39
+;           Pc9_4_90.1000: 0.514
 ;           Pc9_4_120.1000: 0.529
 ;           Q5.1000: -0.07
 ;inf1: 1/SW(N) = 2 * DW(N)
