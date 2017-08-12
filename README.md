@@ -246,6 +246,8 @@ Checkmarks indicate a tested sequence.
 
 - [x] `zgesgp.kinetics.cw` - 1H 1D for real-time measurements
 - [ ] `sfhmqcf3gpph.3d.cw` - 1H,15N SOFAST-HMQC for real-time measurements
+- [x] `19F_CEST.cw` - 19F CEST (pseudo-2D)
+- [x] `19F_xQ.cw` - 19F DD/DD CCR measurements (pseudo-2D)
 
 
 
