@@ -248,6 +248,7 @@ Checkmarks indicate a tested sequence.
 - [ ] `sfhmqcf3gpph.3d.cw` - 1H,15N SOFAST-HMQC for real-time measurements
 - [x] `19F_CEST.cw` - 19F CEST (pseudo-2D)
 - [x] `19F_xQ.cw` - 19F DD/DD CCR measurements (pseudo-2D)
-
+- [x] `19F_T2.cw` - 19F hahn-echo
+- [x] `hsqcphpr_19Fcoupled.cw` - 13C-19F HSQC
 
 
