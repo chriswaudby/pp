@@ -1,0 +1,187 @@
+#include "/opt/topspin/exp/stan/nmr/lists/pp/user/bits.jlb"
+
+#define HOMO_DEC
+
+"d11=50m"
+"d12=200u"
+
+define delay dedel
+define delay advdel
+
+define loopcounter tdcount1
+define loopcounter tdcount2
+
+"advdel=dw*2-4u"
+"dedel=de+20u"
+
+
+"tdcount1 = d5/(dw*2)+0.5"
+
+"tdcount2 = (td/2)/(tdcount1*4)+1"
+
+
+"d0=in0*0.5-p4*2-2u-p7*0.635"
+
+"d21=2.7m-p21-110u-p12*0.5"
+"d23=2.7m-p23-106u-p12*0.5-dedel"
+
+
+"anavpt=4096"
+
+
+
+1       ze
+        1m ;RESET
+        1m 
+2       1m do:N do:C1
+        1m BLKGRAD
+        d11
+        d12
+3       d12
+4       d12
+        10u sytra
+        10u reset:f1
+        10u REC_BLK
+        40u setfrtp1|1
+        1m fq=cnst4(bf ppm):H
+        1m pl9:H
+        1m do:C1
+        1m do:N
+        d1 cw:H
+        10u do:H
+        10u pl1:H
+        10u pl7:N
+        10u UNBLKGRAD
+        (p7 ph1):N
+        p21:gp24
+        100u fq=cnst8(bf ppm):H
+;------- start 90-degree on hn -----------------------
+       (p1 ph0):H
+        10u
+        p21:gp21
+        d21
+        100u
+       (center (p12:sp2 ph0):H (p7*2 ph0):N)
+        d21
+        p21:gp21
+        110u pl1:H
+       (p1 ph1):H                ;INEPT to 15N
+        6u
+        p20:gp20
+        100u pl4:C1
+        5u 
+        5u pl1:H
+;---------start N evolution --------------------------------
+       (p7 ph7):N
+        d0
+       (center (p1*2 ph0):H (p4*2 ph0 4u p4*2:sp4 ph0):C1)
+        d0
+       (p7 ph8):N
+        10u
+        p22:gp22
+        100u
+        3u pl1:H
+       (p1 ph0):H
+        106u
+        p23:gp23
+        d23 pl0:H
+        dedel
+       (center (p12:sp2 ph0):H (p7*2 ph0):N)
+        6u
+        p23:gp23
+        d23
+999     50u pl30:N
+        10u pl19:C1
+        40u setfrtp1^1
+        ACQ_START(ph30,ph31) ;total delay here=de
+        5u REC_UNBLK
+        5u syrec  ;not required, done already in acq_start
+        10u cpd3:N cpds2:C1
+40      4u DWL_CLK_ON
+        advdel DWL_CLK_OFF
+lo to 40 times tdcount1
+#ifdef HOMO_DEC
+        3u                        ;start next pulse block
+        3u sytra
+        3u REC_BLK
+        p30:gp28
+        2u
+        3u pl0:f1
+       (p10:sp10 ph28):f1
+        2u
+        p30:gp28
+        12u 
+        p31:gp29
+        12u 
+        2u pl1:f1
+       (p1*2 ph29):f1
+        2u
+        3u
+        p31:gp29
+        3u                       ;end pulse block
+        3u REC_UNBLK
+        3u syrec
+#endif
+50      4u DWL_CLK_ON            ;collect full echo
+        advdel DWL_CLK_OFF
+lo to 50 times tdcount1
+
+60      4u DWL_CLK_ON
+        advdel DWL_CLK_OFF
+lo to 60 times tdcount1
+#ifdef HOMO_DEC
+        3u                       ;start next pulse block
+        3u sytra
+        3u REC_BLK
+        p30:gp30
+        2u
+        3u pl0:f1
+       (p10:sp10 ph28):f1
+        2u
+        p30:gp30
+        12u 
+        p31:gp31
+        15u 
+        2u pl1:f1
+       (p1*2 ph29):f1
+        2u
+        3u
+        p31:gp31
+        3u ip28*2
+        3u ip29*2
+        3u REC_UNBLK           ;end pulse block
+        3u syrec
+#endif
+70      4u DWL_CLK_ON          ;collect first half of echo
+        advdel DWL_CLK_OFF
+lo to 70 times tdcount1
+lo to 40 times tdcount2
+        5u rp28
+        5u rp29
+        100u rcyc = 2
+        1m do:N do:C1
+        1m BLKGRAD
+        d11 wr #0 if #0 zd
+        d12 ip7
+       lo to 3 times 2
+        d12*0.5 id0
+        d12*0.5 ip31*2
+       lo to 4 times l3
+
+
+1m 
+1m do:C1
+1m do:N
+1m
+exit    
+        
+ph0=0
+ph1=1          ;original setting = 1     ;check right phase for Boltzmann !!!!!
+ph7=0 2
+ph8=0 0 2 2
+ph9=0
+ph10=2
+ph28=0
+ph29=2
+ph30=0
+ph31=0 2 2 0

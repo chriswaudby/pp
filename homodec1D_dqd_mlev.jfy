@@ -1,0 +1,156 @@
+#include <Avance.incl>
+#include <Grad.incl>
+#include <Delay.incl>
+#include <De.incl>
+
+#define BASH
+
+define loopcounter tdCount
+
+"d12=50m"
+
+"d27=12m"   ;half length between the two decoupling blocks
+"l27=d27/(dw*2)+0.5"
+
+"d28=dw*2*l27"
+"d29=d28*2"
+
+"tdCount = aq/(d28*4)+1"
+
+"d3=de+12u"
+
+"l24=0"
+"cnst22=0"
+"cnst24=0"
+
+dwellmode explicit
+
+1  ze
+   d12
+2  30m
+   10u BLKGRAD
+   10u fq=cnst4(bf ppm):f1
+   10u pl9:f1
+   d1 cw:f1 ph9
+   10u do:f1
+   10u UNBLKGRAD
+   p29:gp9
+   1m pl1:f1
+   1000u 
+   10u pl1:f1
+  (p1 ph1 d2 p0 ph11:r):f1  ;jump-return for water suppression
+;goto 99
+   d3
+   p20:gp0
+   50u pl0:f1
+   50u fq=0:f1 ;O1p must be set to be equal to cnst8!!!
+;   50u fq=cnst8(bf ppm):f1 ;O1p must be set to be equal to cnst8!!!
+  (p10:sp0 ph0):f1         ;amide selective reburp pulse (180 deg), calibrate carefully
+   12u
+   p20:gp0
+99 100u
+  ACQ_START(ph30,ph31) ;total delay here=de
+
+   0.05u DWL_CLK_ON
+   0.1u REC_UNBLK
+77  d28
+
+#ifdef BASH
+
+   if "l24%8==0 || l24%8==5"
+      {
+       "cnst22=0"
+       "cnst24=0"
+      }
+   if "l24%8==1 || l24%8==4"
+      {
+       "cnst22=180"
+       "cnst24=180"
+      }
+   if "l24%8==3 || l24%8==6"
+      {
+       "cnst22=0"
+       "cnst24=180"
+      }
+   if "l24%8==2 || l24%8==7"
+      {
+       "cnst22=180"
+       "cnst24=0"
+      }
+
+   0.1u REC_BLK
+   0.05u DWL_CLK_OFF
+
+   5u
+   p21:gp1
+   20u ip2+cnst22
+   23u ip4+cnst22 ;may need a longer delay, depending on your grad recovery
+   3u pl0:f1
+  (p10:sp0 ph2):f1
+   6u
+   p21:gp1
+   45u            ;may need a longer delay, depending on your grad recovery
+   p22:gp2
+   40u            ;may need a longer delay, depending on your grad recovery
+   60u pl1:f1
+  (p1*2 ph4):f1
+   5u
+   p22:gp2
+   95u            ;may need a longer delay, depending on your grad recovery
+   0.05u DWL_CLK_ON
+   0.1u REC_UNBLK
+#endif
+
+   d29
+
+#ifdef BASH
+   0.1u REC_BLK
+   0.05u DWL_CLK_OFF
+
+   5u
+   p21:gp3
+   20u ip2+cnst24
+   20u ip4+cnst24 ;may need a longer delay, depending on your grad recovery
+   5u pl0:f1
+  (p10:sp0 ph2):f1
+   5u
+   p21:gp3
+   45u            ;may need a longer delay, depending on your grad recovery
+   p22:gp4
+   40u            ;may need a longer delay, depending on your grad recovery
+   60u pl1:f1
+  (p1*2 ph4):f1
+   5u
+   p22:gp4
+   95u iu24       ;may need a longer delay, depending on your grad recovery
+   0.05u DWL_CLK_ON
+   0.1u REC_UNBLK
+#endif
+
+   d28
+
+lo to 77 times tdCount
+
+   0.1u REC_BLK
+   0.05u DWL_CLK_OFF
+
+   6u ru24 
+
+  rcyc = 2
+  50m wr #0 
+
+exit
+
+
+
+ph0=0
+ph1=2 0
+ph11=0 2
+ph2=2
+ph4=0
+ph9=0 0 2 2
+ph30=0
+ph31=0 2 
+
+
+
