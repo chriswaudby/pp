@@ -26,6 +26,7 @@ prosol relations=<triple>
 #include <Grad.incl>
 #include <Delay.incl>
 
+"cnst4=92"
 
 "d11=30m"
 "d12=20u"
