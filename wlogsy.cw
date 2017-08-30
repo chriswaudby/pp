@@ -164,13 +164,13 @@ ph31=0 2 0 2  0 2 0 2  0 2 0 2  0 2 0 2
 ;pl0 : 120dB
 ;pl1 : f1 channel - power level for pulse (default)
 ;pl10 : f1 channel - power level for spin-lock
-;sp1 : f1 channel - shaped pulse 90 degree [flipback]
+;sp1 : f1 channel - shaped pulse 90 degree [ESnob flipback]
 ;sp11 : f1 channel - shaped pulse 180 degree [flipdown]
-;sp21 : f1 channel - shaped pulse 90 degree [flipdown]
+;sp21 : f1 channel - shaped pulse 90 degree [ESnob flipdown]
 ;sp22 : f1 channel - shaped pulse 180 degree [e-PHOGSY]
-;spnam1 : Sinc.1000
+;spnam1 : ESnob.1000
 ;spnam11 : Squa100.1000
-;spnam21 : Sinc.1000
+;spnam21 : ESnob.1000
 ;spnam22 : Reburp.1000
 ;p1 : f1 channel -  90 degree high power pulse
 ;p2 : f1 channel - 180 degree high power pulse
