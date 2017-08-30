@@ -176,6 +176,8 @@ Checkmarks indicate a tested sequence.
  - [ ] `hbhaconhgp3d.cw` - HBHACONH
  - [x] `hccconhgpwg3d2.cw` - H(CCCO)NH TOCSY
  - [x] `hcchdigp3d.cw` - HC(C)H TOCSY
+ - [x] `hmcmcgcbca.linear.2h.cw` - Cali assignment for linearised methyl backbones
+ - [ ] `hmcmcgcbcaco.linear.2h.cw` - CO assignment for linearised methyl backbones
 
 
 ## Relaxation and dynamics
