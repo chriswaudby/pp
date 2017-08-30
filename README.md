@@ -124,8 +124,9 @@ Checkmarks indicate a tested sequence.
 
 ## 1H experiments
 
-- [ ] `project.cw` - PROJECT (T2 relaxation via perfect echo)
-- [x] `stddiffesgp.cw` - STD (saturation transfer difference)
+- [x] `project.cw` - PROJECT (T2 relaxation via perfect echo)
+- [ ] `stddiffesgp.cw` - STD (saturation transfer difference)
+- [x] `wlogsy.cw` - WaterLOGSY
 
 
 ## 1H,15N correlation experiments
@@ -219,6 +220,7 @@ Checkmarks indicate a tested sequence.
 - [x] `ch3_mq_cpmg.cw` - 13C MQ CPMG for 13CH3 methyls (thanks to Vitali Tugarinov)
 - [ ] `CHD2_1H_CPMG.cw` - 1H SQ CPMG for 13CHD2 methyls
 - [ ] `C13_CHD2_METmethylCPMG.cw` - 13C SQ CPMG for 13CHD2 methyls (thanks to Goran Carlstrom, Lund)
+- [x] `TQ_CPMG.cw` - 1H 3Q CPMG for methyls
 
 ### CEST
 
