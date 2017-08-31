@@ -1,5 +1,4 @@
 ;HMCM[CGCB]CACO.linear.2h.cw
-; NOT WORKING - USE .2 VERSION!
 ; COSY experiment for assignment of methyl spin systems
 ;
 ; with selective 180 pulses
@@ -58,7 +57,7 @@ prosol relations=<triple>
 "DELTA3=d23-p14*1.5-1u"
 
 "in0=inf2/2"  ; C' RT evolution
-"d0=3u"
+"d0=0.1u"
 
 "in10=inf1/2"  ; Cmethyl CT evolution
 "in30=in10"
@@ -74,8 +73,9 @@ prosol relations=<triple>
 
 "spoff3=0" ; 13C Q3 inversion, on-resonance for aliphatics
 "spoff5=bf2*(cnst21/1000000)-o2" ; 13C' Q3 inversion, const21 = 173 ppm
-"spoff23=bf2*(cnst21/1000000)-o2" ; 13C' Q5 excitation, const21 = 173 ppm
-"spoff25=bf2*(cnst21/1000000)-o2" ; 13C' Q5 excitation, const21 = 173 ppm
+"spoff7=o2-bf2*(cnst21/1000000)" ; 13CA Q3 inversion (C' on-res), const21 = 173 ppm
+"spoff23=0" ; 13C' Q5 excitation, const21 = 173 ppm
+"spoff25=0" ; 13C' Q5 excitation, const21 = 173 ppm
 
 "p9=0.25*3.873/(bf2*(cnst21/1000000)-o2)"  ; 90 degree square pulse with null on C=O
 ;"p9=0.25*3.873/(bf2*(cnst21-cnst23)/1000000)"  ; 90 degree square pulse with null on C=O
@@ -177,23 +177,24 @@ d11 H2_PULSE
   (p30 ph4):f4
 
   ; z-filter - do not move 13C carrier to C'
-  3u ;fq=cnst21(bf ppm):f2
+  3u fq=cnst21(bf ppm):f2
   p16:gp4
   d16
 
   ; t1 evolution (CO)
   (p13:sp23 ph16):f2  ; 90 CO selective
   d0 
-  (center (p14:sp3 ph1):f2 (p22 ph1):f3 )  ; 180 on CA and 15N
+  (center (p14:sp7 ph1):f2 (p22 ph1):f3 )  ; 180 on CA and 15N
   d0
-  ;(p14:sp5 ph1):f2  ; on-res 180
-  ;3u
-  ;(p14:sp3 ph1):f2 ; 180 on CA (BS compensation)
-  ;3u 
+;  (p15:sp6 ph1):f2  ; on-res 180
+;  (p14:sp3 ph1):f2  ; on-res 180
+;  3u
+;  (p14:sp7 ph1):f2 ; 180 on CA (BS compensation)
+;  3u 
   (p13:sp25 ph1):f2
 
   ; z-filter, move 13C carrier back to CA
-  3u ;fq=cnst23(bf ppm):f2
+  3u fq=0:f2
   p16:gp5
   d16
 
