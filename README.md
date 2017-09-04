@@ -80,8 +80,9 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 
 # Bruker syntax highlighting in vim
 
-* Place `syntax` folder in `~/.vim`
-* In vim: `set syntax=bruker`
+* Copy contents of `syntax-highlighting` folding into `~/.vim`
+* Pulse programs will be automatically detected by the presence of `#include <Avance.incl>`
+* Alteratively, in vim: `set syntax=bruker`
 
 
 
