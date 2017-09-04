@@ -255,5 +255,5 @@ Checkmarks indicate a tested sequence.
 - [x] `19F_xQ.cw` - 19F DD/DD CCR measurements (pseudo-2D)
 - [x] `19F_T2.cw` - 19F hahn-echo
 - [x] `hsqcphpr_19Fcoupled.cw` - 13C-19F HSQC
-
+- [ ] `imaging_zgesgp.cw` - 1D CSI
 
