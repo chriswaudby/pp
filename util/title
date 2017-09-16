@@ -1,0 +1,13 @@
+#!/bin/csh
+
+if($#argv == 0) then
+  echo
+  more ./pdata/1/title
+  echo
+endif
+
+if($#argv == 1) then
+  echo
+       more ./$1/pdata/1/title
+  echo
+endif
