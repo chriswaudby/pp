@@ -58,11 +58,28 @@ baseopt_echo
 
 
 1 ze 
-  d11 pl12:f2 pl3:f3
-2 d1 do:f2
+  d11 pl1:f1 pl12:f2 pl3:f3
+2 d11 do:f2
 
-  4u UNBLKGRAD
+# ifdef OFFRES_PRESAT
+  30u fq=cnst19(bf hz):f1
+  4u pl9:f1
+  d1 cw:f1 ph1
+  4u do:f1
+  30u fq=0:f1
+# else
+  d1
+# endif /*OFFRES_PRESAT*/
 
+  ; purge 13C
+  d12 pl1:f1 pl2:f2
+  50u UNBLKGRAD
+  (p3 ph1):f2
+  4u
+  p16:gp1
+  d16*2 
+
+  ; begin HSQC
   (p1 ph1)
   4u
   p16:gp4
@@ -116,7 +133,7 @@ baseopt_echo
   DELTA1 pl12:f2
   4u BLKGRAD
   go=2 ph31 cpd2:f2 
-  d1 do:f2 mc #0 to 2 
+  d11 do:f2 mc #0 to 2 
      F1EA(calgrad(EA), caldel(d0, +in0) & caldel(d20, -in20) & calph(ph3, +180) & calph(ph6, +180) & calph(ph31, +180))
 exit 
   
@@ -156,6 +173,7 @@ ph31=0 2 0 2 2 0 2 0
 ;d23: d23 = T : 13.3 or 26.6 msec
 ;     2T (constant time period) = n/J(CC)
 ;cnst2: = J(XH)
+;cnst19: water frequency (in ppm)
 ;cnst21: CO chemical shift (offset, in ppm)
 ;inf1: 1/SW(X) = 2 * DW(X)
 ;in0: 1/(2 * SW(X)) = DW(X)
