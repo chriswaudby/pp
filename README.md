@@ -101,6 +101,13 @@ shopt -s histappend
 
 # nice prompt
 export PS1="\[\033[38;5;15m\][\[$(tput sgr0)\]\[\033[38;5;11m\]\u@\h\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;13m\]\W\[$(tput sgr0)\]\[\033[38;5;15m\]]\\$ \[$(tput sgr0)\]"
+
+# add utils to path
+export PATH=$PATH:~/pp/util
+
+# set aliases
+alias vi=vim
+alias ls='ls --color'
 ```
 
 ## .cshrc
@@ -121,9 +128,21 @@ setenv CLICOLOR
 set prompt="%B%{\033[36m%}[%c2]%b % "
 
 # add utils to path
-set path =($path ~/pp/util)
+set path =($path ~/pp/util )
 ```
 
+## Installing nmrPipe
+
+```
+mkdir NMRPipe
+cd NMRPipe/
+wget https://www.ibbr.umd.edu/nmrpipe/install.com
+wget https://www.ibbr.umd.edu/nmrpipe/binval.com
+wget https://www.ibbr.umd.edu/nmrpipe/NMRPipeX.tZ
+wget https://www.ibbr.umd.edu/nmrpipe/s.tZ
+chmod +x *.com
+./install.com
+```
 
 
 # Pulse programs
