@@ -10,6 +10,7 @@
 # Table of Contents
 * [git quickstart](#git-quickstart)
 * [syntax highlighting in vim](#bruker-syntax-highlighting-in-vim)
+* [my shell settings](#my-shell-settings)
 * [pulse programs](#pulse-programs)
 
 
@@ -80,11 +81,68 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 
 # Bruker syntax highlighting in vim
 
-* Place `syntax` folder in `~/.vim`
-* In vim: `set syntax=bruker`
+* Copy contents of `syntax-highlighting` folding into `~/.vim`
+* Pulse programs will be automatically detected by the presence of `#include <Avance.incl>`
+* Alteratively, in vim: `set syntax=bruker`
 
 
 
+# My shell settings
+
+## .bashrc
+
+```
+# history searching
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+
+# append history (in case of multiple sessions)
+shopt -s histappend
+
+# nice prompt
+export PS1="\[\033[38;5;15m\][\[$(tput sgr0)\]\[\033[38;5;11m\]\u@\h\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;13m\]\W\[$(tput sgr0)\]\[\033[38;5;15m\]]\\$ \[$(tput sgr0)\]"
+
+# add utils to path
+export PATH=$PATH:~/pp/util
+
+# set aliases
+alias vi=vim
+alias ls='ls --color'
+```
+
+## .cshrc
+
+```
+set savehist = (5000 merge )
+set filec
+set nobeep
+set autolist=true
+
+bindkey -k up history-search-backward # Use up and down arrow to search
+bindkey -k down history-search-forward
+
+# enable colouring for ls
+setenv CLICOLOR
+
+# custom prompt
+set prompt="%B%{\033[36m%}[%c2]%b % "
+
+# add utils to path
+set path =($path ~/pp/util )
+```
+
+## Installing nmrPipe
+
+```
+mkdir NMRPipe
+cd NMRPipe/
+wget https://www.ibbr.umd.edu/nmrpipe/install.com
+wget https://www.ibbr.umd.edu/nmrpipe/binval.com
+wget https://www.ibbr.umd.edu/nmrpipe/NMRPipeX.tZ
+wget https://www.ibbr.umd.edu/nmrpipe/s.tZ
+chmod +x *.com
+./install.com
+```
 
 
 # Pulse programs
@@ -124,8 +182,9 @@ Checkmarks indicate a tested sequence.
 
 ## 1H experiments
 
-- [ ] `project.cw` - PROJECT (T2 relaxation via perfect echo)
-- [x] `stddiffesgp.cw` - STD (saturation transfer difference)
+- [x] `project.cw` - PROJECT (T2 relaxation via perfect echo)
+- [ ] `stddiffesgp.cw` - STD (saturation transfer difference)
+- [x] `wlogsy.cw` - WaterLOGSY
 
 
 ## 1H,15N correlation experiments
@@ -175,6 +234,8 @@ Checkmarks indicate a tested sequence.
  - [ ] `hbhaconhgp3d.cw` - HBHACONH
  - [x] `hccconhgpwg3d2.cw` - H(CCCO)NH TOCSY
  - [x] `hcchdigp3d.cw` - HC(C)H TOCSY
+ - [x] `hmcmcgcbca.linear.2h.cw` - Cali assignment for linearised methyl backbones
+ - [ ] `hmcmcgcbcaco.linear.2h.cw` - CO assignment for linearised methyl backbones
 
 
 ## Relaxation and dynamics
@@ -219,6 +280,7 @@ Checkmarks indicate a tested sequence.
 - [x] `ch3_mq_cpmg.cw` - 13C MQ CPMG for 13CH3 methyls (thanks to Vitali Tugarinov)
 - [ ] `CHD2_1H_CPMG.cw` - 1H SQ CPMG for 13CHD2 methyls
 - [ ] `C13_CHD2_METmethylCPMG.cw` - 13C SQ CPMG for 13CHD2 methyls (thanks to Goran Carlstrom, Lund)
+- [x] `TQ_CPMG.cw` - 1H 3Q CPMG for methyls
 
 ### CEST
 
@@ -250,5 +312,5 @@ Checkmarks indicate a tested sequence.
 - [x] `19F_xQ.cw` - 19F DD/DD CCR measurements (pseudo-2D)
 - [x] `19F_T2.cw` - 19F hahn-echo
 - [x] `hsqcphpr_19Fcoupled.cw` - 13C-19F HSQC
-
+- [ ] `imaging_zgesgp.cw` - 1D CSI
 
