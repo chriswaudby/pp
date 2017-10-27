@@ -1,3 +1,5 @@
+;don't use this one - doesn't seem to work!
+;
 ;15N constant-time HSQC CPMG relaxation dispersion experiment
 ;with 1H CW decoupling during CPMG period, pseudo-3D (recommended version)
 ;Only for use with Topspin 3
@@ -31,7 +33,7 @@ prosol relations=<triple>
 #include <Grad.incl>
 #include <Delay.incl>
 
-define list<power> protCW= <$VALIST>		; list of power levels for proton CW
+define list<power> protCW=<$VALIST>		; list of power levels for proton CW
 
 define loopcounter COUNTER1
 
@@ -132,8 +134,8 @@ aqseq 312
 # endif /*LABEL_CN*/
 
   d12
-  "protCW.idx=0"	; this statement should work, but doesn't!
-  ;3m protCW.res
+  ;"protCW.idx=0"	; this statement should work, but doesn't!
+  3m protCW.res
 
 2 30m
 3 d11
