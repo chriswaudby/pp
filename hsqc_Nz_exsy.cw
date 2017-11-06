@@ -8,7 +8,7 @@
 ;run as pseudo-3D
 ;mixing times in seconds from vd-list
 
-prosol relations=<triple_d>
+prosol relations=<triple>
 
 
 #include <Avance.incl>
@@ -17,6 +17,8 @@ prosol relations=<triple_d>
 
 ;$DIM=3D
 aqseq 312
+
+define delay vdmin
 
 "p2=p1*2"
 "p22=p21*2"
@@ -32,7 +34,12 @@ aqseq 312
 
 "in0=inf2"
 
+"vdmin=8u+2*p19+2*d16"
+
+"acqt0=0.6366*p1"
+
 1 ze
+  vdmin
   d11 pl16:f3
   d12  BLKGRAD
 2 d1 do:f3
