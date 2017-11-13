@@ -1,9 +1,8 @@
 ;hsqc_Nz_exsy.cw
 ;Nz exchange
+; old version
 ;
-;using vclist, 40 ms per repeat
-;
-;Chris Waudby, Nov 2017
+;Chris Waudby, Sep 2012
 ;
 ;adapted from Farrow et al. (1994)
 ;
@@ -36,8 +35,6 @@ define delay vdmin
 
 "in0=inf2"
 
-"spoff5=bf1*(cnst19/1000000)-o1"
-"d25=20m-0.5*p15"
 "vdmin=8u+2*p19+2*d16"
 
 "acqt0=0.6366*p1"
@@ -51,7 +48,7 @@ define delay vdmin
 
   ; calculate time for exchange delay
   10u
-  ;"d21=vd-8u-2*p19-2*d16"
+  "d21=vd-8u-2*p19-2*d16"
   10u
 
   ; Nz spoiler
@@ -99,21 +96,17 @@ define delay vdmin
   p19:gp8
   d16 pl1:f1
 
-  (p21 ph11):f3
+  (p21 ph1):f3
 
   4u
   p19:gp4         ;Nz spoiler
   d16 BLKGRAD
 
-;------------ Nz EXCHANGE PERIOD ------
-77 d25
-   (p15:sp5 ph4):f1
-   d25
-   lo to 77 times c
+  d21             ;EXSY exchange delay
 
   4u UNBLKGRAD
   p19:gp5         ;Nz spoiler
-  d16 pl1:f1
+  d16
 
   (p21 ph4):f3
 
@@ -145,7 +138,7 @@ define delay vdmin
 
   go=2 ph31 cpd3:f3
   d1 do:f3 mc #0 to 2
-    F1QF(ivc)
+    F1QF(ivd)
     F2PH(ip5, id0)
 
 exit
@@ -154,14 +147,13 @@ ph1= 1
 ph2= 2
 ph3= 3
 ph4= 0
-ph5= 0 2
-ph6= 0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
-ph11=1 1 3 3
-ph7= 0
-ph8= 0
-ph9= 0 
-ph10=2 
-ph31=0 2 2 0 2 0 0 2 0 2 2 0 2 0 0 2 
+ph5= 0
+ph6= 0 1 2 3
+ph7= 0 0 0 0 0 0 0 0 2 2 2 2 2 2 2 2
+ph8= 0 0 0 0 0 0 0 0 2 2 2 2 2 2 2 2
+ph9= 0 0 0 0 2 2 2 2
+ph10=2 2 2 2 0 0 0 0
+ph31=0 2 0 2 0 2 0 2 2 0 2 0 2 0 2 0
 
 ;pl1 : f1 channel - power level for pulse (default)
 ;pl3 : f3 channel - power level for pulse (default)
@@ -172,10 +164,6 @@ ph31=0 2 2 0 2 0 0 2 0 2 2 0 2 0 0 2
 ;p21 : f3 channel -  90 degree high power pulse
 ;p22 : f3 channel - 180 degree high power pulse
 ;p11 : f1 channel - water flipback [1 ms]
-;cnst19 : 8.2 ppm
-;spnam5 : Reburp.1000
-;sp5 : f1 channel - power level for reburp
-;p15 : f1 channel - reburp for CCR suppression during exchange period [1257 us (800 MHz)]
 ;p16 : watergate gradient
 ;p19 : spoiler gradient [500-900 us]
 ;sp1 : f1 channel - power level for water flipback
@@ -183,22 +171,23 @@ ph31=0 2 2 0 2 0 0 2 0 2 2 0 2 0 0 2
 ;sp13: f2 channel - shaped pulse 180 degree (adiabatic)
 ;d1 : relaxation delay; 1-5 * T1
 ;d16 : gradient recovery delay [200usec]
+;d21 : exsy exchange delay (set from vdlist)
 ;cnst4: = J(NH)
 ;inf2: 1/SW(X) = 2 * DW(X)
 ;in0: 1/(1 * SW(X)) = 2 * DW(X)
 ;nd0: 1
-;NS: 4 * n
-;DS: 4 * n
+;NS: 6 * n (strange bug despite phase cycle)
+;DS: 6 * n
 ;td1: number of experiments
 ;FnMODE: States-TPPI
 ;cpd3: decoupling according to sequence defined by cpdprg3
 ;pcpd3: f3 channel - 90 degree pulse for decoupling sequence
 
-;gpz1: Eqm Nz crush [31 %]
+;gpz1: Eqm Nz crush [5 %]
 ;gpz2: 180 pair [8 %]
 ;gpz3: HzNz spoil [15 %]
 ;gpz4: Nz spoil [-20 %]
-;gpz5: Nz spoil [-21 %]
+;gpz5: Nz spoil [-20 %]
 ;gpz6: 180 pair [16 %]
 ;gpz7: HzNz crush [51 %]
 ;gpz8: 180 pair [13.17 %]

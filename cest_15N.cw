@@ -120,23 +120,23 @@ p16:gp6  ; cleaning gradient
 200u
 
 ;------15N T1 relaxation period--------------------------
-5u
-if "l2==1" goto 77
-5u
-
 5u pl8:f1 pl18:f3
+
+if "l2==1" goto 77
 5u LOCKH_ON
 5u N15sat:f3
 5u fq=cnst19(bf ppm):f1
 d18 cpds1:f1 cw:f3 ph0
 5u do:f1 do:f3
 5u LOCKH_OFF
-   5u fq=0:f1
-   5u fq=0:f3
-
-5u
+5u fq=0:f1
+5u fq=0:f3
 77 5u
 5u
+
+; water purge
+2mp ph0
+3mp ph1
 
  5u pl1:f1 pl3:f3
 
