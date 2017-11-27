@@ -45,25 +45,26 @@
 2 d11 do:f2
 
   ; purge before d1
-  d12 pl8:f1
-  40m cw:f1 ph2  ; 10 kHz purge
-  4u do:f1
-  p16:gp5
-  d16 pl1:f1 
-  (p1 ph1)
-  p16:gp6
-  d16 BLKGRAD
+  ;d12 pl8:f1
+  ;40m cw:f1 ph2  ; 10 kHz purge
+  ;4u do:f1
+  ;p16:gp5
+  ;d16 pl1:f1 
+  ;(p1 ph1)
+  ;p16:gp6
+  ;d16 BLKGRAD
 
   30u fq=cnst21(bf hz):f1
   d12 pl9:f1
   d1 cw:f1 ph1
-  d13 do:f1
-  30u fq=0:f1
+  4u do:f1
+  4u fq=0:f1
   d12 pl1:f1 pl2:f2 UNBLKGRAD
 
   ; purge 13C equilibrium magnetisation
   (p3 ph1):f2
-  p16:gp0
+  4u 
+  p16:gp5
   d16
   4u
 

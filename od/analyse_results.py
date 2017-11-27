@@ -1,4 +1,4 @@
-#!/home/nmrsu/anaconda3/bin/python
+#!/home/waudbyc/anaconda3/bin/python
 """Read in the current experimental results, update the parameter estimates and
 select the optimal point for the next observation.
 
@@ -33,12 +33,14 @@ import response_surface as rs
 import optimal_design as od
 import information_matrix as im
 import utils
-import parameters
+#import parameters
 
 max_aq_time = 0.2
 
 # parse command line arguments
 working_directory = sys.argv[1]
+if working_directory[-1] != '/':
+    working_directory = working_directory + '/'
 print("Working directory: " + working_directory)
 
 
