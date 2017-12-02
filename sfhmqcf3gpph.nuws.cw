@@ -42,6 +42,7 @@ define loopcounter myCounter
 
 "DELTA1=d21-p16-d16-p39*cnst39"
 "DELTA2=p39*cnst39-de-4u"
+"acqt0=de"
 
 
 "spoff23=bf1*(cnst19/1000000)-o1"
@@ -51,7 +52,7 @@ define loopcounter myCounter
 1 ze
   d11 pl26:f3
 2 d1 do:f3
-3 d12 pl3:f3
+  d12 pl3:f3
   50u UNBLKGRAD
 
   p16:gp2
@@ -89,10 +90,10 @@ exit
 
 
 ph1=0
-ph2=0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
+ph2=0 0 0 0 
 ph3=0 2
 ph4=0 0 2 2
-ph31=0 2 2 0 2 0 0 2
+ph31=0 2 2 0 
 
 
 ;pl3 : f3 channel - power level for pulse (default)
