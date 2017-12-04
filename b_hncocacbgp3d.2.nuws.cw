@@ -1,4 +1,8 @@
-;b_hncocacbgp3d.2
+;b_hncocacbgp3d.2.nuws.cw
+;with NUWS in 15N dimension (for highly folded spectra)
+;NB acquistion order 312 not 321
+;Chris Waudby Dec 2017
+;
 ;avance-version (15/03/12)
 ;best-HN(CO)CACB
 ;3D sequence with
@@ -39,6 +43,8 @@ prosol relations=<triple>
 #include <Grad.incl>
 #include <Delay.incl>
 
+define loopcounter dsFlag
+"dsFlag=1"
 
 "d11=30m"
 
@@ -116,8 +122,11 @@ prosol relations=<triple>
 "spoff29=bf1*(cnst54/1000000)-o1"
 "spoff30=0"
 
+; number of complex points
+"l3=td1/2"
+"l6=td2/2"
 
-aqseq 321
+aqseq 312
 
 
 "acqt0=0"
@@ -246,10 +255,38 @@ baseopt_echo
   d16 pl26:f3
   4u BLKGRAD
   go=2 ph31 cpd3:f3 
-  d11 do:f3 mc #0 to 2 
-     F1PH(calph(ph9, -90) & calph(ph10, -90), caldel(d0, +in0) & calph(ph9, +180)) 
-     F2EA(calgrad(EA) & calph(ph6, +180), caldel(d10, +in10) & caldel(d29, +in29) & caldel(d30, -in30) & calph(ph8, +180) & calph(ph31, +180))
-  TAU
+
+; begin NUWS bit 
+  if "dsFlag==0" goto 10
+  zd
+  "dsFlag=0"
+10 4u
+
+; repeat acquisition block according to schedule in vclist
+  lo to 2 times c
+
+; save data, reset scan counter
+  4u do:f3
+  d11 wr #0 if #0 zd 
+
+; 13C looping
+  4u dp9 dp10
+  lo to 3 times 2
+  4u id0 ip9*2
+  lo to 3 times l3
+
+; 15N looping (and NUWS incrementation)
+  4u ivc
+  4u rp9 rp10 rd0
+  4u igrad EA ip6*2
+  lo to 3 times 2
+  4u id10 id29 dd30 ip8*2 ip31*2
+  lo to 3 times l6
+
+;  d11 do:f3 mc #0 to 2 
+;     F1PH(calph(ph9, -90) & calph(ph10, -90), caldel(d0, +in0) & calph(ph9, +180)) 
+;     F2EA(calgrad(EA) & calph(ph6, +180), caldel(d10, +in10) & caldel(d29, +in29) & caldel(d30, -in30) & calph(ph8, +180) & calph(ph31, +180))
+;  TAU
 exit
 
 
