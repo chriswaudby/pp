@@ -75,11 +75,15 @@ if "l2==1"
     10u LOCKH_OFF
 }
 ; purge water before recycle delay
+10u pl8:f1
+2mp ph0
+3mp ph1
 10u pl1:f1
-(p1 ph0):f1
-5u
-p16:gp8
-200u
+;10u pl1:f1
+;(p1 ph0):f1
+;5u
+;p16:gp8
+;200u
 1m BLKGRAD
 
 d1
@@ -120,30 +124,34 @@ p16:gp6  ; cleaning gradient
 200u
 
 ;------15N T1 relaxation period--------------------------
-5u
-if "l2==1" goto 77
-5u
-
 5u pl8:f1 pl18:f3
+
+; water purge
+2mp ph0
+3mp ph1
+
+if "l2==1" goto 77
 5u LOCKH_ON
 5u N15sat:f3
 5u fq=cnst19(bf ppm):f1
 d18 cpds1:f1 cw:f3 ph0
 5u do:f1 do:f3
 5u LOCKH_OFF
-   5u fq=0:f1
-   5u fq=0:f3
-
-5u
+5u fq=0:f1
+5u fq=0:f3
 77 5u
 5u
 
- 5u pl1:f1 pl3:f3
+; water purge
+2mp ph0
+3mp ph1
+
+5u pl1:f1 pl3:f3
 
 5u
 p16:gp7  ; cleaning gradient
 200u
-
+;goto 999
 ;---------- Echo-Antiecho encoding------------------------
 (p21 ph7):f3
 DELTA6 ;compensation for d0 15N evolution
@@ -282,7 +290,7 @@ ph31=1 3 3 1
 ;gpz4: 40%
 ;gpz5: 40%
 ;gpz6: 30%
-;gpz7: -50%
+;gpz7: 50%
 ;gpz8: 77%
 ;gpz9: 40%
 

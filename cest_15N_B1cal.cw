@@ -123,11 +123,14 @@ d18 cpds1:f1 cw:f3 ph0
 5u do:f1 do:f3
 5u LOCKH_OFF
 
- 5u pl1:f1 pl3:f3
    5u fq=0:f1
    5u fq=0:f3
 
-5u
+; water purge
+2mp ph0
+3mp ph1
+
+ 5u pl1:f1 pl3:f3
 p16:gp7  ; cleaning gradient
 200u
 
