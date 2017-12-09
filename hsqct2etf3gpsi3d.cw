@@ -190,7 +190,7 @@ aqseq 312
 ;  d1 mc #0 to 4
 ;     F1QF()
 ;     F2EA(igrad EA & ip5*2 & rpp3 rpp4 rpp5 rpp6 rpp7 rpp31, id10 & ip3*2 & ip6*2 & ip31*2)
-  d31
+  4u
 exit
    
 
@@ -211,7 +211,7 @@ ph31=0 2 2 0
 ;pl12: f1 channel - 10 kHz purge pulse
 ;pl3 : f3 channel - power level for pulse (default)
 ;pl16: f3 channel - power level for CPD/BB decoupling
-;pl23: f3 channel - power level for TOCSY-spinlock
+;pl23: f3 channel - power level for CPMG pulse train
 ;sp1 : f1 channel - shaped pulse  90 degree
 ;sp11: f1 channel - shaped pulse  90 degree water flip-back
 ;sp13: f2 channel - shaped pulse 180 degree  (Ca and C=O, adiabatic)
@@ -222,7 +222,7 @@ ph31=0 2 2 0
 ;p16: homospoil/gradient pulse
 ;p21: f3 channel -  90 degree high power pulse
 ;p22: f3 channel - 180 degree high power pulse
-;p30: f3 channel - 180 degree pulse at pl23
+;p30: f3 channel - 180 degree pulse at pl23 [80-90 usec]
 ;d1 : relaxation delay; 1-5 * T1
 ;d10 : incremented delay                             [3 usec]
 ;d11: delay for disk I/O                             [30 msec]
@@ -234,7 +234,6 @@ ph31=0 2 2 0
 ;d25: 1/(4J)YH for YH
 ;     1/(8J)YH for all multiplicities
 ;d26: 1/(4J(YH))
-;d31: length of single cpmg loop
 ;cnst4: = J(YH)
 ;cnst11: for multiplicity selection = 4 for NH, 8 for all multiplicities
 ;cnst12: for multiplicity selection = 4 for NH, 8 for all multiplicities
@@ -261,7 +260,7 @@ ph31=0 2 2 0
 ;gpz2: 80%
 ;gpz3: 16.2%
 ;gpz4: 7%
-;gpz5: -5%
+;gpz5: 11%
 
 ;use gradient files:   
 ;gpnam1: SINE.100
