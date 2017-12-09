@@ -1,3 +1,4 @@
+;tested on topspin 3.5pl6 - interleaving doesn't work!
 ;Clean-up gradient pairs added in SE block, bipolar gradients during t1
 ;Delays adjusted for zero first-order phase correction
 ;
@@ -39,7 +40,8 @@ prosol relations=<triple>
 
 "d21=450u"
 
-"d31=(p30*16+d21*32)"
+define delay loopduration
+"loopduration=(p30*16+d21*32)"
 
 		
 "d10=10u"
@@ -67,20 +69,32 @@ aqseq 312
 
 
 1 ze
-  d11 pl16:f3 st0
-2 6m do:f3 
+  loopduration
+  d11 pl16:f3 ;st0
+2 6m 
 3 3m
-4 d1
+4 d11 do:f3
+  4u  BLKGRAD
 
+  ; purge 1H magnetisation
+  4u pl12:f1
+  2mp ph1
+  3mp ph2
+  4u pl1:f1
+
+  d1
+
+  100u UNBLKGRAD
   (p1 ph1)
   d26 pl3:f3
   (center (p2 ph1) (p22 ph1):f3 )
-  d26 UNBLKGRAD
+  d26 
   (p1 ph2)
 
   4u pl0:f1
   (p11:sp11 ph1:r):f1		; flipback(+x), +y -> +z
   4u
+
   p16:gp1
   d16 pl1:f1
 
@@ -157,18 +171,25 @@ aqseq 312
   d16
   d12 pl16:f3
   4u  BLKGRAD
-  goscnp ph31 cpd3:f3
 
-  3m do:f3
-  3m st ivc
-  lo to 3 times nbl
+  go=4 ph31 cpd3:f3
+  d11 do:f3 mc #0 to 4
+    F1QF(ivc)
+    F2EA(igrad EA & ip5*2 & rpp3 rpp4 rpp5 rpp6 rpp7 rpp31, id10 & ip3*2 & ip6*2 & ip31*2)
 
-  3m ipp3 ipp4 ipp5 ipp6 ipp7 ipp31
-  lo to 4 times ns
+; BROKEN INTERLEAVING (?)
+;  goscnp ph31 cpd3:f3
 
-  d1 mc #0 to 4
-     F1QF()
-     F2EA(igrad EA & ip5*2 & rpp3 rpp4 rpp5 rpp6 rpp7 rpp31, id10 & ip3*2 & ip6*2 & ip31*2)
+;  3m do:f3
+;  3m st ivc
+;  lo to 3 times nbl
+
+;  3m ipp3 ipp4 ipp5 ipp6 ipp7 ipp31
+;  lo to 4 times ns
+
+;  d1 mc #0 to 4
+;     F1QF()
+;     F2EA(igrad EA & ip5*2 & rpp3 rpp4 rpp5 rpp6 rpp7 rpp31, id10 & ip3*2 & ip6*2 & ip31*2)
   d31
 exit
    
@@ -187,10 +208,12 @@ ph31=0 2 2 0
 
 ;pl0 : 120dB
 ;pl1 : f1 channel - power level for pulse (default)
+;pl12: f1 channel - 10 kHz purge pulse
 ;pl3 : f3 channel - power level for pulse (default)
 ;pl16: f3 channel - power level for CPD/BB decoupling
 ;pl23: f3 channel - power level for TOCSY-spinlock
 ;sp1 : f1 channel - shaped pulse  90 degree
+;sp11: f1 channel - shaped pulse  90 degree water flip-back
 ;sp13: f2 channel - shaped pulse 180 degree  (Ca and C=O, adiabatic)
 ;p1 : f1 channel -  90 degree high power pulse
 ;p2 : f1 channel - 180 degree high power pulse
