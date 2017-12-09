@@ -1,4 +1,5 @@
 ;zgesgp.kinetics.cw
+;using baseopt
 ;avance-version (07/10/04)
 ;pseudo-2D sequence
 ;water suppression using excitation sculpting with gradients

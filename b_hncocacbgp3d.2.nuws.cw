@@ -270,17 +270,30 @@ baseopt_echo
   d11 wr #0 if #0 zd 
 
 ; 13C looping
-  4u dp9 dp10
+  1u dp9
+  1u dp10
   lo to 3 times 2
-  4u id0 ip9*2
+  1u id0
+  1u ip9
+  1u ip9
   lo to 3 times l3
 
 ; 15N looping (and NUWS incrementation)
   4u ivc
-  4u rp9 rp10 rd0
-  4u igrad EA ip6*2
+  1u rp9
+  1u rp10
+  1u rd0
+  1u igrad EA
+  1u ip6
+  1u ip6
   lo to 3 times 2
-  4u id10 id29 dd30 ip8*2 ip31*2
+  1u id10
+  1u id29
+  1u dd30
+  1u ip8
+  1u ip8
+  1u ip31
+  1u ip31
   lo to 3 times l6
 
 ;  d11 do:f3 mc #0 to 2 
