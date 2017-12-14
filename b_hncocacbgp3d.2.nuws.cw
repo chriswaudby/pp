@@ -260,6 +260,7 @@ baseopt_echo
   if "dsFlag==0" goto 10
   zd
   "dsFlag=0"
+  goto 2  ; repeat following ds (without counting it as part of vclist)
 10 4u
 
 ; repeat acquisition block according to schedule in vclist
