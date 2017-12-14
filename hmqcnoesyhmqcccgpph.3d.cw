@@ -42,10 +42,12 @@
 ;"d30=in30/2-p3"
 
 ;------------options for first (in transfer pathway) 13C dim (F2)
-"d0=in0/2-0.63662*p3-p1"
+;"d0=in0/2-0.63662*p3-p1"
+"d0=in0/2-0.63662*p3-p2"
 
 ;------------options for second (in transfer pathway) 13C dim (F3)
-"d10=in10/2-0.63662*p3-p1"
+;"d10=in10/2-0.63662*p3-p1"
+"d10=in10/2-0.63662*p3-p2"
 
 
 
@@ -92,11 +94,15 @@ aqseq 321	; for info only
 
   ; 13C F2 evolution (MQ)
 # ifdef NO_F1
-  ( center (p3 ph3 0.1u p3 ph4):f2 (p2 ph2):f1 )
+;  ( center (p3 ph3 0.1u p3 ph4):f2 (p2 ph2):f1 )
+  ( center (p3 ph3 0.1u p3 ph4):f2 (p1 ph1 p2 ph2 p1 ph1):f1 )
 # else
   (p3 ph3):f2
   d0
+;  (p2 ph2):f1
+  (p1 ph1):f1
   (p2 ph2):f1
+  (p1 ph1):f1
   d0
   (p3 ph4):f2
 # endif /*NO_F1*/
@@ -129,11 +135,15 @@ aqseq 321	; for info only
   d16
 
 # ifdef NO_F2
-  ( center (p3 ph7 0.1u p3 ph8):f2 (p2 ph2):f1 )
+;  ( center (p3 ph7 0.1u p3 ph8):f2 (p2 ph2):f1 )
+  ( center (p3 ph7 0.1u p3 ph8):f2 (p1 ph1 p2 ph2 p1 ph1):f1 )
 # else
   (p3 ph7):f2
   d10
+;  (p2 ph2):f1
+  (p1 ph1):f1
   (p2 ph2):f1
+  (p1 ph1):f1
   d10
   (p3 ph8):f2
 # endif /*NO_F2*/
@@ -155,7 +165,7 @@ exit
 
 
 ph1= 0
-ph2= 0
+ph2= 1
 ph3= 0 2
 ph4= 0
 ph5= 0
