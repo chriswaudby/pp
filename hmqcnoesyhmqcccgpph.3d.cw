@@ -1,14 +1,13 @@
-;4D 13C HMQC-NOESY-13C HMQC
+;3D CCH HMQC-NOESY-13C HMQC
 ;for methyl-methyl NOES
 ;Option for NUS using Topspin 3
 ;Derived from hmqcnoesyhmqcccgpphpr.jk
 ;John K, Oct 2013
 ;Chris W, Dec 2016
 
-;F1(H) -> F2(H[mq],t1) -> F2(C[mq],t2) ---NOE--> F1(H) -> F2(C[mq],t3) -> F1(H,t4)
+;F1(H) -> F2(C[mq],t1) ---NOE--> F1(H) -> F2(C[mq],t2) -> F1(H,t3)
 ;
-;Indirect evolution order is t3, t2, t1 (13C, 13C, 1H)
-;MQ evolution for 1H (taking advantage of methyl trosy)
+;Indirect evolution order is t2, t1 (13Cdir, 13Cnoe)
 ;Uses half-dwell first-point delay by default in all indirect dims
 ;Option for off-res presat
 ;Options for 2D planes in each 13C dim
@@ -35,18 +34,20 @@
 "d12=20u"
 "d13=4u"
 
-"in0=inf2/2"		; first 13C dim
-"in10=inf3/2"		; second 13C dim
-"in30=inf1/2"
+"in0=inf1/2"		; first 13C dim
+"in10=inf2/2"		; second 13C dim
+;"in30=inf1/2"
 
 ;------------indirect 1H dim (F1)
-"d30=in30/2-p3"
+;"d30=in30/2-p3"
 
 ;------------options for first (in transfer pathway) 13C dim (F2)
-"d0=in0/2-0.63662*p3-p1"
+;"d0=in0/2-0.63662*p3-p1"
+"d0=in0/2-0.63662*p3-p2"
 
 ;------------options for second (in transfer pathway) 13C dim (F3)
-"d10=in10/2-0.63662*p3-p1"
+;"d10=in10/2-0.63662*p3-p1"
+"d10=in10/2-0.63662*p3-p2"
 
 
 
@@ -58,7 +59,7 @@
 "DELTA3=d2-p16-d16"
 "acqt0=de"
 
-;aqseq 4321	; for info only
+aqseq 321	; for info only
 
 
 1 ze
@@ -86,36 +87,25 @@
 
 ;-------------------------start first 13C HMQC element
 
-  (p1 ph11):f1
+  (p1 ph1):f1
   DELTA1
   p16:gp2
   d16
 
-  (p3 ph3):f2
-
-  ; 1H F1 indirect evolution (as MQ)
-# ifdef NO_F1
-  2u
-  (p4 ph1):f2
-  2u
-# else
-  d30          
-  (p4 ph1):f2
-  d30
-# endif /*NO_F1*/
-
   ; 13C F2 evolution (MQ)
-# ifdef NO_F2
-  2u
-  (p2 ph2):f1
-  2u
+# ifdef NO_F1
+;  ( center (p3 ph3 0.1u p3 ph4):f2 (p2 ph2):f1 )
+  ( center (p3 ph3 0.1u p3 ph4):f2 (p1 ph1 p2 ph2 p1 ph1):f1 )
 # else
+  (p3 ph3):f2
   d0
+;  (p2 ph2):f1
+  (p1 ph1):f1
   (p2 ph2):f1
+  (p1 ph1):f1
   d0
-# endif /*NO_F2*/
-
   (p3 ph4):f2
+# endif /*NO_F1*/
 
   p16:gp2
   d16
@@ -144,38 +134,30 @@
   p16:gp4
   d16
 
-# ifdef NO_F3
-  ( center (p3 ph7 2u p3 ph8):f2 (p2 ph2):f1 )
+# ifdef NO_F2
+;  ( center (p3 ph7 0.1u p3 ph8):f2 (p2 ph2):f1 )
+  ( center (p3 ph7 0.1u p3 ph8):f2 (p1 ph1 p2 ph2 p1 ph1):f1 )
 # else
   (p3 ph7):f2
   d10
+;  (p2 ph2):f1
+  (p1 ph1):f1
   (p2 ph2):f1
+  (p1 ph1):f1
   d10
   (p3 ph8):f2
-# endif /*NO_F3*/
+# endif /*NO_F2*/
 
   d12 pl12:f2
   p16:gp4
-  d16
+  d16 
   4u BLKGRAD
   DELTA2
   go=2 ph31 cpd2:f2
 
-# ifndef NUS
-
   d11 do:f2 mc #0 to 2
-	F1PH(rp7 & rd10 & rp3 & rd0 & ip11, id30)
-	F2PH(rp7 & rd10 & ip3, id0)
-	F3PH(ip7, id10)
-
-# else
-
-  d11 do:f2 mc #0 to 2
-	F1PH(calph(ph11), caldel(d30))
-	F2PH(calph(ph3), caldel(d0))
-	F3PH(calph(ph7), caldel(d10))
-
-# endif /*NUS*/
+	F2PH(ip7, id10)
+	F1PH(rp7 & rd10 & ip3, id0)
 
   4u BLKGRAD
 
@@ -190,9 +172,6 @@ ph5= 0
 ph6= 0
 ph7= 0 0 2 2
 ph8= 0
-ph9= 1
-ph11=0
-ph12=0 0 2 2
 ph29=0
 ph31=0 2 2 0
 
@@ -236,10 +215,8 @@ ph31=0 2 2 0
 ;DS: 16
 ;td1: number of experiments in F1
 ;td2: number of experiments in F2
-;td3: number of experiments in F3
 ;FnMODE: States-TPPI (or States) in F1
 ;FnMODE: States-TPPI (or States) in F2
-;FnMODE: States-TPPI (or States) in F3
 ;cpd2: decoupling according to sequence defined by cpdprg2
 ;pcpd2: f2 channel - 90 degree pulse for decoupling sequence
 

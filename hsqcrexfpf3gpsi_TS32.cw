@@ -1,3 +1,5 @@
+;don't use this one - doesn't seem to work!
+;
 ;15N constant-time HSQC CPMG relaxation dispersion experiment
 ;with 1H CW decoupling during CPMG period, pseudo-3D (recommended version)
 ;Only for use with Topspin 3

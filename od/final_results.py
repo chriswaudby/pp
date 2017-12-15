@@ -1,4 +1,4 @@
-#!/home/nmrsu/anaconda3/bin/python
+#!/home/waudbyc/anaconda3/bin/python
 """Extract and analyse the final results of a methyl CCR measurement.
 
 The working directory should be specified as a command line argument. This
@@ -25,7 +25,15 @@ import response_surface as rs
 import optimal_design as od
 import utils
 
-N_seed = 5
+# set number of seed points (for plotting)
+N_seed = 6
+
+# parse command line arguments
+working_directory = sys.argv[1]
+if working_directory[-1] != '/':
+    working_directory = working_directory + '/'
+print("Working directory: " + working_directory)
+
 
 def print_estimate(theta_hat, sigma, label='ESTIMATE'):
     n_spins = len(theta_hat) // 3
@@ -43,10 +51,6 @@ def loadvar(name):
     f.close()
     return x
 
-
-# parse command line arguments
-working_directory = sys.argv[1]
-print("Working directory: " + working_directory)
 
 
 # load data

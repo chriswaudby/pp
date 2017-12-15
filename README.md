@@ -10,6 +10,7 @@
 # Table of Contents
 * [git quickstart](#git-quickstart)
 * [syntax highlighting in vim](#bruker-syntax-highlighting-in-vim)
+* [my shell settings](#my-shell-settings)
 * [pulse programs](#pulse-programs)
 
 
@@ -86,6 +87,62 @@ Here `origin` refers to the remote repo (from which we originally cloned the rep
 
 
 
+# My shell settings
+
+## .bashrc
+
+```
+# history searching
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+
+# append history (in case of multiple sessions)
+shopt -s histappend
+
+# nice prompt
+export PS1="\[\033[38;5;15m\][\[$(tput sgr0)\]\[\033[38;5;11m\]\u@\h\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;13m\]\W\[$(tput sgr0)\]\[\033[38;5;15m\]]\\$ \[$(tput sgr0)\]"
+
+# add utils to path
+export PATH=$PATH:~/pp/util
+
+# set aliases
+alias vi=vim
+alias ls='ls --color'
+```
+
+## .cshrc
+
+```
+set savehist = (5000 merge )
+set filec
+set nobeep
+set autolist=true
+
+bindkey -k up history-search-backward # Use up and down arrow to search
+bindkey -k down history-search-forward
+
+# enable colouring for ls
+setenv CLICOLOR
+
+# custom prompt
+set prompt="%B%{\033[36m%}[%c2]%b % "
+
+# add utils to path
+set path =($path ~/pp/util )
+```
+
+## Installing nmrPipe
+
+```
+mkdir NMRPipe
+cd NMRPipe/
+wget https://www.ibbr.umd.edu/nmrpipe/install.com
+wget https://www.ibbr.umd.edu/nmrpipe/binval.com
+wget https://www.ibbr.umd.edu/nmrpipe/NMRPipeX.tZ
+wget https://www.ibbr.umd.edu/nmrpipe/s.tZ
+chmod +x *.com
+./install.com
+```
 
 
 # Pulse programs

@@ -65,9 +65,15 @@ define list<frequency> H1sat = <$FQ1LIST>
 aqseq 312
 
 1 ze 
-  d11 pl12:f2
-2 d1 do:f2
+  d11 pl12:f2 pl26:f3
+2 d1 do:f2 do:f3
 
+  ; 13C purge
+  4u UNBLKGRAD
+  4u pl2:f2
+  (p3 ph1):f2
+  p16:gp0
+  d16
 
   ; CEST period
   4u pl8:f1
@@ -76,7 +82,7 @@ aqseq 312
   d18 cw:f1 ph1
   4u do:f1
   4u LOCKH_OFF
-  4u pl1:f1 pl2:f2
+  4u pl1:f1 pl2:f2 pl3:f3
   4u fq=0:f1
 
 #ifdef INEPT
@@ -88,7 +94,7 @@ aqseq 312
   4u
   (center (p2 ph1) (p8:sp13 ph6):f2 )
   4u
-  DELTA2 pl2:f2 UNBLKGRAD
+  DELTA2 pl2:f2 ;UNBLKGRAD
   p16:gp5
   d16
   (p1 ph2)
@@ -133,11 +139,11 @@ aqseq 312
   (p2 ph1)
   4u
   p16:gp2
-  d16 pl12:f2
+  d16 pl12:f2 pl26:f3
   4u BLKGRAD
 
-  go=2 ph31 cpd2:f2 
-  d1 do:f2 mc #0 to 2 
+  go=2 ph31 cpd2:f2 cpd3:f3
+  d1 do:f2 do:f3 mc #0 to 2 
      F1QF(H1sat.inc)
      F2EA(igrad EA & ip5*2, id0 & dd20 & ip3*2 & ip6*2 & ip31*2)
 d31
@@ -159,6 +165,7 @@ ph31=0 2 2 0
 ;pl2 : f2 channel - power level for pulse (default)
 ;pl3 : f3 channel - power level for pulse (default)
 ;pl12: f2 channel - power level for CPD/BB decoupling
+;pl26: f3 channel - power level for CPD/BB decoupling
 ;sp3 : f2 channel - shaped pulse 180 degree (on resonance)
 ;sp5 : f2 channel - shaped pulse 180 degree (off resonance)
 ;sp13: f2 channel - shaped pulse 180 degree (adiabatic)

@@ -1,10 +1,11 @@
-;hsqcctetgpsp.cw
+;1H CEST (starting on zz)
+;13C evolution, non-CT
+;
 ;avance-version (15/02/27)
 ;HSQC
 ;2D H-1/X correlation via double inept transfer
 ;phase sensitive using Echo/Antiecho-TPPI gradient selection
 ;with decoupling during acquisition
-;constant time version
 ;using trim pulses in inept transfer
 ;using shaped pulses for inversion on f2 - channel
 ;
@@ -24,27 +25,29 @@ prosol relations=<triple>
 #include <Grad.incl>
 #include <Delay.incl>
 
+;list of CEST saturation frequencies
+;give values in Hz relative to sfo1
+define list<frequency> H1sat = <$FQ1LIST>
+
 
 "p2=p1*2"
 "p22=p21*2"
+"d3=1s/(cnst2*6)"
 "d4=1s/(cnst2*4)"
 "d11=30m"
 "d12=20u"
 
+"p17=0.5*p16"
 
-"d0=3u"
-"d20=d23-p16-d16-p14*1.5-4u-d12"
+"d0=inf2/2"
+"in0=inf2"
 
-"in0=inf1/2"
-
-"in20=in0"
-
-"td1=tdmax(td1,d20*2,in20)"
+"TAU=d3-p16-d16-0.5*larger(p14,p2)"
 
 
 "DELTA1=d4-larger(p2,p8)/2-p16-de-8u"
 "DELTA2=d4-larger(p2,p8)/2-4u-p16-d16"
-"DELTA3=d23-d0-p14/2-larger(p14,p22)-4u"
+"DELTA3=d3-larger(p2,p14)/2-4u-p19-d16"
 "DELTA4=d4-larger(p2,p8)/2-p1*2/PI-4u-p16-d16"
 
 
@@ -53,111 +56,126 @@ prosol relations=<triple>
 "spoff13=0"
 
 
+;"l2=1"  ; loop counter for saturation list
+aqseq 312
+
+
 "acqt0=0"
 baseopt_echo
 
 
 1 ze 
-  d11 pl1:f1 pl12:f2 pl3:f3
-2 d11 do:f2
+  d11 pl1:f1 pl2:f2 pl3:f3 
 
-# ifdef OFFRES_PRESAT
-  30u fq=cnst19(bf hz):f1
-  4u pl9:f1
-  d1 cw:f1 ph1
+2 d1 do:f2
+
+  ; purge 13C after d1 (before saturation)
+;  4u UNBLKGRAD
+;  4u pl2:f2
+;  (p3 ph1):f2
+;  4u
+;  p16:gp0
+;  d16
+;  4u BLKGRAD
+
+  ; CEST period
+  4u pl8:f1
+  4u H1sat:f1
+  4u LOCKH_ON
+  d18 cw:f1 ph1
   4u do:f1
-  30u fq=0:f1
-# else
-  d1
-# endif /*OFFRES_PRESAT*/
+  4u LOCKH_OFF
+  4u pl1:f1 pl2:f2 pl3:f3
+  4u fq=0:f1
+  4u UNBLKGRAD
 
-  ; purge 13C
-  d12 pl1:f1 pl2:f2
-  50u UNBLKGRAD
-  (p3 ph1):f2
+#ifdef INEPT
+  ; first INEPT
+  (p1 ph1)
   4u
   p16:gp1
-  d16*2 
-
-  ; begin HSQC
-  (p1 ph1)
-  4u
-  p16:gp4
   d16
   DELTA2 pl0:f2
-  (center (p2 ph1) (p8:sp13 ph6):f2 )
-  DELTA2 pl2:f2 
+  (center (p2 ph1) (p8:sp13 ph1):f2 )
+  DELTA2 pl2:f2
+  p16:gp1
+  d16
+  (p1 ph2)
+#endif
+
+  ; zz-filter
+  4u
+  p16:gp2
+  d16
+
+  ; t1 evolution
+  (p3 ph3):f2
+  d0
+  (center (p2 ph5) (p14:sp5 ph1):f2 (p22 ph1):f3 )  ; CO
+  d0
+  p17:gp3*EA*-1
+  d16
+  (p14:sp3 ph1):f2 ; CA
+  p17:gp3*EA
+  d16
+  3u
+  (p14:sp5 ph1):f2 ; CO (BS)
+  3u
+  (p3 ph4):f2
+
+  ; zz filter
+  4u
   p16:gp4
   d16
-#ifdef NOZZ1
-  (p1 ph2) (p3 ph3):f2
-#else
-  (p1 ph2)
-  ; zz filter
-  4u
-  p16:gp3*-0.8
-  d16
-  (p3 ph3):f2
-#endif /*NOZZ1*/
-  ; t1 evolution
-  d0
-  (center (p2 ph5) (p14:sp5 ph1):f2 (p22 ph1):f3 )
-  4u
-  DELTA3 pl0:f2
-  (p14:sp3 ph4):f2
-  d20
-  p16:gp1*EA*-1
-  d16 pl0:f2
-  (p14:sp5 ph1):f2 
-  4u
-  d12 pl2:f2
 
-#ifdef NOZZ2
-  (ralign (p1 ph1) (p3 ph4):f2 )
-#else
-  (p3 ph4):f2
-  ; zz filter
-  4u
-  p16:gp3
-  d16
-  (p1 ph1)
-#endif /*NOZZ2*/
   ; back-transfer
+  (p1 ph1)
   4u
   p16:gp5
   d16
   DELTA4 pl0:f2
   (center (p2 ph1) (p8:sp13 ph1):f2 )
   4u
-  p16:gp2
+  p16:gp6
   DELTA1 pl12:f2
   4u BLKGRAD
+
+  ; acquisition
   go=2 ph31 cpd2:f2 
-  d11 do:f2 mc #0 to 2 
-     F1EA(calgrad(EA), caldel(d0, +in0) & caldel(d20, -in20) & calph(ph3, +180) & calph(ph6, +180) & calph(ph31, +180))
+  d11 do:f2 mc #0 to 2
+     F1QF(H1sat.inc)
+     F2EA(igrad EA & ip5*2, id0 & dd20 & ip3*2 & ip6*2 & ip31*2)
 exit 
   
 
 ph1=0
 ph2=1
 ph3=0 2
-ph4=0 0 0 0 2 2 2 2
-ph5=0 0 2 2
+ph4=0 0 2 2
+ph5=0 0 0 0 2 2 2 2
 ph6=0
-ph31=0 2 0 2 2 0 2 0
+ph31=0 2 2 0 
 
 
 ;pl0 : 0W
 ;pl1 : f1 channel - power level for pulse (default)
 ;pl2 : f2 channel - power level for pulse (default)
 ;pl3 : f3 channel - power level for pulse (default)
+;pl6 : f1 channel - 3 kHz purge power
+;pl7 : f1 channel - power level for CPD/BB decoupling [8 kHz]
+;pl8 : f1 channel - CEST 1H decoupling [4.5 kHz]
 ;pl12: f2 channel - power level for CPD/BB decoupling
+;pl16: f3 channel - power level for CPD/BB decoupling
+;pl18: f2 channel - CEST 13C saturation power level
 ;sp3 : f2 channel - shaped pulse 180 degree (on resonance)
 ;sp5 : f2 channel - shaped pulse 180 degree (off resonance)
 ;sp13: f2 channel - shaped pulse 180 degree (adiabatic)
 ;p1 : f1 channel -  90 degree high power pulse
 ;p2 : f1 channel - 180 degree high power pulse
 ;p3 : f2 channel -  90 degree high power pulse
+;p7 : f1 channel -  90 degree CPD decoupling @ pl7 [31.25 usec]
+;p11: f1 channel -  90 degree CEST decoupling @ pl8 [55 usec]
+
 ;p8 : f2 channel - 180 degree shaped pulse for inversion (adiabatic)
 ;p14: f2 channel - 180 degree shaped pulse
 ;p16: homospoil/gradient pulse
@@ -169,11 +187,10 @@ ph31=0 2 0 2 2 0 2 0
 ;d11: delay for disk I/O                             [30 msec]
 ;d12: delay for power switching                      [20 usec]
 ;d16: delay for homospoil/gradient recovery
-;d20 : = d23
-;d23: d23 = T : 13.3 or 26.6 msec
-;     2T (constant time period) = n/J(CC)
+;d18: CEST relaxation/saturation time [300 msec]
+;d2: d2 = T : 26.6 or 53.2 msec
+;     T (constant time period) = n/J(CC)
 ;cnst2: = J(XH)
-;cnst19: water frequency (in ppm)
 ;cnst21: CO chemical shift (offset, in ppm)
 ;inf1: 1/SW(X) = 2 * DW(X)
 ;in0: 1/(2 * SW(X)) = DW(X)
@@ -187,10 +204,11 @@ ph31=0 2 0 2 2 0 2 0
 ;pcpd2: f2 channel - 90 degree pulse for decoupling sequence
 
 
+
 ;for z-only gradients:
-;gpz1: 80%
+;gpz1: 40%
 ;gpz2: 30.1% for C-13
-;gpz3: 55% (zz filters)
+;gpz3: 35% (zz filters)
 ;gpz4: 13% (180 refocusing)
 ;gpz5: 10% (180 refocusing)
 
