@@ -66,7 +66,8 @@
 
 ;------------other delays
 "TAU=d8-p16*2-d16*2-p3"
-"DELTA=p3*0.6366+p17+d17-p2-d0"
+;"DELTA=p3*0.6366+p17+d17-p2-d20"
+"DELTA=p3*0.6366+50u-p2-d20"
 "DELTA1=d2-p16-d16"
 "DELTA2=d2-0.6366*p1"
 "DELTA3=d2-p17-d16-4u-de"
@@ -195,7 +196,7 @@ else
   (p3 ph12):f2
   ; t1 - 1H F1 indirect evolution (as MQ)
   d0
-  (p4 ph2):f2
+  (p4 ph4):f2
   d0
   ; t2 - 13C F2 evolution (MQ)
   d10
@@ -228,7 +229,10 @@ else
   (p3 ph13):f2
   p17:gp4
   d17
+  50u
   (p4 ph2):f2
+  p17:gp4*-1
+  d17
   DELTA
   d20
   (p1 ph1):f1
@@ -236,10 +240,13 @@ else
   (p1 ph1):f1
   d20
   DELTA
+  p17:gp4*-1
+  d17
   (p4 ph1):f2
   p17:gp4
   d17
-  (p3 ph4):f2
+  50u
+  (p3 ph1):f2
 
   DELTA3 pl12:f2
   if "l0 % 2 == 1"
@@ -270,11 +277,12 @@ ph1= 0
 ph2= 1
 ;ph3=(8) 1
 ph3= 0
+ph4= 0 0 1 1
 ph11=0
 ph12=0 2
 ph13=0
 ph29=0
-ph31=0 2
+ph31=0 2 2 0
 
 
 ;pl1 : f1 channel - power level for pulse (default)
@@ -325,7 +333,7 @@ ph31=0 2
 ;gpz1: 31%
 ;gpz2: 13%
 ;gpz3: 50%
-;gpz4: 40%
+;gpz4: 20%
 ;gpz5: 20.1%
 
 ;use gradient files:
