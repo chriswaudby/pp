@@ -42,7 +42,6 @@ def process_component(prop1, prop2, output_filename, start='H'):
     # resolve echo/anti-echo components
     output_dic = deepcopy(dic_echo)
     output_dic[0]['size'] *= 2
-
     output_data = np.zeros((output_dic[0]['size'],output_dic[1]['size']),dtype='complex64')
     output_data[::2] = data_echo + data_antiecho
     output_data[1::2] = 1j*(data_echo - data_antiecho)
@@ -52,9 +51,9 @@ def process_component(prop1, prop2, output_filename, start='H'):
         output_data *= -1
 
     # write processed data back to nmrPipe by directly editing original dictionary
-    dic['FDF1APOD'] /= 96
-    dic['FDF1TDSIZE'] /= 96
-    dic['FDSPECNUM'] /= 96
+    dic['FDF1APOD'] //= 96
+    dic['FDF1TDSIZE'] //= 96
+    dic['FDSPECNUM'] //= 96
 
     #ng.pipe.write(expt + '/' + output_filename, dic, output_data, overwrite=True)
     ng.pipe.write(output_filename, dic, output_data, overwrite=True)
@@ -87,7 +86,7 @@ def isolate_propagator(input_dic, input_data, start, pathway):
         data = dataH
     else:
         data = dataN
-    dic[0]['size'] /= 2     # update spectrum size
+    dic[0]['size'] //= 2     # update spectrum size
 
     # make linear combinations of B propagators
     # dataB will become a list with the four combinations
@@ -99,7 +98,7 @@ def isolate_propagator(input_dic, input_data, start, pathway):
         data = -data[1::4,:]+data[3::4,:]-1j*(data[0::4,:]+data[2::4,:])
     else:
         data = -data[1::4,:]+data[3::4,:]+1j*(data[0::4,:]+data[2::4,:])
-    dic[0]['size'] /= 4     # update spectrum size
+    dic[0]['size'] //= 4     # update spectrum size
 
     # phase cycles for first S3CT propagators
     #psi1 = [0., 240., 120., 0., 240., 120.]
@@ -116,7 +115,7 @@ def isolate_propagator(input_dic, input_data, start, pathway):
     else:
         data = data1 - data2
     data = data[0::2] + data[1::2] # + data[2::6] + data[3::6] + data[4::6] + data[5::6]
-    dic[0]['size'] /= 2     # update spectrum size
+    dic[0]['size'] //= 2     # update spectrum size
 
     # phase cycles for second S3CT propagators
     psi1 = [0., 120., 240., 0., 120., 240.]
@@ -141,7 +140,7 @@ def isolate_propagator(input_dic, input_data, start, pathway):
     elif D2 == '-a':
         data = data2 - data4
     data = data[0::6] + data[1::6] + data[2::6] + data[3::6] + data[4::6] + data[5::6]
-    dic[0]['size'] /= 6     # update spectrum size
+    dic[0]['size'] //= 6     # update spectrum size
 
     # finally combine H start phase cycling
     if start == 'H':
@@ -149,7 +148,7 @@ def isolate_propagator(input_dic, input_data, start, pathway):
     else:
         data = data[0::2] + data[1::2]
 
-    dic[0]['size'] /= 2     # update spectrum size
+    dic[0]['size'] //= 2     # update spectrum size
 
 
     return dic, data
