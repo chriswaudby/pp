@@ -2,7 +2,7 @@
 
 if($#argv == 0) then
   echo
-  more ./pdata/1/title
+  cat ./pdata/1/title
   echo
   awk '/\$NS/ {print "Scans: " $2}' acqus
   awk '/\$RG/ {print "Receiver gain: " $2}' acqus
@@ -33,7 +33,7 @@ endif
 
 if($#argv == 1) then
   echo
-       more ./$1/pdata/1/title
+       cat ./$1/pdata/1/title
   echo
   awk '/\$NS/ {print "Scans: " $2}' ./$1/acqus
   awk '/\$RG/ {print "Receiver gain: " $2}' ./$1/acqus

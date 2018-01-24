@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import numpy as np
 
 N = int(input('Number of points in difframp [8]: ') or '8')

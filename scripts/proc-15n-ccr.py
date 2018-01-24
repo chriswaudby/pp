@@ -1,4 +1,5 @@
-#!/Users/chris/Library/Enthought/Canopy_64bit/User/bin/python
+/usr/bin/env python
+
 import sys
 import nmrglue as ng
 import numpy as np
