@@ -9,17 +9,19 @@ Jul 2017
 import math
 import sys
 import simplejson as json
+from os.path import isfile
 from subprocess import *
 
 # debugging flag - plot dispersion function d(x) for each iteration?
 PLOTDISPERSION = False
 
-# path to scripts for numerical analysis in proper python
-analysis_script_path = '/home/nmrsu/pp_cw/od/'
+# SETUP BITS
+analysis_script_path = '/home/waudbyc/pp_950/od'  # path to scripts for numerical analysis in proper python
+data_directory = '/home/waudbyc/nmr'
+experiment_name = 'chris_ccr_750Ile_271117'
+BF2 = 238.9908430  # Nov 2017
 
-BF2 = 201.2230230
 
-dlg_title = 'Adaptive methyl CCR measurement' # default title for dialogs
 
 # split up csv list and convert to floats
 def split_csv(inputstring):
@@ -27,11 +29,11 @@ def split_csv(inputstring):
     return [float(x) for x in tmp]
 
 # get experiment
-experiment_name = 'chris_ccr_750ile_adapt_270717'
 proton_template_expt = 2
 diffusion_template_expt = 999
 hmqc_template_expt = 7
 first_expt = 20
+dlg_title = 'Adaptive methyl CCR measurement' # default title for dialogs
 result = INPUT_DIALOG(title=dlg_title,
     header='Please input the experiment name and IDs of reference experiments.',
     items=['Experiment folder = ',
@@ -57,25 +59,25 @@ else: # unpack results
     first_expt = int(result[3])
 
 # set working directory for temporary files to current experiment
-working_directory = "/opt/topspin3.5pl2/data/jc/nmr/%s/" % experiment_name
+working_directory = "%s/%s" % (data_directory, experiment_name)
 
 # Utility function to change experiment number
 def re(expt):    
-    dataset = "/opt/topspin3.5pl2/data/jc/nmr/%s/%i/pdata/1" % (experiment_name, expt)
+    dataset = "%s/%i/pdata/1" % (working_directory, expt)
     print("re: %s" % dataset)
     RE_PATH(dataset, show='y')
 
 # Utility functions for file transfer to/from json (for python interchange)
 def loadvar(name):
     # Load parameter from json file in working directory.
-    f = open(working_directory + 'adapt_ccr_' + name, 'r')
+    f = open(working_directory + '/adapt_ccr_' + name, 'r')
     x = json.load(f)
     f.close()
     return x
 
 def savevar(x, name):
     # Save parameter x to json file in working directory.
-    f = open(working_directory + 'adapt_ccr_' + name, 'w')
+    f = open(working_directory + '/adapt_ccr_' + name, 'w')
     json.dump(x, f)
     f.close()
 
@@ -92,13 +94,13 @@ result = INPUT_DIALOG(title=dlg_title,
         '13C excitation phase for priming experiments (0 to 359 degrees) = ',
         'Width of integration regions (ppm) = '],
     values=['11',
-        '0.7208, 0.6319, 0.3828, 0.1734, -0.2803',
-        '11.8041, 10.76, 10.967, 11.3704, 10.4062',
+        '-0.2573, 0.1958, 0.4057, 0.65367, 0.7437',
+        '10.4281, 11.3917, 10.9918, 10.784, 11.8283',
         '1, 1, 1, 1, 1',
         '15, 15, 15, 15, 15',
         '10, 10, 10, 10, 15',
-        '0.00002, 0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009, 0.01, 0.015, 0.02, 0.025, 0.03, 0.04',
-        '0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0',
+        '0.00002, 0.001, 0.002, 0.005, 0.01, 0.1',
+        '0, 0, 0, 0, 0, 0',
 #        '0.00002, 0.005, 0.010, 0.040, 0.100',
 #        '0, 0, 0, 0, 0',
         '0.03']
@@ -167,15 +169,6 @@ integrals = []
 
 def prepare_ccr_expt(expt, tau, phase=0):
     re(hmqc_template_expt)
-    #dataset = "/opt/topspin3.2/data/jc/nmr/%s/%i/pdata/1" % (experiment_name, expt)
-    #print("Writing dataset: %s" % dataset)
-    #print(type(dataset))
-    #dataset=str(dataset)
-    #print(type(dataset))
-    #print(dataset)
-    #top.Cmd.wr(dataset, "n")
-    ##WR_PATH(dataset) # , confirm="n") #BUG - override not a valid option?
-
     XCMD("wrpa %i" % expt)
     print("wrpa %i done!" % expt)
     re(expt)
@@ -200,10 +193,19 @@ def analyse_expt(expt):
     print('Peak integrals:')
     print(y)
 
+# stop acquisition if a file 'STOP' is detected in working directory
+def stop():
+    if isfile(working_directory + '/STOP'):
+        return True
+    else:
+        return False
 
 current_expt = first_expt - 1
 
 for tau, phase in zip(priming_times, priming_phases):
+    if stop():
+        print('STOP during seed experiments, current_expt = %i' % current_expt)
+        break
     current_expt += 1
     prepare_ccr_expt(current_expt, tau, phase)
     print('Running seed experiment %i: tau = %g, phase = %g' % (current_expt, tau, phase))
@@ -213,6 +215,10 @@ for tau, phase in zip(priming_times, priming_phases):
     analyse_expt(current_expt)
 
 for iteration in range(N_experiments):
+    if stop():
+        print('STOP during main experiments, current_expt = %i' % current_expt)
+        break
+
     # write current status to disk for analysis in proper python
     savevar(integrals, 'integrals')
     savevar(taus, 'taus')
@@ -220,7 +226,7 @@ for iteration in range(N_experiments):
     savevar(theta, 'theta')
     
     # calculate theta update and next sampling point
-    output = Popen(["/home/nmrsu/pp_cw/od/analyse_results.py",
+    output = Popen(["%s/analyse_results.py" % analysis_script_path,
                     working_directory], \
                    stdout=PIPE).communicate()[0]
     print("Fit results:")
@@ -256,7 +262,7 @@ savevar(phases, 'phases')
 savevar(theta, 'theta')
 
 # calculate theta update and next sampling point
-output = Popen(["/home/nmrsu/pp_cw/od/analyse_results.py",
+output = Popen(["%s/analyse_results.py" % analysis_script_path,
                 working_directory], \
                stdout=PIPE).communicate()[0]
 print("Fit results (final):")

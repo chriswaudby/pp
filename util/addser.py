@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import sys
 import argparse
@@ -7,7 +7,7 @@ import nmrglue as ng
 
 parser = argparse.ArgumentParser(description='Sum a collection of bruker ser files. Data will be truncated to fit shortest ser file.')
 parser.add_argument('-out', metavar='outputser', dest='out', help='Output filename', required=True)
-parser.add_argument('serfiles', metavar='inputser', type=open, nargs='+',
+parser.add_argument('serfiles', metavar='inputser', type=argparse.FileType('rb'), nargs='+',
                     help='ser files to be summed')
 args = parser.parse_args()
 

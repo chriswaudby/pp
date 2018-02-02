@@ -1,11 +1,14 @@
-;HMCM[CGCB]CACO.linear.2h.cw
+;HMCM[CGCB]CACO.linear.2h.3.cw
 ; COSY experiment for assignment of methyl spin systems
 ;
 ; with selective 180 pulses
 ; explicit coding of t1 and t2 increments and quadrature
 ; frequency switching on 13C
+; phase correction of shaped pulses
+;    phcor[15] = -5
+;    phcor[17] = 5
 ;
-;adapted by Chris Waudby Aug 2017
+;adapted by Chris Waudby Aug 2017, updated Dec 2017
 ;
 ;3D sequence with
 ;   inverse correlation for triple resonance using inept transfer steps
@@ -165,11 +168,11 @@ d11 H2_PULSE
   1u
   (p14:sp5 ph1):f2  ; CO BS compensation
   DELTA3
-  (p14:sp3 ph1):f2  ; CA
+  (p14:sp3 ph21:r):f2  ; CA
   1u
   (p14:sp5 ph1):f2  ; CO
   DELTA3 pl9:f2
-  (p9 ph15):f2  ; Cali selective 90
+  (p9 ph15:r):f2  ; Cali selective 90
 
   ;switch off 2H decoupling
   3u do:f4
@@ -204,11 +207,11 @@ d11 H2_PULSE
   3u cpd4:f4
 
   ; CO->CA 
-  (p9 ph17):f2
+  (p9 ph17:r):f2
   DELTA3
   (p14:sp5 ph1):f2  ; CO 
   1u
-  (p14:sp3 ph1):f2  ; CA
+  (p14:sp3 ph22:r):f2  ; CA
   DELTA3 
   (p14:sp5 ph1):f2  ; CO BS compensation
   1u pl2:f2
@@ -295,6 +298,8 @@ ph16=0 0 0 0 2 2 2 2
 ph17=1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3
 ph18=1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3
 ph20=0
+ph21=0
+ph22=0
 ph31=0 2 0 2 2 0 2 0 2 0 2 0 0 2 0 2
 
 
@@ -311,19 +316,19 @@ ph31=0 2 0 2 2 0 2 0 2 0 2 0 0 2 0 2
 ;pl2 : f2 channel - power level for pulse (default)
 ;pl9 : f2 channel - power level for p9
 ;pl12: f2 channel - power level for CPD/BB decoupling
-;sp3: f2 channel - Q3.1000 CA refocusing
-;sp5: f2 channel - Q3.1000 CO decoupling
+;sp3: f2 channel - Q3_surbop CA refocusing
+;sp5: f2 channel - Q3_surbop CO decoupling
 ;sp23: f2 channel - Q5.1000 90 degree excitation (C=O off resonance)
 ;sp25: f2 channel - Q5tr.1000 90 degree (C=O off resonance)
 ;p3 : f2 channel -  90 degree high power pulse
 ;p4 : f2 channel - 180 degree high power pulse
-;p9 : f2 channel - 90 degree pulse with null on C=O
-;p13: f2 channel - 90 degree shaped pulse
-;p14: f2 channel - 180 degree shaped pulse [200 usec]
+;p9 : f2 channel - 90 degree pulse with null on C=O [calculated automatically, calibrate power pl9]
+;p13: f2 channel - 90 degree shaped pulse [420 usec, 500 MHz]
+;p14: f2 channel - 180 degree shaped pulse [324 usec, 500 MHz]
 ;p24: f2 channel - 180 degree shaped pulse [3000 usec]
 
 ;pl17: f4 channel - power level for 2H CPD decoupling
-;p30: f4 channel - 90 degree pulse at pl17 (CPD 90)
+;p30: f4 channel - 90 degree pulse at pl17 (CPD 90) [250 usec, 500 MHz]
 
 ;p16: homospoil/gradient pulse                         [1 msec]
 ;p19: gradient pulse 2                                 [500 usec]

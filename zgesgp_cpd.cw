@@ -1,7 +1,8 @@
-;zgesgp.kinetics.cw
+;zgesgp_cpd.cw
+;with cpd on f2
 ;using baseopt
 ;avance-version (07/10/04)
-;pseudo-2D sequence
+;1D sequence
 ;water suppression using excitation sculpting with gradients
 ;T.-L. Hwang & A.J. Shaka, J. Magn. Reson.,
 ;   Series A 112 275-279 (1995)
@@ -29,13 +30,15 @@ prosol relations=<triple>
 "acqt0=de"
 
 1 ze
-2 30m
-3 4u
+  1m pl1:f1 pl12:f2
+2 30m do:f2
 #ifdef PRESAT
+  d12 fq=cnst19(bf ppm):f1 ; off-resonance decoupling
   d12 pl9:f1 BLKGRAD
   d1 cw:f1
   4u do:f1
   4u pl1:f1
+  d12 fq=0:f1 ; restore 1H frequency
 #else
   d12 pl1:f1 BLKGRAD
   d1
@@ -68,13 +71,9 @@ prosol relations=<triple>
   p16:gp2
   d16
 
-  go=2 ph31
-  30m wr #0 if #0 zd
-  lo to 3 times td1
-
+  go=2 ph31 cpd2:f2
+  30m do:f2 mc #0 to 2 F0(zd)
   4u BLKGRAD
-
-
 exit
 
 

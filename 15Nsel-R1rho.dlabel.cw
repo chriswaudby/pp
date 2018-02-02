@@ -50,16 +50,16 @@ prosol relations=<triple>
 
 1 ze
   d11 st0
-2 3m do:f3
+2 3m do:f2 do:f3
 3 d11
-4 d11 do:f3
+4 d11 do:f2 do:f3
    
   "p31=vd"
   "p29=d30-p31"
   "d29=d30-p31"
   
   d12 fq=cnst29:f1 fq=cnst29:f3
-  d12 pl24:f1 pl23:f3
+  d12 pl24:f1 pl0:f2 pl23:f3
   d12
 
 ;  if "d29 > 0.0"
@@ -200,13 +200,13 @@ prosol relations=<triple>
   3u
   
   p13:gp3
-  d16 pl16:f3
+  d16 pl12:f2 pl16:f3
   
   2u BLKGRAD
   
-  goscnp ph31 cpd3:f3
+  goscnp ph31 cpd2:f2 cpd3:f3
 
-  3m do:f3
+  3m do:f2 do:f3
   3m st ivd 
   lo to 2 times nbl
 
@@ -244,7 +244,9 @@ ph31=0 2 2 0 2 0 0 2 2 0 0 2 0 2 2 0
 
 ;pl0 : 120dB
 ;pl1 : f1 - High power pulse (default)
+;pl2 : f2 - High power pulse (default)
 ;pl3 : f3 - High power pulse (default)
+;pl12: f2 - decoupling during acqu
 ;pl16: f3 - decoupling during acqu
 ;pl23: f3 - 15N spin lockpower
 ;pl24: f1 - 1H spin lockpower
@@ -255,6 +257,8 @@ ph31=0 2 2 0 2 0 0 2 2 0 0 2 0 2 2 0
 
 ;p1 : f1 - 90 degree high power pulse
 ;p2 : f1 - 180 degree high power pulse
+;p3 : f2 - 90 degree high power pulse
+;p4 : f2 - 180 degree high power pulse
 ;p10: gradient - 1 ms [< 250 pts]
 ;p11: f1/2 - hetnuc CP [1/J(CH)]
 ;p12: gradient - 50 us [< 12 pts]
@@ -287,6 +291,8 @@ ph31=0 2 2 0 2 0 0 2 2 0 0 2 0 2 2 0
 ;DS: nbl*ds >= 64
 ;td1: number of increments
 ;FnMODE: QF
+;cpd2: decoupling according to sequence 
+;pcpd2: f2 - 90 degree pulse for cpd
 ;cpd3: decoupling according to sequence 
 ;pcpd3: f3 - 90 degree pulse for cpd
 
