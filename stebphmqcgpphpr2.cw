@@ -1,7 +1,8 @@
-; Changed coding to minimise phase evolution during 13C transverse period (16/9/11)
-;
+; stebphmqcgpphpr2.cw
+; 1H STE diffusion measurement with 13C editing via HMQC
 ; pseudo-2D (indirect diffusion dimension, no carbon frequency dimension)
-; With water saturation during diffusion delay
+; with water saturation during diffusion delay
+; off-resonance presat (-DOFFRES_PRESAT) (cnst21 Hz relative to bf)
 ;
 ; With proton stimulated gradient-echo prior to HMQC
 ; Lit. Protein Engineering, Design & Selection, 24, 99-103 (2011)
@@ -9,7 +10,6 @@
 ; Removal of 13C equilibrium magnetisation (for methyl TROSY)
 ; Addition of clean-up gradient-pair
 ; Delays adjusted for zero first-order phase correction
-; With options for 15N decoupling and 90,-180 or 180,-360 phase corr.
 ;
 ;hmqcphpr
 ;avance-version (07/04/04)
@@ -42,8 +42,6 @@ define list<gradient> diff=<Difframp>
 "d12=20u"
 "d13=4u"
 
-"d0=3u"
-
 "DELTA1=d2-p16-d16"
 "DELTA2=d2-p16-d16-d12-4u-0.6366*p1-de"
 "DELTA3=d20-2*p30-p19-3*d16-p2-2*p1-d12-d13"
@@ -52,13 +50,19 @@ define list<gradient> diff=<Difframp>
 1 ze 
 2 d11 do:f2
   4u BLKGRAD
-3 d12 pl9:f1
+  4u pl9:f1
+
+# ifdef OFFRES_PRESAT
+  4u fq=cnst21(bf hz):f1
+# endif /*OFFRES_PRESAT*/
+
   d1 cw:f1 ph29
-  d13 do:f1
-  d12 pl1:f1 pl2:f2
+  4u do:f1
+  4u pl1:f1 pl2:f2
+  4u fq=0:f1
   4u UNBLKGRAD
   (p3 ph1):f2
-  d13
+  4u
   p16:gp1
   d16 
 ;----------- STE element -------------
@@ -86,7 +90,7 @@ define list<gradient> diff=<Difframp>
   p16:gp2
   d16
 
-  ( center (p3 ph3 d0 p3 ph4):f2 (p2 ph1):f1 )
+  ( center (p3 ph3 0.1u p3 ph4):f2 (p2 ph1):f1 )
 
   d12 pl12:f2
   p16:gp2
@@ -96,6 +100,10 @@ define list<gradient> diff=<Difframp>
   go=2 ph31 cpd2:f2 
   d11 do:f2 mc #0 to 2 
 	F1QF(igrad diff)
+
+  ; repeat whole experiment
+  lo to 2 times l0
+
   4u BLKGRAD
 exit 
   
@@ -120,7 +128,6 @@ ph31=0 2 2 0
 ;p16: homospoil/gradient pulse
 ;p19: gradient pulse 2 (spoil gradient)
 ;p30: gradient pulse (little DELTA * 0.5)
-;d0 : incremented delay (2D)                         [3 usec]
 ;d1 : relaxation delay; 1-5 * T1
 ;d2 : 1/(2J)CH
 ;d11: delay for disk I/O                             [30 msec]
@@ -132,7 +139,8 @@ ph31=0 2 2 0
 ;inf1: 1/SW(X) = 2 * DW(X)
 ;in0: 1/(2 * SW(X)) = DW(X)
 ;nd0: 2
-;NS: 16 * n
+;l0: number of repeats for entire experiment
+;NS: 4 * n
 ;DS: 16
 ;td1: number of experiments
 ;FnMODE: States-TPPI, TPPI, States or QSEQ
@@ -156,12 +164,3 @@ ph31=0 2 2 0
 ;gpnam6: SMSQ10.100
 
 
-                                          ;preprocessor-flags-start
-;LABEL_CN: for C-13 and N-15 labeled samples start experiment with
-;             option -DLABEL_CN (eda: ZGOPTNS)
-;HALFDWELL: for initial sampling delay of half a dwell-time with 
-;	    option -DHALFDWELL (eda: ZGOPTNS)
-                                          ;preprocessor-flags-end
-
-
-;$Id: hmqcphpr,v 1.4 2007/04/11 13:34:30 ber Exp $

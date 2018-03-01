@@ -1,5 +1,7 @@
 ;sfhmqcf2gpph.nuws.cw
 ;1H,13C SOFAST HMQC
+;switch on NUWS with -DNUWS
+;option for first-increment only with -DONE_D 
 ;with apodisation-weighted sampling
 ;with exorcycle on 1H 180
 ;phase sensitive
@@ -27,8 +29,11 @@ prosol relations=<triple>
 #include <Grad.incl>
 #include <Delay.incl>
 
-define loopcounter myCounter
-"myCounter=0"
+#ifdef NUWS
+define loopcounter dsFlag
+; dsFlag starts as 1, will be set to zero after first set of dummy scans is completed
+"dsFlag=1"
+#endif /* NUWS */
 
 "d11=30m"
 "d12=20u"
@@ -64,8 +69,11 @@ define loopcounter myCounter
   p16:gp1
   d16
 
+#ifdef ONE_D
+  (center (p40:sp24 ph2):f1 (DELTA1 p3 ph3 0.1u p3 ph4 DELTA1):f2 )
+#else
   (center (p40:sp24 ph2):f1 (DELTA1 p3 ph3 d0 p3 ph4 DELTA1):f2 )
-
+#endif /* ONE_D */
 
   DELTA2
   p16:gp1
@@ -73,14 +81,17 @@ define loopcounter myCounter
   4u BLKGRAD
   go=2 ph31 cpd2:f2
 
-  if "myCounter==1" goto 10
+#ifdef NUWS
+  if "dsFlag==0" goto 10
   zd
-  "myCounter=1"
+  "dsFlag=0"
+  goto 2
 10 4u
 
   ; repeat acquisition block according to schedule in vclist
   lo to 2 times c
-  3m ivc
+  30u ivc
+#endif /* NUWS */
 
   d1 do:f2 mc #0 to 2
      F1PH(ip3, id0)
