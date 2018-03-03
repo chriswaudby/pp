@@ -2,7 +2,7 @@
 ; 1H STE diffusion measurement with 13C editing via HMQC
 ; pseudo-2D (indirect diffusion dimension, no carbon frequency dimension)
 ; with water saturation during diffusion delay
-; off-resonance presat (-DOFFRES_PRESAT) (cnst21 Hz relative to bf)
+; off-resonance presat (-DOFFRES_PRESAT) (cnst22 Hz relative to bf)
 ;
 ; With proton stimulated gradient-echo prior to HMQC
 ; Lit. Protein Engineering, Design & Selection, 24, 99-103 (2011)
@@ -43,8 +43,8 @@ define list<gradient> diff=<Difframp>
 "d13=4u"
 
 "DELTA1=d2-p16-d16"
-"DELTA2=d2-p16-d16-d12-4u-0.6366*p1-de"
-"DELTA3=d20-2*p30-p19-3*d16-p2-2*p1-d12-d13"
+"DELTA2=d2-p16-d16-d12-4u+0.6366*p1-de"
+"DELTA3=d20-2*p30-p19-3*d16-p2-2*p1-d12-d13-8u"
 "acqt0=de"
 
 1 ze 
@@ -53,7 +53,7 @@ define list<gradient> diff=<Difframp>
   4u pl9:f1
 
 # ifdef OFFRES_PRESAT
-  4u fq=cnst21(bf hz):f1
+  4u fq=cnst22(bf hz):f1
 # endif /*OFFRES_PRESAT*/
 
   d1 cw:f1 ph29
@@ -75,8 +75,14 @@ define list<gradient> diff=<Difframp>
   p1 ph1
   p19:gp4
   d16 pl9:f1
+# ifdef OFFRES_PRESAT
+  4u fq=cnst22(bf hz):f1
+# else
+  4u
+# endif /*OFFRES_PRESAT*/
   DELTA3 cw:f1 ph29
   d13 do:f1
+  4u fq=0:f1
   d12 pl1:f1
   p1 ph2
   p30:gp6*diff
@@ -136,6 +142,7 @@ ph31=0 2 2 0
 ;d16: delay for homospoil/gradient recovery
 ;d20: diffusion time (big DELTA)
 ;cnst2: = J(CH)
+;cnst22: frequency for off-res presat (Hz relative to bf)
 ;inf1: 1/SW(X) = 2 * DW(X)
 ;in0: 1/(2 * SW(X)) = DW(X)
 ;nd0: 2
