@@ -140,6 +140,10 @@ aqseq 312
        F1QF(ivd)
        F2PH(ip13 & ip29, id0)
 #endif /* ONE_D */
+
+  ; repeat whole experiment
+  lo to 2 times l0
+
   4u BLKGRAD
 exit 
   
@@ -178,6 +182,7 @@ ph31=0 2
 ;inf1: 1/SW(X) = 2 * DW(X)
 ;in0: 1/(2 * SW(X)) = DW(X)
 ;nd0: 2
+;l0: number of repeats for entire experiment
 ;NS: 4 * n
 ;DS: 16
 ;td1: number of experiments
