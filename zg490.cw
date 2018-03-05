@@ -1,4 +1,4 @@
-;zg490.rak
+;zg490.cw
 ;avance-version (02/05/31)
 ;1D sequence for pulse calibration
 ;
@@ -12,17 +12,19 @@
 ;$OWNER=ep
 #include <Avance.incl>
 
+"acqt0=-4*2/3.1416*p1"
 
 1 ze
 2 30m
   d1
-  p1 ph1 
-  3u
-  p1 ph1 
-  3u
-  p1 ph1 
-  3u
-  p1 ph1 
+;  p1 ph1 
+;  3u
+;  p1 ph1 
+;  3u
+;  p1 ph1 
+;  3u
+;  p1 ph1 
+  p1*4 ph1
   go=2 ph31
   30m mc #0 to 2 F0(zd)
 exit
