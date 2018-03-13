@@ -36,13 +36,17 @@ define list<gradient> diff=<Difframp>
 
 "p2=p1*2"
 "p22=p21*2"
-"d4=1s/(cnst4*4)-p30-d16-larger(p21,p1)"
-"d5=1s/(cnst4*4)-p19-d16-larger(p21,p1)"
-"d6=1s/(cnst4*4)-p19-d16-larger(p21,p1)-p11-d12"
+
 "d11=30m"
 "d12=20u"
 "d13=4u"
 "d15=50u"
+;"d4=1s/(cnst4*4)-p30-d16-larger(p21,p1)"
+;"d5=1s/(cnst4*4)-p19-d16-larger(p21,p1)"
+;"d6=1s/(cnst4*4)-p19-d16-larger(p21,p1)-p11-d12"
+"d4=2.77m-p30-d16-larger(p21,p1)"
+"d5=2.77m-p19-d16-larger(p21,p1)"
+"d6=2.77m-p19-d16-larger(p21,p1)-p11-d12"
 
 "DELTA1=d20-8*d16-6*p19-4*p21-3*larger(p22,p2)-3*d5-2*p11-2*d15-2*p30-2*p1-2*d12-2*d4-d6-d13"
 
