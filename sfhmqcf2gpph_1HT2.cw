@@ -40,24 +40,31 @@ define loopcounter dsFlag
 "d21=1s/(cnst2*2)"
 
 
-"in0=inf1"
-
+"in0=inf2"
 "d0=in0/2-p3*4/3.1415"
 
 
-"DELTA1=d21-p16-d16-p39*cnst39"
-"DELTA2=p39*cnst39-de-4u"
+"DELTA=d21-p16-d16"
+"DELTA4=d16-4u-de"
 "acqt0=de"
 
+define delay vdmin
+"vdmin=4*larger(p3+0.5*p40,p3+cnst39*p39)"
 
 "spoff23=bf1*(cnst19/1000000)-o1"
 "spoff24=bf1*(cnst19/1000000)-o1"
 
+aqseq 312
+
 
 1 ze
+  vdmin
   d11 pl12:f2
 2 d1 do:f2
-3 d12 pl2:f2
+  "DELTA1=0.25*vd-p3-cnst39*p39"
+  "DELTA2=0.25*vd-p3-0.5*p40"
+  "DELTA3=0.25*vd-p3"
+  d12 pl2:f2
   50u UNBLKGRAD
 
   ; purge equilibrium 13C
@@ -67,18 +74,25 @@ define loopcounter dsFlag
   d16
 
   (p39:sp23 ph1):f1
+  DELTA1
+  (p4 ph1):f2
+  DELTA2
+  (p40:sp24 ph13):f1
+  DELTA2
+  (p4 ph1):f2
+  DELTA3
+
   p16:gp1
   d16
 
 #ifdef ONE_D
-  (center (p40:sp24 ph2):f1 (DELTA1 p3 ph3 0.1u p3 ph4 DELTA1):f2 )
+  (center (p40:sp24 ph14):f1 (DELTA p3 ph11 0.1u p3 ph12 DELTA):f2 )
 #else
-  (center (p40:sp24 ph2):f1 (DELTA1 p3 ph3 d0 p3 ph4 DELTA1):f2 )
+  (center (p40:sp24 ph14):f1 (DELTA p3 ph11 d0 p3 ph12 DELTA):f2 )
 #endif /* ONE_D */
 
-  DELTA2
   p16:gp1
-  d16 pl12:f2
+  DELTA4 pl12:f2
   4u BLKGRAD
   go=2 ph31 cpd2:f2
 
@@ -95,14 +109,16 @@ define loopcounter dsFlag
 #endif /* NUWS */
 
   d1 do:f2 mc #0 to 2
-     F1PH(ip3, id0)
+     F1QF(ivd)
+     F2PH(ip3, id0)
 exit
 
 
-ph1=0
-ph2=0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
-ph3=0 2
-ph4=0 0 2 2
+ph1= 0
+ph11=0 2
+ph12=0 0 2 2
+ph13=0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
+ph14=0
 ph31=0 2 2 0 2 0 0 2
 
 

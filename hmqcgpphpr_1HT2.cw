@@ -1,4 +1,5 @@
 ;methyl 1H T2 measurement
+;option for (pseudo)1D measurement only (-DONE_D)
 ;L2 line (Tugarinov & Kay 2006)
 ;
 ;avance-version (07/04/04)
@@ -30,14 +31,10 @@
 "d12=20u"
 "d13=4u"
 
+#ifndef ONE_D
 "in0=inf2/2"
-
-#   ifdef SINGLEDWELL
-    "d0=in0-0.63662*p3-2*p1"
-#   else
-    "d0=in0/2-0.63662*p3-2*p1"
-#   endif /*SINGLEDWELL*/
-
+"d0=in0/2-0.63662*p3-2*p1"
+#endif
 
 "DELTA1=d2-p16-d16"
 "DELTA2=d2-p16-d16-d12-4u-de+0.6366*p1"
@@ -47,8 +44,10 @@ define delay vdmin
 
 "acqt0=de"
 baseopt_echo
-aqseq 312
 
+#ifndef ONE_D
+aqseq 312
+#endif
 
 1 ze 
   vdmin
@@ -97,11 +96,15 @@ aqseq 312
   (p3 ph12):f2 
 
   ; t1 evolution
+#ifndef ONE_D
   d0
+#endif
   (p1 ph2):f1
   (p2 ph1):f1
   (p1 ph2):f1
+#ifndef ONE_D
   d0
+#endif
   (p3 ph13):f2
 
   ; relaxation period
@@ -128,9 +131,19 @@ aqseq 312
 
   ; acquisition
   go=2 ph31 cpd2:f2 
+
+#ifdef ONE_D
+  d11 do:f2 mc #0 to 2
+       F1QF(ivd)
+#else
   d11 do:f2 mc #0 to 2
        F1QF(ivd)
        F2PH(ip13 & ip29, id0)
+#endif /* ONE_D */
+
+  ; repeat whole experiment
+  lo to 2 times l0
+
   4u BLKGRAD
 exit 
   
@@ -169,6 +182,7 @@ ph31=0 2
 ;inf1: 1/SW(X) = 2 * DW(X)
 ;in0: 1/(2 * SW(X)) = DW(X)
 ;nd0: 2
+;l0: number of repeats for entire experiment
 ;NS: 4 * n
 ;DS: 16
 ;td1: number of experiments

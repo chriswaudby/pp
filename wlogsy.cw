@@ -174,6 +174,9 @@ ph31=0 2 0 2  0 2 0 2  0 2 0 2  0 2 0 2
 ;spnam22 : Reburp.1000
 ;p1 : f1 channel -  90 degree high power pulse
 ;p2 : f1 channel - 180 degree high power pulse
+;spnam22 : Reburp.1000
+;p1 : f1 channel -  90 degree high power pulse
+;p2 : f1 channel - 180 degree high power pulse
 ;p11: f1 channel -  90 degree shaped pulse (ESnob.1000)      [4 msec]
 ;p12: f1 channel - 180 degree shaped pulse (Squa100.1000)   [2 msec]
 ;p32: f1 channel - 180 degree shaped pulse (Reburp.1000)    [5-25 msec]

@@ -100,7 +100,7 @@
 
 # ifdef ONE_D
 
-    ( center (p3 ph3 2u p3 ph4):f2 (p2 ph2):f1 )
+    ( center (p3 ph3 0.1u p3 ph4):f2 (p2 ph5):f1 )
 
 # else
 
