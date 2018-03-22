@@ -40,16 +40,16 @@
 ;"d30=in30/2-p3"
 
 ;------------options for first (in transfer pathway) 13C dim (F2)
-"in0=inf1/2"		; first 13C dim
-"d0=in0/2-0.63662*p3-p1"
-;"d0=in0/2-0.63662*p3-p2"
+"d0=in0/2-p3*4/3.1415"
+"in0=inf1"		; first 13C dim
 
 ;------------options for second (in transfer pathway) 13C dim (F3)
-"in10=inf2/2"		; second 13C dim
-"d10=in10/2-0.63662*p3-p1"
-;"d10=in10/2-0.63662*p3-p2"
+"d10=in10/2-p3*4/3.1415"
+"in10=inf2"		; second 13C dim
 
 
+"spoff23=bf1*(cnst19/1000000)-o1"
+"spoff24=bf1*(cnst19/1000000)-o1"
 
 "TAU=d8-p16*2-d16*2-p3-20u"
 
@@ -87,33 +87,22 @@ aqseq 321	; for info only
 
 ;-------------------------start first 13C HMQC element
 
-  (p1 ph1):f1
-  DELTA1
+  (p39:sp23 ph1):f1
   p16:gp2
   d16
 
   ; 13C F2 evolution (MQ)
-# ifdef NO_F1
-  ( center (p3 ph3 0.1u p3 ph4):f2 (p2 ph2):f1 )
-;  ( center (p3 ph3 0.1u p3 ph4):f2 (p1 ph1 p2 ph2 p1 ph1):f1 )
-# else
-  (p3 ph3):f2
-  d0
-  (p2 ph2):f1
-;  (p1 ph1):f1
-; (p2 ph2):f1
-;  (p1 ph1):f1
-  d0
-  (p3 ph4):f2
-# endif /*NO_F1*/
+#ifdef NO_F1
+  (center (p40:sp24 ph2):f1 (DELTA1 p3 ph3 0.1u p3 ph4 DELTA1):f2 )
+#else
+  (center (p40:sp24 ph2):f1 (DELTA1 p3 ph3 d0 p3 ph4 DELTA1):f2 )
+#endif /* NO_F1 */
 
   p16:gp2
   d16
-  DELTA1
+  (p39:sp23 ph5):f1
 
 ;------------------------start NOE period
-
-  (p1 ph5):f1
   10u
   p16:gp3*0.71
   d16
@@ -127,32 +116,19 @@ aqseq 321	; for info only
 
 
 ;------------------------start second 13C HMQC element
-
-  (p1 ph6):f1
-
-  DELTA3
+  (p39:sp23 ph6):f1
   p16:gp4
   d16
+#ifdef NO_F2
+  (center (p40:sp24 ph2):f1 (DELTA1 p3 ph7 0.1u p3 ph8 DELTA1):f2 )
+#else
+  (center (p40:sp24 ph2):f1 (DELTA1 p3 ph7 d10 p3 ph8 DELTA1):f2 )
+#endif /* NO_F2 */
 
-# ifdef NO_F2
-  ( center (p3 ph7 0.1u p3 ph8):f2 (p2 ph2):f1 )
-;  ( center (p3 ph7 0.1u p3 ph8):f2 (p1 ph1 p2 ph2 p1 ph1):f1 )
-# else
-  (p3 ph7):f2
-  d10
-  (p2 ph2):f1
-;  (p1 ph1):f1
-;  (p2 ph2):f1
-;  (p1 ph1):f1
-  d10
-  (p3 ph8):f2
-# endif /*NO_F2*/
-
-  d12 pl12:f2
-  p16:gp4
-  d16 
-  4u BLKGRAD
   DELTA2
+  p16:gp4
+  d16 pl12:f2
+  4u BLKGRAD
   go=2 ph31 cpd2:f2
 
   d11 do:f2 mc #0 to 2
