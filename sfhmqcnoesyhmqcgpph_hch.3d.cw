@@ -5,6 +5,10 @@
 ;Chris W, Mar 2018
 ;
 ;adapted from Rossi JBNMR 2016 Fig 4a
+;
+;at 800 MHz, with 0.7ppm 1H offset:
+; p39 (Pc9.90): 2006 us
+; p40 (Reburp): 1100 us
 
 ;F1(H,t1) ---NOE--> F1(H) -> F2(C[mq],t2) -> F1(H,t3)
 ;
@@ -47,6 +51,10 @@
 ;------------shaped pulses
 "spoff23=bf1*(cnst19/1000000)-o1"
 "spoff24=bf1*(cnst19/1000000)-o1"
+"spoff25=bf1*(cnst19/1000000)-o1"
+"spoal23=1"
+"spoal24=0.5"
+"spoal25=0"
 
 ;------------delays
 "TAU=d8-p16*2-d16*2-p3-20u"
@@ -86,7 +94,7 @@ aqseq 321	; for info only
   d0
   (p40:sp24 ph13):f1
   3u
-  (p39:sp23 ph1):f1
+  (p39:sp25 ph1):f1
   0.1u do:f2
   4u pl2:f2 
 ;------------------------start NOE period
@@ -98,6 +106,7 @@ aqseq 321	; for info only
   d16
   TAU
 ;------------------------start second 13C HMQC element
+  4u pl1:f1 
   (p1 ph1):f1
   DELTA3
   p16:gp4
@@ -111,7 +120,7 @@ aqseq 321	; for info only
   go=2 ph31 cpd2:f2
   d11 do:f2 mc #0 to 2
 	F2PH(ip12, id10)
-	F1PH(rp12 & rd10 & ip11 & ip13, id0)
+	F1PH(rp12 & rd10 & ip11, id0)
 
   4u BLKGRAD
 
@@ -121,7 +130,7 @@ exit
 ph1= 0
 ph2= 1
 ph11=0 2
-ph12=0 2 2 0
+ph12=0 0 2 2
 ph13=0 0 0 0 1 1 1 1
 ph29=0
 ph31=0 2 2 0 2 0 0 2

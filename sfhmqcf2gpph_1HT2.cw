@@ -39,6 +39,7 @@ define loopcounter dsFlag
 "d12=20u"
 "d21=1s/(cnst2*2)"
 
+"p4=2*p3"
 
 "in0=inf2"
 "d0=in0/2-p3*4/3.1415"
@@ -110,7 +111,7 @@ aqseq 312
 
   d1 do:f2 mc #0 to 2
      F1QF(ivd)
-     F2PH(ip3, id0)
+     F2PH(ip11, id0)
 exit
 
 
