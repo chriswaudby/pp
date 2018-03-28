@@ -18,15 +18,13 @@ if($#argv == 0) then
   awk '/\$O1/ {print "O1: " $2}' acqus
   if (-e acqu2s) then
     echo
+    awk '/\$BF2/ {print "BF2: " $2}' acqus
+    awk '/\$SFO2/ {print "SFO2: " $2}' acqus
+    awk '/\$O2/ {print "O2: " $2}' acqus
+    echo
     awk '/\$BF3/ {print "BF3: " $2}' acqus
     awk '/\$SFO3/ {print "SFO3: " $2}' acqus
     awk '/\$O3/ {print "O3: " $2}' acqus
-  endif
-  if (-e acqu3s) then
-    echo
-    awk '/\$BF1/ {print "BF2: " $2}' acqu3s
-    awk '/\$SFO1/ {print "SFO2: " $2}' acqu3s
-    awk '/\$O1/ {print "O2: " $2}' acqu3s
   endif
   echo
 endif
@@ -49,15 +47,13 @@ if($#argv == 1) then
   awk '/\$O1/ {print "O1: " $2}' ./$1/acqus
   if (-e ./$1/acqu2s) then
     echo
+    awk '/\$BF1/ {print "BF2: " $2}' ./$1/acqus
+    awk '/\$SFO1/ {print "SFO2: " $2}' ./$1/acqus
+    awk '/\$O1/ {print "O2: " $2}' ./$1/acqus
+    echo
     awk '/\$BF3/ {print "BF3: " $2}' ./$1/acqus
     awk '/\$SFO3/ {print "SFO3: " $2}' ./$1/acqus
     awk '/\$O3/ {print "O3: " $2}' ./$1/acqus
-  endif
-  if (-e ./$1/acqu3s) then
-    echo
-    awk '/\$BF1/ {print "BF2: " $2}' ./$1/acqu3s
-    awk '/\$SFO1/ {print "SFO2: " $2}' ./$1/acqu3s
-    awk '/\$O1/ {print "O2: " $2}' ./$1/acqu3s
   endif
   echo
 endif
