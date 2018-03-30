@@ -1,9 +1,6 @@
-;3D CCH HMQC-NOESY-13C HMQC
-;for methyl-methyl NOES
-;Option for NUS using Topspin 3
-;Derived from hmqcnoesyhmqcccgpphpr.jk
-;John K, Oct 2013
-;Chris W, Dec 2016
+;3D H[N/M]CMHM SF-NOESY-SFHMQC
+;for amide/methyl-methyl NOES
+; Rossi 2016 JBNMR
 
 ;F1(H) -> F2(C[mq],t1) ---NOE--> F1(H) -> F2(C[mq],t2) -> F1(H,t3)
 ;
@@ -34,92 +31,64 @@
 "d12=20u"
 "d13=4u"
 
-;"in30=inf1/2"
+;------------options for first (in transfer pathway) 1H (F1)
+"d0=3u"
+"in0=inf1"
 
-;------------indirect 1H dim (F1)
-;"d30=in30/2-p3"
-
-;------------options for first (in transfer pathway) 13C dim (F2)
-"in0=inf1/2"		; first 13C dim
-"d0=in0/2-0.63662*p3-p1"
-;"d0=in0/2-0.63662*p3-p2"
-
-;------------options for second (in transfer pathway) 13C dim (F3)
-"in10=inf2/2"		; second 13C dim
-"d10=in10/2-0.63662*p3-p1"
-;"d10=in10/2-0.63662*p3-p2"
+;------------options for second (in transfer pathway) 13C (F2)
+"d10=in10/2-p3*4/3.1415"
+"in10=inf2"
 
 
+"spoff13=bf1*(cnst19/1000000)-o1" ; H[N] fd (p29)
+"spoff14=bf1*(cnst19/1000000)-o1" ; H[N] 180 (p30)
+"spoff15=bf1*(cnst19/1000000)-o1" ; H[N] fb (p29)
+"spoal13=1"
+"spoal14=0.5"
+"spoal15=0"
 
-"TAU=d8-p16*2-d16*2-p3-20u"
+"spoff23=bf1*(cnst20/1000000)-o1" ; H[M] fd (p39)
+"spoff24=bf1*(cnst20/1000000)-o1" ; H[M] 180 (p40)
+"spoal23=1"
+"spoal24=0.5"
+
+"TAU=d8-p16*2-d16*2-p3-14u"
 
 
 "DELTA1=d2-p16-d16"
-"DELTA2=d2-p16-d16-d12-4u-de+0.63662*p1"
-"DELTA3=d2-p16-d16"
+"DELTA2=p39*cnst23-4u-de"
 "acqt0=de"
 
 aqseq 321	; for info only
 
 
 1 ze
-  d11 pl12:f2
-2 d11 do:f2
+  d11 pl12:f2 pl16:f3
+2 d11 do:f2 do:f3
   4u BLKGRAD
 
-# ifdef OFFRES_PRESAT
-    30u fq=cnst21(bf hz):f1
-# endif /*OFFRES_PRESAT*/
-
-  d12 pl9:f1
-  d1 cw:f1 ph29
-  d13 do:f1
-  d12 pl1:f1 pl2:f2
-  30u fq=0:f1
+  d1 
   50u UNBLKGRAD
-
-;-------------------------kill equm 13C magnetisation
-
-  (p3 ph1):f2
-  d13
   p16:gp1
-  d16*2
-
-;-------------------------start first 13C HMQC element
-
-  (p1 ph1):f1
-  DELTA1
-  p16:gp2
   d16
 
-  ; 13C F2 evolution (MQ)
-# ifdef NO_F1
-  ( center (p3 ph3 0.1u p3 ph4):f2 (p2 ph2):f1 )
-;  ( center (p3 ph3 0.1u p3 ph4):f2 (p1 ph1 p2 ph2 p1 ph1):f1 )
-# else
-  (p3 ph3):f2
+;-------------------------start 1H evolution
+
+  20u pl16:f3
+  4u cpd3:f3 ; 15N cpd
+  (p29:sp13 ph11):f1
   d0
-  (p2 ph2):f1
-;  (p1 ph1):f1
-; (p2 ph2):f1
-;  (p1 ph1):f1
-  d0
-  (p3 ph4):f2
-# endif /*NO_F1*/
+  (p30:sp14 ph13):f1
+  3u
+  (p29:sp15 ph14):f1
+  4u do:f3
 
-  p16:gp2
-  d16
-  DELTA1
-
-;------------------------start NOE period
-
-  (p1 ph5):f1
-  10u
-  p16:gp3*0.71
-  d16
+  ; purge residual magnetisation
+  p16:gp1
+  d16 pl2:f2
   (p3 ph1):f2
   10u
-  p16:gp3
+  p16:gp1*0.71
   d16
 
 
@@ -127,37 +96,19 @@ aqseq 321	; for info only
 
 
 ;------------------------start second 13C HMQC element
-
-  (p1 ph6):f1
-
-  DELTA3
-  p16:gp4
+  (p39:sp23 ph1):f1
+  p16:gp2
   d16
-
-# ifdef NO_F2
-  ( center (p3 ph7 0.1u p3 ph8):f2 (p2 ph2):f1 )
-;  ( center (p3 ph7 0.1u p3 ph8):f2 (p1 ph1 p2 ph2 p1 ph1):f1 )
-# else
-  (p3 ph7):f2
-  d10
-  (p2 ph2):f1
-;  (p1 ph1):f1
-;  (p2 ph2):f1
-;  (p1 ph1):f1
-  d10
-  (p3 ph8):f2
-# endif /*NO_F2*/
-
-  d12 pl12:f2
-  p16:gp4
-  d16 
-  4u BLKGRAD
+  (center (p40:sp24 ph2):f1 (DELTA1 p3 ph12 d10 p3 ph15 DELTA1):f2 )
   DELTA2
+  p16:gp2
+  d16 pl12:f2
+  4u BLKGRAD
   go=2 ph31 cpd2:f2
 
   d11 do:f2 mc #0 to 2
-	F2PH(ip7, id10)
-	F1PH(rp7 & rd10 & ip3, id0)
+	F2PH(ip15, id10)
+	F1PH(rp15 & rd10 & ip14, id0)
 
   4u BLKGRAD
 
@@ -166,14 +117,12 @@ exit
 
 ph1= 0
 ph2= 1
-ph3= 0 2
-ph4= 0
-ph5= 0
-ph6= 0
-ph7= 0 0 2 2
-ph8= 0
-ph29=0
-ph31=0 2 2 0
+ph11=0 2
+ph12=0 0 2 2
+ph13=0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
+ph14=0
+ph15=0
+ph31=0 2 2 0 2 0 0 2
 
 
 ;pl1 : f1 channel - power level for pulse (default)
@@ -181,19 +130,37 @@ ph31=0 2 2 0
 ;pl3 : f3 channel - power level for pulse (default)
 ;pl9 : f1 channel - power level for presaturation
 ;pl12: f2 channel - power level for CPD/BB decoupling
+;pl16: f3 channel - power level for CPD/BB decoupling
 ;p1 : f1 channel -  90 degree high power pulse
 ;p2 : f1 channel - 180 degree high power pulse
 ;p3 : f2 channel -  90 degree high power pulse
 ;p4 : f2 channel - 180 degree high power pulse
+;p29: f1 channel - 90 degree shaped pulse for excitation (amide)
+;                      Pc9_4_90.1000 (90o)    (2657 us at 700 MHz)
+;p30: f1 channel - 180 degree shaped pulse for refocussing (amide)
+;                      Reburp.1000               (1943 us at 700 MHz)
+;p39: f1 channel - 120 degree shaped pulse for excitation (methyl)
+;                      Pc9_4_120.1000 (120o)    (1598 us at 700 MHz)
+;p40: f1 channel - 180 degree shaped pulse for refocussing (methyl)
+;                      Reburp.1000               (1259 us at 700 MHz)
+;sp13: f1 channel - shaped pulse 90 degree (amide)
+;                   (Pc9_4_90.1000 )
+;sp14: f1 channel - shaped pulse 180 degree (Reburp.1000) (amide)
+;sp23: f1 channel - shaped pulse 120 degree (methyl)
+;                   (Pc9_4_120.1000 )
+;sp24: f1 channel - shaped pulse 180 degree (Reburp.1000) (methyl)
+;sp25: f1 channel - shaped pulse 120 degree (methyl)
+;                   (Pc9_4_120.1000 )
+;cnst19: H(N) chemical shift (offset, in ppm) [8.2 ppm]
+;cnst20: H(methyl) chemical shift (offset, in ppm) [0.7 ppm]
+;cnst39: compensation of chemical shift evolution during p39
+;           Pc9_4_120.1000: 0.529
+
 ;p16: homospoil/gradient pulse                       [1 msec]
-;p19: second gradient pulse                          [250 usec]
 ;p22: f3 channel - 180 degree high power pulse
 ;p28: f1 channel - trim pulse                        [1 msec]
 ;d0 : incremented delay (4D)
 ;d10: incremented delay (4D)
-;d20: decremented delay (4D)
-;d28: incremented delay (4D)
-;d30: incremented delay (4D)
 ;d1 : relaxation delay; 1-5 * T1
 ;d2 : 1/(2J)CH
 ;d8 : mixing time
@@ -202,16 +169,11 @@ ph31=0 2 2 0
 ;d13: short delay                                    [4 usec]
 ;d16: delay for homospoil/gradient recovery
 ;cnst2: = J(CH)
-;cnst21: frequency in Hz for off-res presat
 ;inf1: 1/SW(H)
-;inf2: 1/SW(C) = 2 * DW(C)
-;inf3: 1/SW(C) = 2 * DW(C)
-;in0: 1/(2 * SW(C)) = DW(C)
-;in10: 1/(2 * SW(C)) = DW(C)
-;in30: 1/(2 * SW(H)) = DW(H)
-;nd0: 2
-;nd10: 2
-;NS: 4 * n
+;inf2: 1/SW(C) = DW(C)
+;in0: 1/(SW(H)) = DW(C)
+;in10: 1/(2 * SW(C)) = 0.5 * DW(C)
+;NS: 8 * n
 ;DS: 16
 ;td1: number of experiments in F1
 ;td2: number of experiments in F2
@@ -219,6 +181,8 @@ ph31=0 2 2 0
 ;FnMODE: States-TPPI (or States) in F2
 ;cpd2: decoupling according to sequence defined by cpdprg2
 ;pcpd2: f2 channel - 90 degree pulse for decoupling sequence
+;cpd3: decoupling according to sequence defined by cpdprg2
+;pcpd3: f2 channel - 90 degree pulse for decoupling sequence
 
 
 ;for z-only gradients:

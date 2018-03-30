@@ -1,5 +1,7 @@
 ;1H calibration by nutation during zz filter
-; set pl18, applied at cnst18 (ppm)
+; set p18 @ pl18, applied at cnst18 (ppm)
+; or run as 2D with -DNUTATION in increments of inf1
+;
 ;avance-version (05/10/28)
 ;HSQC
 ;2D H-1/X correlation via double inept transfer
@@ -39,8 +41,10 @@ prosol relations=<triple>
 "d11=30m"
 "d12=20u"
 
+#ifdef NUTATION
 "d18=0.1u"
 "in18=inf1" ; nutation time increment
+#endif
 
 "d20=d23-p16-d16-p14*1.5-4u-d12"
 "d31=d20"
@@ -86,8 +90,12 @@ prosol relations=<triple>
 ; calibration
 5u fq=cnst18(bf ppm):f1
 5u pl18:f1
+#ifdef NUTATION
 d18 cw:f1 ph1
 5u do:f1
+#else
+p18 ph1
+#endif /* NUTATION */
 5u fq=0:f1 pl1:f1
 p16:gp7  ; cleaning gradient
 200u
@@ -132,8 +140,10 @@ p16:gp7  ; cleaning gradient
 
   go=2 ph31 cpd2:f2 cpd3:f3
   d1 do:f2 do:f3 mc #0 to 2 
+#ifdef NUTATION
      F1QF(id18)
-d31
+#endif
+  d31 do:f2 do:f3
 exit 
   
 
@@ -152,6 +162,7 @@ ph31=0 2 2 0
 ;pl2 : f2 channel - power level for pulse (default)
 ;pl3 : f3 channel - power level for pulse (default)
 ;pl12: f2 channel - power level for CPD/BB decoupling
+;pl18: 1H power level for calibration
 ;pl26: f3 channel - power level for CPD/BB decoupling
 ;sp3 : f2 channel - shaped pulse 180 degree (on resonance)
 ;sp5 : f2 channel - shaped pulse 180 degree (off resonance)
@@ -163,6 +174,7 @@ ph31=0 2 2 0
 ;p8 : f2 channel - 180 degree shaped pulse for inversion (adiabatic)
 ;p14: f2 channel - 180 degree shaped pulse
 ;p16: homospoil/gradient pulse
+;p18: 1H pulse length for calibration @ pl18
 ;p19: 2nd homospoil/gradient pulse
 ;p22: f3 channel - 180 degree high power pulse
 ;p28: f1 channel - trim pulse                        [1 msec]
@@ -178,6 +190,7 @@ ph31=0 2 2 0
 ;d24: 1/(8J)XH for all multiplicities
 ;     1/(4J)XH for XH
 ;cnst2: = J(XH)
+;cnst18: 1H frequency (in ppm) for calibration
 ;cnst21: CO chemical shift (offset, in ppm)
 ;in0: 1/(2 * SW(X)) = DW(X)
 ;in20: 1/(2 * SW(X)) = DW(X) = in0
