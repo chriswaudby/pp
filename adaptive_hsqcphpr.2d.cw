@@ -34,28 +34,17 @@
 "d20=in0/2" ; actual first evolution time accounting for 13C pulse durations
 
 "d4=1s/(cnst2*4)"
-"DELTA=d4-larger(p1,p3)-p16-d16-4u-0.6366*p1"
-"DELTA1=d4-p19-d16-p10-p1-4u-0.6366*p1"
-"DELTA2=d4-p19-d16-p10-p1-12u"
+"DELTA=d4-larger(p2,p4)/2-p16-d16-4u"
 
-"acqt0=0"
+"acqt0=0.6366*p1"
 
 1 ze 
   d11 pl12:f2
 2 d11 do:f2
 
-  ; purge before d1
-  ;d12 pl8:f1
-  ;40m cw:f1 ph2  ; 10 kHz purge
-  ;4u do:f1
-  ;p16:gp5
-  ;d16 pl1:f1 
-  ;(p1 ph1)
-  ;p16:gp6
-  ;d16 BLKGRAD
-
+  ; off-resonance presat
+  30u pl9:f1
   30u fq=cnst21(bf hz):f1
-  d12 pl9:f1
   d1 cw:f1 ph1
   4u do:f1
   4u fq=0:f1
@@ -75,7 +64,7 @@
   d16
   DELTA 
   (center (p2 ph1) (p4 ph1):f2 )
-  DELTA
+  DELTA 
   p16:gp1
   d16
   4u
@@ -97,20 +86,15 @@
 
   ; retro-INEPT
   (p1 ph2) 
-  p19:gp4
-  d16
-  DELTA1
-  (p10:sp1 ph3):f1
-  4u pl1:f1
-  (center (p2 ph1) (p4 ph1):f2 )
   4u
-  (p10:sp1 ph3):f1
-  DELTA2
-  p19:gp4
+  p16:gp4
   d16
-  4u BLKGRAD
-  4u pl12:f2
-
+  DELTA 
+  (center (p2 ph1) (p4 ph1):f2 )
+  DELTA pl12:f2 
+  p16:gp4
+  d16 BLKGRAD
+  4u
   go=2 ph31 cpd2:f2 
   d11 do:f2 mc #0 to 2 F1PH(ip7, id0)
 exit 
@@ -153,19 +137,16 @@ ph31=0 2 2 0
 ;pcpd2: f2 channel - 90 degree pulse for decoupling sequence
 
 ;for z-only gradients:
-;gpz0: 46 %
-;gpz1: 13 %
-;gpz2: 17 %
-;gpz3: 33 %
-;gpz4: 29 %
-
-;gradients
-;p16: 1000u
-;p19: 600u
+;gpz1: 7 %
+;gpz2: 50 %
+;gpz3: 35 %
+;gpz4: 13 %
+;gpz5: 17 %
 
 ;use gradient files:
-;gpnam0: SMSQ10.100
 ;gpnam1: SMSQ10.100
 ;gpnam2: SMSQ10.100
 ;gpnam3: SMSQ10.100
-;gpnam4: SMSQ10.50
+;gpnam4: SMSQ10.100
+;gpnam5: SMSQ10.100
+
