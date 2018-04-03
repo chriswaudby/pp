@@ -23,11 +23,12 @@ prosol relations=<triple_d>
 #include <Delay.incl>
 
 
-define list<gradient> diff=<Difframp>
-
+;define list<gradient> diff=<Difframp>
+;define list<gradient> diff={0.05 0.179 0.307 0.436 0.564 0.693 0.821 0.95}
+define list<gradient> diff={0.15 0.95}
 
 "p2=p1*2"
-
+"d11=30m"
 
 "DELTA1=d20-p1*2-p2-p30*2-d16*3-p19"
 
@@ -51,8 +52,13 @@ aqseq 321
   d16
   p1 ph3
   p19:gp7
-  d16
-  DELTA1
+
+  d16 pl9:f1
+  DELTA1 cw:f1 ph1
+  1u do:f1
+  4u pl1:f1
+;  d16  
+;  DELTA1
   p1 ph4
   p30:gp6*diff
   d16
@@ -78,9 +84,9 @@ aqseq 321
   d16
   4u BLKGRAD
   go=2 ph31 
-  d1 mc #0 to 2
+  d11 mc #0 to 2
     F2QF(igrad diff)
-    F1QF()
+    F1QF(rgrad diff)
 exit
 
 
@@ -107,7 +113,7 @@ ph31=0 1 2 3  0 1 2 3  2 3 0 1  2 3 0 1
 ;d1 : relaxation delay; 1-5 * T1
 ;d16: delay for gradient recovery
 ;d19: delay for binomial water suppression
-;     d19 = (1/(2*d)), d = distance of next null (in Hz)
+;     d19 = (1/(2*d)), d = distance of next null (in Hz) [106 us at 600 MHz]
 ;d20: diffusion time (big DELTA)
 ;NS : 8 * n
 ;DS : 4 * m
