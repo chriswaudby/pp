@@ -2,19 +2,14 @@
 ;for amide/methyl-methyl NOES
 ; Rossi 2016 JBNMR
 
-;F1(H) -> F2(C[mq],t1) ---NOE--> F1(H) -> F2(C[mq],t2) -> F1(H,t3)
+;F1(H,t1) ---NOE--> F1(H) -> F2(C[mq],t2) -> F1(H,t3)
 ;
-;Indirect evolution order is t2, t1 (13Cdir, 13Cnoe)
-;Uses half-dwell first-point delay by default in all indirect dims
-;Option for off-res presat
-;Options for 2D planes in each 13C dim
-;  (set both to get 1D or 2D HH plane with no 13C phase evolution)
-;Removal of 13C equilibrium magnetisation
+;Indirect evolution order is t2, t1 (13C, 1Hnoe)
 ;Delays adjusted for zero first-order phase correction in acqusition dim
 
 
 ;$CLASS=HighRes
-;$DIM=4D
+;$DIM=3D
 ;$TYPE=
 ;$SUBTYPE=
 ;$COMMENT=
@@ -36,8 +31,8 @@
 "in0=inf1"
 
 ;------------options for second (in transfer pathway) 13C (F2)
-"d10=in10/2-p3*4/3.1415"
 "in10=inf2"
+"d10=in10/2-p3*4/3.1415"
 
 
 "spoff13=bf1*(cnst19/1000000)-o1" ; H[N] fd (p29)
@@ -56,7 +51,7 @@
 
 
 "DELTA1=d2-p16-d16"
-"DELTA2=p39*cnst23-4u-de"
+"DELTA2=p39*cnst39-4u-de"
 "acqt0=de"
 
 aqseq 321	; for info only
@@ -140,9 +135,9 @@ ph31=0 2 2 0 2 0 0 2
 ;p30: f1 channel - 180 degree shaped pulse for refocussing (amide)
 ;                      Reburp.1000               (1943 us at 700 MHz)
 ;p39: f1 channel - 120 degree shaped pulse for excitation (methyl)
-;                      Pc9_4_120.1000 (120o)    (1598 us at 700 MHz)
+;                      Pc9_4_120.1000 (120o)    (2314 us at 700 MHz)
 ;p40: f1 channel - 180 degree shaped pulse for refocussing (methyl)
-;                      Reburp.1000               (1259 us at 700 MHz)
+;                      Reburp.1000               (1693 us at 700 MHz)
 ;sp13: f1 channel - shaped pulse 90 degree (amide)
 ;                   (Pc9_4_90.1000 )
 ;sp14: f1 channel - shaped pulse 180 degree (Reburp.1000) (amide)
