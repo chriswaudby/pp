@@ -28,7 +28,7 @@ define list<loopcounter> ncyc = {0 40 1 36 2 32 3 28 4 24 5 20 6 18 7 16 8 14 9 
 ;"d3=3.75m - p23 - 2u"
 ;"d4=3.75m - p23 - 2u - p8"
 "d3=4m - p23 - 2u + 0.6366*p1"
-"d4=4m - p23 - 2u - p8"
+"d4=4m - p23 - 2u - p8 - 4u"
 "acqt0=0"
 
 "d11=1m"
@@ -44,23 +44,22 @@ aqseq 312
   10m st0
 2 2u do:f2
 3 2u do:f2
-  1m BLKGRAD
 4 d1 do:f2
 
-if "ncyc == 0"
-  {
-   "DEL = TIME_T2/4 - p8"
-   "DEL_1 = DEL - p8*0.63662*0.5"
-   "DEL_2 = DEL - p1"
-   "COUNTER = 0"
-  }
-else
-  {
-   "DEL = TIME_T2/(4*ncyc) - p8"
-   "DEL_1 = TIME_T2/(4*ncyc) - p8 - p8*0.63662*0.5"
-   "DEL_2 = DEL - p1"
-   "COUNTER = ncyc - 2"
-  }
+"if (ncyc == 0) \
+  { \
+   DEL = TIME_T2/4 - p8; \
+   DEL_1 = DEL - p8*0.63662*0.5; \
+   DEL_2 = DEL - p1; \
+   COUNTER = 0; \
+  } \
+else \
+  { \
+   DEL = TIME_T2/(4*ncyc) - p8; \
+   DEL_1 = TIME_T2/(4*ncyc) - p8 - p8*0.63662*0.5; \
+   DEL_2 = DEL - p1; \
+   COUNTER = ncyc - 2; \
+  }"
 
   1m UNBLKGRAD
   10u pl8:f2
@@ -172,34 +171,28 @@ else
    2u
    p23:gp3
    d4 pl31:f2
+   4u BLKGRAD
 
 ;start looping experiment
+;  go=2 ph31 cpd2:f2
+;  d11 do:f2 wr #0 if #0 zd
+;    F1QF(ncyc.inc)
+;    F2PH(ip4, id0)
+  
    goscnp ph31 cpd2:f2
 
    3m do:f2
    3m st ncyc.inc   ; nbl = number of CPMG points
    lo to 2 times nbl
 
+   20u ncyc.res
    3m ipp1 ipp2 ipp3 ipp31
    lo to 3 times ns  ; CPMG innermost loop, then ns
 
-   1m BLKGRAD
+;   1m BLKGRAD
    d1 mc #0 to 4
       F1QF()
-      F2PH(ip4, id0)
-
-;   d11 wr #0 if #0 zd
-;
-;   d12 ncyc.inc
-;   lo to 3 times l2    ; l2 = number of CPMG points
-;
-;   d12 ip4
-;   lo to 4 times 2     ; states-TPPI
-;
-;   d12 ip31
-;   d12 ip31    
-;   d12 id0
-;   lo to 5 times l3    ; l3 = number of complex points
+      F2PH(calph(ph4, +90) & exec(rppall), caldel(d0,+in0))
 
 1m BLKGRAD
 exit 
