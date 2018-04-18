@@ -30,7 +30,7 @@ def split_csv(inputstring):
 
 # get experiment
 proton_template_expt = 2
-diffusion_template_expt = 999
+diffusion_template_expt = 0
 hmqc_template_expt = 7
 first_expt = 20
 dlg_title = 'Adaptive methyl CCR measurement' # default title for dialogs
@@ -39,13 +39,13 @@ result = INPUT_DIALOG(title=dlg_title,
     items=['Experiment folder = ',
      '1D template = ',
      'HMQC template = ',
-#     'Diffusion template = ',
+     'Diffusion template (zero => do not run) = ',
      'First output experiment = '
     ],
     values=[experiment_name,
      str(proton_template_expt),
      str(hmqc_template_expt),
-#     str(diffusion_template_expt),
+     str(diffusion_template_expt),
      str(first_expt)
     ])
 if result is None:
@@ -55,8 +55,12 @@ else: # unpack results
     experiment_name = result[0]
     proton_template_expt = int(result[1])
     hmqc_template_expt = int(result[2])
-#    diffusion_template_expt = int(result[3])  # NB change 3 to 4 below when uncommenting!
-    first_expt = int(result[3])
+    diffusion_template_expt = int(result[3])  # NB change 3 to 4 below when uncommenting!
+    first_expt = int(result[4])
+if diffusion_template_expt <= 0:
+    run_diffusion = False
+else:
+    run_diffusion = True
 
 # set working directory for temporary files to current experiment
 working_directory = "%s/%s" % (data_directory, experiment_name)
@@ -137,15 +141,18 @@ savevar(omega, 'omega')
 
 
 # get parameters for interleaving
-#result = INPUT_DIALOG(title=dlg_title,
-#    header='Please input the time interval for interleaving 1D and diffusion experiments.',
-#    items=['CCR block duration (minutes) = '],
-#    values=[str(90)])
-#if result is None:
-#    MSG('Setup and acquisition aborted!', title=dlg_title)
-#    EXIT()
-#else: # unpack results
-#    interleave_time = float(result[0])
+if run_diffusion:
+    result = INPUT_DIALOG(title=dlg_title,
+        header='Please input the number of relaxation measurements between interleaving 1D and diffusion experiments.',
+        items=['CCR block size = '],
+        values=[str(10)])
+    if result is None:
+        MSG('Setup and acquisition aborted!', title=dlg_title)
+        EXIT()
+    else: # unpack results
+        interleave_block_size = int(result[0])
+else:
+    interleave_block_size = 0
 
 # get total number of experiments
 result = INPUT_DIALOG(title=dlg_title,
@@ -179,6 +186,18 @@ def prepare_ccr_expt(expt, tau, phase=0):
     taus.append(tau)
     phases.append(phase)
 
+def prepare_diffusion_expt(expt):
+    re(diffusion_template_expt)
+    XCMD("wrpa %i" % expt)
+    print("wrpa %i done!" % expt)
+    re(expt)
+
+def prepare_proton_expt(expt):
+    re(proton_template_expt)
+    XCMD("wrpa %i" % expt)
+    print("wrpa %i done!" % expt)
+    re(expt)
+
 def analyse_expt(expt):
     re(expt)
     EFP()
@@ -201,6 +220,7 @@ def stop():
         return False
 
 current_expt = first_expt - 1
+total_relaxation_expts = 0 # counter for interleaving diffusion
 
 for tau, phase in zip(priming_times, priming_phases):
     if stop():
@@ -213,6 +233,7 @@ for tau, phase in zip(priming_times, priming_phases):
     XCMD('au_zgonly', WAIT_TILL_DONE) # solution - run indirectly via AU program
     print('Finished seed experiment %i!' % (current_expt))
     analyse_expt(current_expt)
+    total_relaxation_expts += 1
 
 for iteration in range(N_experiments):
     if stop():
@@ -254,6 +275,21 @@ for iteration in range(N_experiments):
     XCMD('au_zgonly', WAIT_TILL_DONE)
     print('Finished experiment %i!' % (current_expt))
     analyse_expt(current_expt)
+
+    # increment expt counter for interleaving
+    total_relaxation_expts += 1
+
+    if run_diffusion and (total_relaxation_expts % interleave_block_size == 0):
+        current_expt += 1
+        prepare_proton_expt(current_expt)
+        print('Running proton 1D, experiment $i' % (current_expt))
+        XCMD('au_zgonly', WAIT_TILL_DONE)
+        print('Finished 1D experiment $i!' % (current_expt))
+        current_expt += 1
+        prepare_diffusion_expt(current_expt)
+        print('Running diffusion, experiment $i' % (current_expt))
+        XCMD('au_zgonly', WAIT_TILL_DONE)
+        print('Finished diffusion experiment $i!' % (current_expt))
 
 # write current status to disk for analysis in proper python
 savevar(integrals, 'integrals')
