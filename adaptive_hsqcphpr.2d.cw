@@ -62,7 +62,7 @@
   4u
   p16:gp1
   d16
-  DELTA 
+  DELTA pl2:f2
   (center (p2 ph1) (p4 ph1):f2 )
   DELTA 
   p16:gp1
