@@ -15,6 +15,8 @@ Required libraries:
 
 Ensure #! in `analyse_results.py` and `final_results.py` points to the correct python interpreter.
 
+Set field strength in `response_surface.py`.
+
 
 ### Setting up bruker bits
 

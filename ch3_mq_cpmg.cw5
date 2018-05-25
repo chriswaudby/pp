@@ -1,3 +1,4 @@
+; revised sequence - interleaving works now for 3.5pl7!
 #include <Avance.incl>
 #include <Grad.incl>
 
@@ -5,15 +6,17 @@ define delay TIME_T2
 "TIME_T2 = 40m"
 
 define delay DEL
-define delay DEL_1
 define delay DEL_2
+define loopcounter COUNTER
+"COUNTER=1"
+"DEL=1s"
+"DEL_2=1s"
 
 define delay TAUB
 "TAUB = 960u - p24 - 2u"
 define delay COMPH
 "COMPH = p1"
 
-define loopcounter COUNTER
 
 ;define list<loopcounter> ncyc = {0}
 ;define list<loopcounter> ncyc = {0 1 20}
@@ -27,7 +30,7 @@ define list<loopcounter> ncyc = {0 40 1 36 2 32 3 28 4 24 5 20 6 18 7 16 8 14 9 
 
 ;"d3=3.75m - p23 - 2u"
 ;"d4=3.75m - p23 - 2u - p8"
-"d3=4m - p23 - 2u + 0.6366*p1"
+"d3=4m - p23 - 2u - 0.6366*p1"
 "d4=4m - p23 - 2u - p8 - 4u"
 "acqt0=0"
 
@@ -36,7 +39,7 @@ define list<loopcounter> ncyc = {0 40 1 36 2 32 3 28 4 24 5 20 6 18 7 16 8 14 9 
 
 ;carbon evolution time
 "in0=inf2/2"
-"d0=in0*0.5 - p8*0.5*0.63662 - p1*2 - 2u - p1"
+"d0=in0*0.5 - p8*0.5 - p1*2 - 2u - p1"
 
 aqseq 312
 
@@ -46,20 +49,30 @@ aqseq 312
 3 2u do:f2
 4 d1 do:f2
 
-"if (ncyc == 0) \
-  { \
-   DEL = TIME_T2/4 - p8; \
-   DEL_1 = DEL - p8*0.63662*0.5; \
-   DEL_2 = DEL - p1; \
-   COUNTER = 0; \
-  } \
-else \
-  { \
-   DEL = TIME_T2/(4*ncyc) - p8; \
-   DEL_1 = TIME_T2/(4*ncyc) - p8 - p8*0.63662*0.5; \
-   DEL_2 = DEL - p1; \
-   COUNTER = ncyc - 2; \
-  }"
+if "ncyc==0" goto 71
+  4u
+  "DEL = TIME_T2/(4*ncyc) - p8"
+  4u
+  "DEL_2 = DEL - p1"
+  4u
+  "COUNTER = ncyc - 1"
+  4u
+71 4u
+
+;if "ncyc == 0"
+;  {
+;   "DEL = TIME_T2/4 - p8"
+;   "DEL_1 = DEL - p8*0.63662*0.5"
+;   "DEL_2 = DEL - p1"
+;   "COUNTER = 0"
+;  }
+;else
+;  { 
+;   "DEL = TIME_T2/(4*ncyc) - p8"
+;   "DEL_1 = TIME_T2/(4*ncyc) - p8 - p8*0.63662*0.5"
+;   "DEL_2 = DEL - p1"
+;   "COUNTER = ncyc - 2"
+;  }
 
   1m UNBLKGRAD
   10u pl8:f2
@@ -87,87 +100,45 @@ else \
    TAUB
    (p8 ph2):f2
 ;******	CPMG STARTS HERE **************
-if "ncyc == 1"
-{  
-   DEL
-   (p8*2 ph5):f2
-   DEL_2
-}
+if "ncyc==0" goto 72
+if "ncyc==1" goto 73
 
-if "ncyc == 2"
-{  
-   DEL
-   (p8*2 ph5):f2
-   DEL
-   DEL
-   (p8*2 ph5):f2
-   DEL_2 
-}
-
-if "ncyc > 2"
-{  
-   DEL
-   (p8*2 ph5):f2
-   DEL
 10 DEL
    (p8*2 ph5):f2
    DEL 
 lo to 10 times COUNTER
-   DEL
+
+73 DEL
    (p8*2 ph5):f2
    DEL_2 
-}
 
-  (p1*2 ph3):f1
+72  (p1*2 ph3):f1
 
-if "ncyc == 1"
-{  
+if "ncyc==0" goto 74
    DEL_2
    (p8*2 ph5):f2
    DEL
-}
+if "ncyc==1" goto 75
 
-if "ncyc == 2"
-{  
-   DEL_2
-   (p8*2 ph5):f2
-   DEL
-   DEL
-   (p8*2 ph5):f2
-   DEL
-}
-
-if "ncyc > 2"
-{  
-   DEL_2
-   (p8*2 ph5):f2
-   DEL
 20 DEL
    (p8*2 ph5):f2
    DEL
 lo to 20 times COUNTER
-   DEL
-   (p8*2 ph5):f2
-   DEL 
-}  
 ;****** CPMG ENDS HERE ****************
 ;******	carbon evolution **************
-if "ncyc == 0"
-{  
-   d0
-   (p1 ph0 2u p1*2 ph7 2u p1 ph0):f1
-   d0
-}
-else
-{
-   COMPH
+75 COMPH
    d0
    (p1 ph0 2u p1*2 ph7 2u p1 ph0):f1
    d0
    COMPH
-}
+   goto 76
+
+74 d0
+   (p1 ph0 2u p1*2 ph7 2u p1 ph0):f1
+   d0
+
 ;****** back to protons ***************
-   (p8 ph4):f2
+76 (p8 ph4):f2
    2u
    p23:gp3
    d4 pl31:f2
@@ -175,8 +146,9 @@ else
 
 ;start looping experiment
 ;  go=2 ph31 cpd2:f2
-;  d11 do:f2 wr #0 if #0 zd
+;  d11 do:f2 mc #0 to 4
 ;    F1QF(ncyc.inc)
+;;    F2PH(calph(ph4,+90),caldel(d0,+in0))
 ;    F2PH(ip4, id0)
   
    goscnp ph31 cpd2:f2

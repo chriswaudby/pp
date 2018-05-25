@@ -1,4 +1,8 @@
 '''
+Catch-up experiment following a crash...
+- set parameters identical to original run
+- you will be asked for the last experiment to successfully run
+
 Adaptive sampling for methyl CCR measurements
 running under Jython (urgh)
 
@@ -166,6 +170,16 @@ if result is None:
     EXIT()
 N_experiments = int(result[0]) - len(priming_times)
 
+# get last successful experiment
+result = INPUT_DIALOG(title=dlg_title,
+    header='Please input the last completed experiment number.',
+    items=['Last complete experiment number = '],
+    values=[str(123)])
+if result is None:
+    MSG('Setup and acquisition aborted!', title=dlg_title)
+    EXIT()
+last_successful_experiment = int(result[0])
+
 # confirm before starting acquisition
 if CONFIRM(message="Begin acqusition?", title=dlg_title) == 0:
     EXIT()
@@ -178,17 +192,21 @@ integrals = []
 
 def prepare_ccr_expt(expt, tau, phase=0):
     print("prepare_ccr_expt: expt=%i, tau=%g, phase=%g" % (expt, tau, phase))
-    re(hsqc_template_expt)
-    XCMD("wrpa %i" % expt)
-    time.sleep(0.5) # delay for disk access (prevent crashes?)
-    print("wrpa %i done!" % expt)
-    re(expt)
-    print("PUTPAR D 0 <%s>" % str(tau))
-    PUTPAR('D 0', str(tau))
-    print("PUTPAR PHCOR 7 <%s>" % str(phase))
-    PUTPAR('PHCOR 7', str(phase))
-    print("PUTPAR O2P <%s>" % str(offset_13C))
-    PUTPAR('O2P', str(offset_13C))
+    if expt <= last_successful_experiment:
+        print('already acquired this - skipping!')
+        re(expt)
+    else:
+        re(hsqc_template_expt)
+        XCMD("wrpa %i" % expt)
+        time.sleep(0.5) # delay for disk access (prevent crashes?)
+        print("wrpa %i done!" % expt)
+        re(expt)
+        print("PUTPAR D 0 <%s>" % str(tau))
+        PUTPAR('D 0', str(tau))
+        print("PUTPAR PHCOR 7 <%s>" % str(phase))
+        PUTPAR('PHCOR 7', str(phase))
+        print("PUTPAR O2P <%s>" % str(offset_13C))
+        PUTPAR('O2P', str(offset_13C))
     expts.append(expt)
     taus.append(tau)
     phases.append(phase)
@@ -196,18 +214,24 @@ def prepare_ccr_expt(expt, tau, phase=0):
 
 def prepare_diffusion_expt(expt):
     print("prepare_diffusion_expt: expt=%i" % (expt))
-    re(diffusion_template_expt)
-    XCMD("wrpa %i" % expt)
-    time.sleep(0.5) # delay for disk access (prevent crashes?)
-    print("wrpa %i done!" % expt)
+    if expt <= last_successful_experiment:
+        print('already acquired this - skipping!')
+    else:
+        re(diffusion_template_expt)
+        XCMD("wrpa %i" % expt)
+        time.sleep(0.5) # delay for disk access (prevent crashes?)
+        print("wrpa %i done!" % expt)
     re(expt)
 
 def prepare_proton_expt(expt):
     print("prepare_proton_expt: expt=%i" % (expt))
-    re(proton_template_expt)
-    XCMD("wrpa %i" % expt)
-    time.sleep(0.5) # delay for disk access (prevent crashes?)
-    print("wrpa %i done!" % expt)
+    if expt <= last_successful_experiment:
+        print('already acquired this - skipping!')
+    else:
+        re(proton_template_expt)
+        XCMD("wrpa %i" % expt)
+        time.sleep(0.5) # delay for disk access (prevent crashes?)
+        print("wrpa %i done!" % expt)
     re(expt)
 
 def analyse_expt(expt):
@@ -242,7 +266,10 @@ for tau, phase in zip(priming_times, priming_phases):
     prepare_ccr_expt(current_expt, tau, phase)
     print('Running seed experiment %i: tau = %g, phase = %g' % (current_expt, tau, phase))
     #XCMD('zg', WAIT_TILL_DONE) # BUG - this doesn't actually wait until execution is finished!
-    XCMD('au_zgonly', WAIT_TILL_DONE) # solution - run indirectly via AU program
+    if current_expt <= last_successful_experiment:
+        print('already acquired this - skipping!')
+    else:
+        XCMD('au_zgonly', WAIT_TILL_DONE) # solution - run indirectly via AU program
     print('Finished seed experiment %i!' % (current_expt))
     analyse_expt(current_expt)
     total_relaxation_expts += 1
@@ -284,7 +311,11 @@ for iteration in range(N_experiments):
     current_expt += 1
     prepare_ccr_expt(current_expt, tau, phase)
     print('Running experiment %i: tau = %g, phase = %g' % (current_expt, tau, phase))
-    XCMD('au_zgonly', WAIT_TILL_DONE)
+    if current_expt <= last_successful_experiment:
+        print('already acquired this - skipping!')
+    else:
+        XCMD('au_zgonly', WAIT_TILL_DONE) # solution - run indirectly via AU program
+    #XCMD('au_zgonly', WAIT_TILL_DONE)
     print('Finished experiment %i!' % (current_expt))
     analyse_expt(current_expt)
 
@@ -295,12 +326,20 @@ for iteration in range(N_experiments):
         current_expt += 1
         prepare_proton_expt(current_expt)
         print('Running proton 1D, experiment %i' % (current_expt))
-        XCMD('au_zgonly', WAIT_TILL_DONE)
+        if current_expt <= last_successful_experiment:
+            print('already acquired this - skipping!')
+        else:
+            XCMD('au_zgonly', WAIT_TILL_DONE) # solution - run indirectly via AU program
+        #XCMD('au_zgonly', WAIT_TILL_DONE)
         print('Finished 1D experiment %i!' % (current_expt))
         current_expt += 1
         prepare_diffusion_expt(current_expt)
         print('Running diffusion, experiment %i' % (current_expt))
-        XCMD('au_zgonly', WAIT_TILL_DONE)
+        if current_expt <= last_successful_experiment:
+            print('already acquired this - skipping!')
+        else:
+            XCMD('au_zgonly', WAIT_TILL_DONE) # solution - run indirectly via AU program
+        #XCMD('au_zgonly', WAIT_TILL_DONE)
         print('Finished diffusion experiment %i!' % (current_expt))
 
 # write current status to disk for analysis in proper python

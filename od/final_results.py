@@ -83,8 +83,8 @@ for i in range(N_expts):
         S2tc.append(theta_0[2*N_spins:3*N_spins])
         S2tc_err.append( 0. * S2tc[0] )
     else:
-        #theta_hat, sigma = od.estimate_theta(yobs[:i,:], taus[:i], phases[:i], omega, theta_0)
-        theta_hat, sigma = od.estimate_theta(yobs[:i,:], taus[:i], phases[:i], omega, theta_hat)
+        #theta_hat, sigma = od.estimate_theta(yobs[:i+1,:], taus[:i+1], phases[:i+1], omega, theta_0)
+        theta_hat, sigma = od.estimate_theta(yobs[:i+1,:], taus[:i+1], phases[:i+1], omega, theta_hat)
         R2.append(theta_hat[N_spins:2*N_spins])
         R2_err.append( sigma[N_spins:2*N_spins] )
         S2tc.append(theta_hat[2*N_spins:3*N_spins])
