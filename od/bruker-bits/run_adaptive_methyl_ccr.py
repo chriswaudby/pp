@@ -32,20 +32,20 @@ def split_csv(inputstring):
 # get experiment
 proton_template_expt = 2
 diffusion_template_expt = 0
-hmqc_template_expt = 7
+hsqc_template_expt = 7
 first_expt = 20
 dlg_title = 'Adaptive methyl CCR measurement' # default title for dialogs
 result = INPUT_DIALOG(title=dlg_title,
     header='Please input the experiment name and IDs of reference experiments.',
     items=['Experiment folder = ',
      '1D template = ',
-     'HMQC template = ',
+     'Adaptive HSQC template = ',
      'Diffusion template (zero => do not run) = ',
      'First output experiment = '
     ],
     values=[experiment_name,
      str(proton_template_expt),
-     str(hmqc_template_expt),
+     str(hsqc_template_expt),
      str(diffusion_template_expt),
      str(first_expt)
     ])
@@ -55,7 +55,7 @@ if result is None:
 else: # unpack results
     experiment_name = result[0]
     proton_template_expt = int(result[1])
-    hmqc_template_expt = int(result[2])
+    hsqc_template_expt = int(result[2])
     diffusion_template_expt = int(result[3])  # NB change 3 to 4 below when uncommenting!
     first_expt = int(result[4])
 if diffusion_template_expt <= 0:
@@ -178,7 +178,7 @@ integrals = []
 
 def prepare_ccr_expt(expt, tau, phase=0):
     print("prepare_ccr_expt: expt=%i, tau=%g, phase=%g" % (expt, tau, phase))
-    re(hmqc_template_expt)
+    re(hsqc_template_expt)
     XCMD("wrpa %i" % expt)
     time.sleep(0.5) # delay for disk access (prevent crashes?)
     print("wrpa %i done!" % expt)

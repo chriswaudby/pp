@@ -22,7 +22,7 @@
 ;
 ;Ferrage et al., JACS (2004) 126:5654
 
-prosol relations=<triple_d>
+prosol relations=<triple>
 
 #include <Avance.incl>
 #include <Grad.incl>
