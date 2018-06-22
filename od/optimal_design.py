@@ -12,7 +12,7 @@ import information_matrix as im
 PLOT = False
 
 
-def estimate_theta(yobs, tau, phi, omega, theta):
+def estimate_theta(yobs, tau, phi, omega, theta, plot=False):
     # debugging
 
     # hard code parameter limits:
@@ -52,7 +52,7 @@ def estimate_theta(yobs, tau, phi, omega, theta):
         sigma = np.zeros_like(theta)
         theta_hat = theta
 
-    if PLOT:
+    if plot:
         tpred = np.linspace(0,tau.max(),1000)
         ypred = rs.y(tpred, tpred*0, theta_hat, omega)
         ypred45 = rs.y(tpred, tpred*0+np.pi/4, theta_hat, omega)
@@ -63,16 +63,29 @@ def estimate_theta(yobs, tau, phi, omega, theta):
         idx90 = abs(phi-np.pi/2) < 0.05
         idx135 = abs(phi-3*np.pi/4) < 0.05
         
+        cm = np.array(((228,26,28),(55,126,184),(77,175,74),(152,78,163)))
+        cm = cm / 255
         for i in range(N):
-            plt.subplot(2,3,i+1)
-            plt.plot(1000*tau[idx0], yobs[idx0,i],'ob')
-            plt.plot(1000*tau[idx45], yobs[idx45,i],'og')
-            plt.plot(1000*tau[idx90], yobs[idx90,i],'or')
-            plt.plot(1000*tau[idx135], yobs[idx135,i],'om')
-            plt.plot(1000*tpred, ypred[:,i],'-b')
-            plt.plot(1000*tpred, ypred45[:,i],'-g')
-            plt.plot(1000*tpred, ypred90[:,i],'-r')
-            plt.plot(1000*tpred, ypred135[:,i],'-m')
+            plt.subplot(N,1,i+1)
+            plt.plot(1000*tau[idx0], yobs[idx0,i],'o',color=cm[0])
+            plt.plot(1000*tau[idx45], yobs[idx45,i],'o',color=cm[1])
+            plt.plot(1000*tau[idx90], yobs[idx90,i],'o',color=cm[2])
+            plt.plot(1000*tau[idx135], yobs[idx135,i],'o',color=cm[3])
+            plt.plot(1000*tpred, ypred[:,i],'-',color=cm[0])
+            plt.plot(1000*tpred, ypred45[:,i],'-',color=cm[1])
+            plt.plot(1000*tpred, ypred90[:,i],'-',color=cm[2])
+            plt.plot(1000*tpred, ypred135[:,i],'-',color=cm[3])
+        # save data for plotting in matlab
+        np.savetxt('observed_0.txt',np.c_[tau[idx0],yobs[idx0,:]])
+        np.savetxt('fitted_0.txt',np.c_[tpred,ypred])
+        np.savetxt('observed_45.txt',np.c_[tau[idx45],yobs[idx45,:]])
+        np.savetxt('fitted_45.txt',np.c_[tpred,ypred45])
+        np.savetxt('observed_90.txt',np.c_[tau[idx90],yobs[idx90,:]])
+        np.savetxt('fitted_90.txt',np.c_[tpred,ypred90])
+        np.savetxt('observed_135.txt',np.c_[tau[idx135],yobs[idx135,:]])
+        np.savetxt('fitted_135.txt',np.c_[tpred,ypred135])
+        # save plot as pdf then display
+        plt.savefig('observed_points_and_fits.pdf')
         plt.show()
 
     return (theta_hat, sigma)

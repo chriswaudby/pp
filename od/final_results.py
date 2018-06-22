@@ -1,4 +1,5 @@
-#!/home/waudbyc/anaconda3/bin/python
+#!/usr/bin/env python
+##!/home/waudbyc/anaconda3/bin/python
 """Extract and analyse the final results of a methyl CCR measurement.
 
 The working directory should be specified as a command line argument. This
@@ -27,6 +28,7 @@ import utils
 
 # set number of seed points (for plotting)
 N_seed = 6
+N_expts_max = 300  # for stopping analysis early
 
 # parse command line arguments
 working_directory = sys.argv[1]
@@ -61,6 +63,7 @@ taus = np.array(loadvar('taus'))#.reshape((-1,1))
 phases = np.array(loadvar('phases')) * np.pi / 180 # convert to rad
 theta_0 = np.array(loadvar('theta0')).ravel()
 N_expts = len(taus)
+if N_expts > N_expts_max: N_expts = N_expts_max
 N_spins = len(omega)
 
 #utils.pprint_array(omega, label='omega')
@@ -98,21 +101,27 @@ print("Running parameter estimates:")
 utils.pprint_array(R2, label='R2(running)')
 utils.pprint_array(S2tc, label='S2tc(running)')
 
+od.estimate_theta(yobs[:i,:], taus[:i], phases[:i], omega, theta_hat, plot=True)
+
 print("Final parameter estimates:")
 print_estimate(theta_hat, sigma)
 
 for i in range(N_spins):
-    plt.subplot(2,3,i+1)
+    plt.subplot(N_spins,1,i+1)
     #plt.errorbar(np.arange(N_expts), S2tc[:,i], yerr=S2tc_err[:,i], fmt='ob-')
-    plt.fill_between(np.arange(N_expts), R2[:,i]-R2_err[:,i], R2[:,i]+R2_err[:,i], facecolor='palegreen')
+    plt.fill_between(np.arange(N_expts), R2[:,i]-R2_err[:,i], R2[:,i]+R2_err[:,i], facecolor='palegreen',linewidth=0)
     plt.plot(np.arange(N_expts), R2[:,i], 'g-')
-    plt.fill_between(np.arange(N_expts), S2tc[:,i]-S2tc_err[:,i], S2tc[:,i]+S2tc_err[:,i], facecolor='mistyrose')
+    plt.fill_between(np.arange(N_expts), S2tc[:,i]-S2tc_err[:,i], S2tc[:,i]+S2tc_err[:,i], facecolor='mistyrose',linewidth=0)
     plt.plot(np.arange(N_expts), S2tc[:,i], 'r-')
     plt.xlabel('Iteration number')
     #plt.ylabel('S2tc estimate / ns')
-    plt.ylim(ymin=0)
+    plt.ylim(ymin=0,ymax=80)
     #plt.title('spin {:g}'.format(i+1))
+plt.savefig('parameter_evolution.pdf')
 plt.show()
+# save data for plotting in matlab
+np.savetxt('S2tc_evolution.txt',np.c_[S2tc, S2tc_err])
+print('Data saved as S2tc_evolution.txt')
 
 #for i in range(N_spins):
 #    plt.subplot(2,3,i+1)
