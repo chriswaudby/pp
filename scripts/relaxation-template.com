@@ -14,21 +14,21 @@ bruk2pipe -in ./ser \
 | pipe2xyz -out ./fid/test%03d.fid -verb -ov
 
 xyz2pipe -in fid/test%03d.fid -x -verb              \
-| nmrPipe  -fn SOL                                  \
-| nmrPipe  -fn GM -g1 8.0 -g2 12.0 -g3 0.0 -c 1.0   \
+#| nmrPipe  -fn SOL                                  \
+| nmrPipe -fn SP -off 0.5 -end 0.98 -pow 1 -c 0.5  \
 | nmrPipe  -fn ZF -auto                             \
 | nmrPipe  -fn FT                                   \
-| nmrPipe  -fn PS -p0 245 -p1 0.0 -di               \
-| nmrPipe  -fn EXT -xn 10ppm -x1 6ppm -sw           \
+| nmrPipe  -fn PS -p0 0 -p1 0.0 -di               \
+#| nmrPipe  -fn EXT -xn 10ppm -x1 6ppm -sw           \
 | nmrPipe  -fn TP                                   \
 | nmrPipe  -fn LP -fb                               \
-| nmrPipe  -fn GM -g1 4.0 -g2 15.0 -g3 0.0 -c 0.5   \
+| nmrPipe -fn SP -off 0.5 -end 0.98 -pow 1 -c 1  \
 | nmrPipe  -fn ZF -auto                             \
 | nmrPipe  -fn FT -auto                                  \
-| nmrPipe  -fn PS -p0 0.0 -p1 0.0 -di               \
+| nmrPipe  -fn PS -p0 -90.0 -p1 180.0 -di               \
 | pipe2xyz -out ft/test%03d.ft2 -y
 
-cp ft/test001.ft2 first-plane.ft2
-sethdr first-plane.ft2 -ndim 2 -zN 1 -zT 1
-pipe2ucsf first-plane.ft2 first-plane.ucsf
+#cp ft/test001.ft2 first-plane.ft2
+#sethdr first-plane.ft2 -ndim 2 -zN 1 -zT 1
+#pipe2ucsf first-plane.ft2 first-plane.ucsf
 
