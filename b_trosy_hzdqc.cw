@@ -1,0 +1,177 @@
+;BEST-TROSY-H(Z/D)QC
+;Chris Waudby, June 2018
+;
+;options:
+; -DDQ = HDQC (otherwise runs HZQC)
+; -DONE_D = first-row
+; -DOFFRES_PRESAT = presat, pl9 on cnst21 (Hz bf)
+
+prosol relations=<triple>
+
+#include <Avance.incl>
+#include <Grad.incl>
+#include <Delay.incl>
+
+
+"d11=30m"
+"d12=20u"
+"d13=4u"
+"d21=1s/(cnst4*2)"
+
+"in0=inf1"
+# ifdef ONE_D
+"d0=2u"
+#else
+"d0=in0/2-p21*4/3.1415"
+# endif /*ONE_D*/
+
+"d2=p39-p39*cnst39-0.3633*p21"
+"d3=0.5*p40-0.3633*p21"
+"DELTA1=d21-p39*cnst39-p40*0.5-p16-d16"
+"DELTA2=d21-0.3633*p21-p16-d16-0.5*p40"
+"DELTA3=d21-p40-p16-d16"
+"DELTA4=d21-0.5*p40-p16-d16-p21-de"
+"acqt0=de"
+
+
+# ifdef OFFRES_PRESAT
+  "TAU=d1-d11-60u-d12*2-d13-d12-50u-p21-p16-d16"
+# else
+  "TAU=d1-d11-d12-50u-p21-p16-d16"
+# endif /*OFFRES_PRESAT*/
+
+
+"spoff23=bf1*(cnst19/1000000)-o1"
+"spoff24=bf1*(cnst19/1000000)-o1"
+
+
+"l0=1"  ; loop counter for shifting 1H 180 pulse between echo/anti-echoes
+
+
+1 ze 
+  d11 
+2 d11 
+
+# ifdef OFFRES_PRESAT
+  30u fq=cnst21(bf hz):f1
+  d12 pl9:f1
+  TAU cw:f1 ph29
+  d13 do:f1
+  d12 pl1:f1
+  30u fq=0:f1
+# else
+  TAU
+# endif /*OFFRES_PRESAT*/
+
+3 d12 pl3:f3
+  50u UNBLKGRAD
+
+  ; purge Nz
+  (p21 ph1):f3
+  p16:gp0
+  d16
+
+  ; begin main sequence
+  (lalign (p39:sp23 ph1) (d2 p21 ph11):f3 ) 
+  DELTA1
+  p16:gp1
+  d16
+  (center (p40:sp24 ph1) (p22 ph12):f3 )
+  p16:gp1
+  d16
+
+
+  if "l0 %2 == 1"
+     {
+  (ralign (p40:sp24 ph1) (DELTA2 p21 ph13 d0 p21 ph1 d3):f3 )
+  DELTA3
+     }
+  else
+     {
+  DELTA3
+  (lalign (p40:sp24 ph1) (d3 p21 ph13 d0 p21 ph1 DELTA2):f3 )
+     }
+
+  p16:gp2
+  d16
+  (center (p40:sp24 ph1) (p22 ph1):f3 )
+  p16:gp2
+  d16
+  DELTA4 BLKGRAD
+  (p21 ph14):f3
+
+  go=2 ph31 
+  d11 mc #0 to 2 
+     F1EA(iu0 & ip14*2 & ip31*2, id0)
+
+exit 
+  
+ph1=0 
+ph11=0 2 1 3
+ph12=0 0 1 1
+ph31=0 2 1 3
+#ifdef DQ
+ph13=1 3 2 0
+ph14=3
+#else /* ZQ */
+ph13=3 1 0 2
+ph14=1
+#endif
+
+;pl3 : f3 channel - power level for pulse (default)
+;pl26: f3 channel - power level for CPD/BB decoupling (low power)
+;sp23: f1 channel - shaped pulse 120 degree 
+;                   (Pc9_4_120.1000 or Q5.1000)
+;sp24: f1 channel - shaped pulse 180 degree (Rsnob.1000)
+;p16: homospoil/gradient pulse                       [1 msec]
+;p21: f3 channel -  90 degree high power pulse
+;p39: f1 channel - 120 degree shaped pulse for excitation
+;                      Pc9_4_120.1000 (120o)    (3.0ms at 600.13 MHz)
+;                  (or Q5.1000 (90o)            (2.0ms at 600.13 MHz) )
+;p40: f1 channel - 180 degree shaped pulse for refocussing
+;                      Rsnob.1000               (1.0ms at 600.13 MHz)
+;d0 : incremented delay (2D) = in0/2-p21*4/3.1415
+;d1 : relaxation delay
+;d11: delay for disk I/O                             [30 msec]
+;d12: delay for power switching                      [20 usec]
+;d16: delay for homospoil/gradient recovery
+;d21 : 1/(2J)NH
+;cnst4: = J(NH)
+;cnst19: H(N) chemical shift (offset, in ppm)
+;cnst39: compensation of chemical shift evolution during p39
+;           Pc9_4_90.1000: 0.514
+;           Pc9_4_120.1000: 0.529
+;inf1: 1/SW(N) = 2 * DW(N)
+;in0: 1/ SW(N) = 2 * DW(N)
+;nd0: 1
+;NS: 4 * n
+;DS: 16
+;td1: number of experiments
+;FnMODE: Echo-AntiEcho
+
+
+;use gradient ratio:	gp 0 : gp 1 : gp 2
+;			-16 :  11 :    7
+
+
+;for z-only gradients:
+;gpz0: -16%
+;gpz1: 11%
+;gpz2:  7%
+
+;use gradient files:   
+;gpnam0: SMSQ10.100
+;gpnam1: SMSQ10.100
+;gpnam2: SMSQ10.100
+
+
+
+
+;Processing
+
+;PHC0(F1): 90
+;PHC1(F1): -180
+;FCOR(F1): 1
+
+
+
