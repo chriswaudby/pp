@@ -38,22 +38,23 @@
 
 ;------------options for first (in transfer pathway) 13C dim (F2)
 "in10=inf2/2"		; first 13C dim (NB two d10 delays present)
-"d10=in10/2-p3*4/3.1415"
+"d10=in10/2"
 
 ;------------options for third (in transfer pathway) 13C dim (F3)
 "in30=inf3"		; second 13C dim (NB only one d30 delay present)
 "d30=in30/2-p3*4/3.1415"
 
 
-"spoff23=bf1*(cnst19/1000000)-o1"
-"spoff24=bf1*(cnst19/1000000)-o1"
-"spoff25=bf1*(cnst19/1000000)-o1"
+; place pulses on-resonance
+;"spoff23=bf1*(cnst19/1000000)-o1"
+;"spoff24=bf1*(cnst19/1000000)-o1"
+;"spoff25=bf1*(cnst19/1000000)-o1"
 
 "TAU=d8-p16*2-d16*2-p3-8u"  ; noe mixing time
 
 
 ; delays for first SFHMQC
-"d5=d2-p39*cnst39-4u-p16-d16"
+"d5=d2-p41*cnst39-4u-p16-d16"
 "DELTA1=d5+p3+p4-p40*0.5"
 
 ; delays for second SFHMQC
@@ -68,7 +69,7 @@
   d11 pl12:f2
   4u BLKGRAD
 2 d11 do:f2
-  d1
+  d1 pl2:f2
   50u UNBLKGRAD
 
 ;-------------------------kill equm 13C magnetisation
@@ -87,8 +88,8 @@
 
   ; 1H F1 and 13C F2 evolution (MQ)
   (lalign
-    (DELTA1 2*d0 d10 p40:sp24 ph2):f1
-    (d5 p3 ph12 d0 p4 ph1 d0 2*d10 p3 ph1 d5):f2
+    (DELTA1 d0 d0 d10 p40:sp24 ph2):f1
+    (d5 p3 ph12 d0 p4 ph1 d0 d10 d10 p3 ph1 d5):f2
   )
 
   4u
@@ -125,13 +126,13 @@
 #ifndef NUWS
   d11 do:f2 mc #0 to 2
     F3PH(ip13, id30)
-	F2PH(rp13 & rd30 & ip12, id10)
-	F1PH(rp13 & rd30 & rp12 & rd10 & ip11, id0)
+	  F2PH(rp13 & rd30 & ip12, id10)
+	  F1PH(rp13 & rd30 & rp12 & rd10 & ip11, id0)
 #else
   d11 do:f2 mc #0 to 2
-	F1PH(calph(ph11), caldel(d0))
-	F2PH(calph(ph12), caldel(d10))
-	F3PH(calph(ph13), caldel(d30))
+	  F1PH(calph(ph11), caldel(d0))
+	  F2PH(calph(ph12), caldel(d10))
+	  F3PH(calph(ph13), caldel(d30))
 #endif /*NUS*/
   4u BLKGRAD
 
