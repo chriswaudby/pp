@@ -48,46 +48,36 @@
    ; begin HSQC
   (p1 ph1)
   4u
-  p16:gp1
+  p16:gp6
   d16
   DELTA1
   (center (p2 ph2) (p8:sp13 ph1):f2 )
   DELTA1 
-  p16:gp1
+  p16:gp5
   d16 pl2:f2
   4u
   (p1 ph2)
 
-#ifdef CALIB_C
   ; zz filter
   4u
   p16:gp2
   d16
 
-  4u pl20:f2
-  (p20 ph1):f2
-  4u pl2:f2
-#endif
-
-;  ; zz filter
-;  4u
-;  p16:gp2
-;  d16
-
   ; t1 evolution
   (p3 ph11):f2
+  DELTA2
+  p16:gp3
+  d16
+  (p4 ph14):f2
+  p16:gp3*-1
+  d16
+
   d0
   (p2 ph13)
   d0
-  p16:gp3*EA
-  d16
-  (p4 ph14):f2
-  p16:gp3*EA*-1
-  d16
-  DELTA2
   (p3 ph12):f2
 
-;  ; zz filter
+  ; zz filter
 ;  4u
 ;  p16:gp4
 ;  d16
@@ -95,19 +85,17 @@
   ; back-transfer
   (p1 ph1)
   4u
-  p16:gp5
+  p16:gp1
   d16
   DELTA1 pl0:f2
   (center (p2 ph1) (p8:sp13 ph1):f2 )
   4u
-  p16:gp6
+  p16:gp1
   DELTA1 pl12:f2
   DELTA3 BLKGRAD
   go=2 ph31 cpd2:f2 
   d11 do:f2 mc #0 to 2 
-     F1EA(calgrad(EA), caldel(d0, +in0) & calph(ph12, +180) & calph(ph31, +180))
-
-
+     F1PH(ip12, id0)
 
 exit
    
