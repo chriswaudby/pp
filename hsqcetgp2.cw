@@ -44,7 +44,13 @@
   d1
   50u UNBLKGRAD
   4u pl1:f1 pl2:f2
- 
+
+   ; purge Cz
+  (p3 ph1):f2
+  4u
+  p16:gp0
+  d16
+
    ; begin HSQC
   (p1 ph1)
   4u
@@ -63,7 +69,7 @@
   p16:gp2
   d16
 
-  ; t1 evolution
+  ; gradient selection and t1 evolution
   (p3 ph11):f2
   DELTA2
   p16:gp3
@@ -71,16 +77,15 @@
   (p4 ph14):f2
   p16:gp3*-1
   d16
-
   d0
   (p2 ph13)
   d0
   (p3 ph12):f2
 
   ; zz filter
-;  4u
-;  p16:gp4
-;  d16
+  4u
+  p16:gp4
+  d16
 
   ; back-transfer
   (p1 ph1)

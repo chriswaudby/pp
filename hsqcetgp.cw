@@ -32,7 +32,7 @@
 "d0=3u"
 "in0=inf1/2"
 
-"DELTA1=d4-p16-d16-4u-larger(p2,p8)*0.5"
+"DELTA1=d4-p16-d16-4u-larger(p2,p4)*0.5"
 "DELTA2=2*d0+p2"
 "DELTA3=d16+0.6366*p1"
 "acqt0=0"
@@ -45,16 +45,22 @@
   50u UNBLKGRAD
   4u pl1:f1 pl2:f2
  
+   ; purge Cz
+  (p3 ph1):f2
+  4u
+  p16:gp0
+  d16
+
    ; begin HSQC
   (p1 ph1)
   4u
   p16:gp1
   d16
   DELTA1
-  (center (p2 ph2) (p8:sp13 ph1):f2 )
+  (center (p2 ph2) (p4 ph1):f2 )
   DELTA1 
   p16:gp1
-  d16 pl2:f2
+  d16 
   4u
   (p1 ph2)
 
@@ -69,10 +75,12 @@
   4u pl2:f2
 #endif
 
-;  ; zz filter
-;  4u
-;  p16:gp2
-;  d16
+#ifdef ZZ1
+  ; zz filter
+  4u
+  p16:gp2
+  d16
+#endif
 
   ; t1 evolution
   (p3 ph11):f2
@@ -87,25 +95,27 @@
   DELTA2
   (p3 ph12):f2
 
-;  ; zz filter
-;  4u
-;  p16:gp4
-;  d16
+#ifdef ZZ2
+  ; zz filter
+  4u
+  p16:gp4
+  d16
+#endif
 
   ; back-transfer
   (p1 ph1)
   4u
   p16:gp5
   d16
-  DELTA1 pl0:f2
-  (center (p2 ph1) (p8:sp13 ph1):f2 )
+  DELTA1 
+  (center (p2 ph1) (p4 ph1):f2 )
   4u
   p16:gp6
   DELTA1 pl12:f2
   DELTA3 BLKGRAD
   go=2 ph31 cpd2:f2 
   d11 do:f2 mc #0 to 2 
-     F1EA(calgrad(EA), caldel(d0, +in0) & calph(ph12, +180) & calph(ph31, +180))
+     F1EA(igrad EA, id0)
 
 
 
