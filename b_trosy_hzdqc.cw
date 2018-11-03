@@ -57,7 +57,7 @@ prosol relations=<triple>
 # ifdef OFFRES_PRESAT
   30u fq=cnst21(bf hz):f1
   d12 pl9:f1
-  TAU cw:f1 ph29
+  TAU cw:f1 ph1
   d13 do:f1
   d12 pl1:f1
   30u fq=0:f1
