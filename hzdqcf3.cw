@@ -6,6 +6,12 @@
 ; (90,-180) phase correction
 ; Crushing equm 15N magnetisation
 ;
+; run as pseudo-3D
+; set td1 = 4, QF
+; nbl = 4
+; ns = 1 (4 step phase cycle stored in F1 dimension)
+;
+;
 ; based on Jarvet and Allard (1996) JMR B 112 240-244
 ;
 ;K.V. Pervushin, G. Wider, R. Riek & K. Wuethrich, 
@@ -26,6 +32,7 @@
 "p2=p1*2"
 "p22=p21*2"
 "d11=30m"
+"d12=20u"
 "d26=1s/(cnst4*4)"
 
 
@@ -172,7 +179,11 @@ ph31=0 2 1 3  ; DQ
 ;pl0 : 0W
 ;pl1 : f1 channel - power level for pulse (default)
 ;pl3 : f3 channel - power level for pulse (default)
-;sp1: f1 channel - shaped pulse  90 degree
+;sp1: f1 channel - 90 degree water flip-down (sinc1000)
+;sp2: f1 channel - 90 degree water flip-down (sinc1000)
+;sp3: f1 channel - 90 degree water flip-down (sinc1000)
+;sp4: f1 channel - 90 degree water flip-back (sinc1000)
+;sp5: f1 channel - 90 degree water flip-down (sinc1000)
 ;p1 : f1 channel -  90 degree high power pulse
 ;p2 : f1 channel - 180 degree high power pulse
 ;p11: f1 channel -  90 degree shaped pulse
@@ -188,23 +199,23 @@ ph31=0 2 1 3  ; DQ
 ;inf1: 1/SW(X) = 2 * DW(X)
 ;in0: 1/(2 * SW(X)) = DW(X)
 ;nd0: 2
-;ns: 4 * n
+;ns: 1 * n
+;nbl: 4
 ;ds: 16
-;td1: number of experiments
+;td1: 4
 ;FnMODE: echo-antiecho
 
-
-;use gradient ratio:    gp 0 : gp 1 : gp 2
-;                          3 :   30 :   50
 
 ;for z-only gradients:
 ;gpz0: 3%
 ;gpz1: 30%
 ;gpz2: 50%
+;gpz3: 11%
 
 ;use gradient files:
 ;gpnam1: SMSQ10.100
 ;gpnam2: SMSQ10.100
+;gpnam3: SMSQ10.100
 
 
 ;use AU-program xfshear to process data
