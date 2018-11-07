@@ -40,7 +40,7 @@ prosol relations=<triple>
 "in0=inf2"
 
 # ifdef ONE_D
-"d0=6u"
+"d0=0.1u"
 #else
 "d0=in0/2-p21*4/3.1415"
 # endif /*ONE_D*/

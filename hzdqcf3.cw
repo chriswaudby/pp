@@ -101,9 +101,11 @@ aqseq 312
      {
      (p21 ph12):f3  ; 1 0 3 2
      }
+#ifndef ONE_D
   d0 gron0
   d0 gron0*-1
   10u groff
+#endif
 
   ; back transfer
   if "l0 %2 == 1"
