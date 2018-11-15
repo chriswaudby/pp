@@ -1,9 +1,8 @@
-;3D CCH HMQC-NOESY-13C HMQC
+;4D HCCH SFHMQC-NOESY-SFHMQC
 ;for methyl-methyl NOES
 ;Option for NUS using Topspin 3
 ;Derived from hmqcnoesyhmqcccgpphpr.jk
-;John K, Oct 2013
-;Chris W, Dec 2016
+;Chris W, July 2018
 
 ;F1(H) -> F2(C[mq],t1) ---NOE--> F1(H) -> F2(C[mq],t2) -> F1(H,t3)
 ;
@@ -30,84 +29,80 @@
 "p2=p1*2"
 "p4=p3*2"
 "d2=1s/(cnst2*2)"
-"d11=45m"
-"d12=20u"
-"d13=4u"
+"d11=45m" ; for disk access
 
-;"in30=inf1/2"
 
 ;------------indirect 1H dim (F1)
-;"d30=in30/2-p3"
+"in0=inf1/2"
+"d0=in0/2-p3"
 
 ;------------options for first (in transfer pathway) 13C dim (F2)
-"d0=in0/2-p3*4/3.1415"
-"in0=inf1"		; first 13C dim
+"in10=inf2/2"		; first 13C dim (NB two d10 delays present)
+"d10=in10/2"
 
-;------------options for second (in transfer pathway) 13C dim (F3)
-"d10=in10/2-p3*4/3.1415"
-"in10=inf2"		; second 13C dim
-
-
-"spoff23=bf1*(cnst19/1000000)-o1"
-"spoff24=bf1*(cnst19/1000000)-o1"
-
-"TAU=d8-p16*2-d16*2-p3-20u"
+;------------options for third (in transfer pathway) 13C dim (F3)
+"in30=inf3"		; second 13C dim (NB only one d30 delay present)
+"d30=in30/2-p3*4/3.1415"
 
 
-"DELTA1=d2-p16-d16"
-"DELTA2=d2-p16-d16-d12-4u-de+0.63662*p1"
-"DELTA3=d2-p16-d16"
+; place pulses on-resonance
+;"spoff23=bf1*(cnst19/1000000)-o1"
+;"spoff24=bf1*(cnst19/1000000)-o1"
+;"spoff25=bf1*(cnst19/1000000)-o1"
+
+"TAU=d8-p16*2-d16*2-p3-8u"  ; noe mixing time
+
+
+; delays for first SFHMQC
+"d5=d2-p41*cnst39-4u-p16-d16"
+"DELTA1=d5+p3+p4-p40*0.5"
+
+; delays for second SFHMQC
+"DELTA2=d2-p16-d16-p39*cnst39"
+"DELTA3=p39*cnst39-de-4u"
 "acqt0=de"
 
-aqseq 321	; for info only
+;aqseq 4321	; for info only
 
 
 1 ze
   d11 pl12:f2
-2 d11 do:f2
   4u BLKGRAD
-
-# ifdef OFFRES_PRESAT
-    30u fq=cnst21(bf hz):f1
-# endif /*OFFRES_PRESAT*/
-
-  d12 pl9:f1
-  d1 cw:f1 ph29
-  d13 do:f1
-  d12 pl1:f1 pl2:f2
-  30u fq=0:f1
+2 d11 do:f2
+  d1 pl2:f2
   50u UNBLKGRAD
 
 ;-------------------------kill equm 13C magnetisation
 
   (p3 ph1):f2
-  d13
+  4u
   p16:gp1
   d16*2
 
 ;-------------------------start first 13C HMQC element
 
-  (p39:sp23 ph1):f1
+  (p41:sp25 ph11):f1
+  4u
   p16:gp2
   d16
 
-  ; 13C F2 evolution (MQ)
-#ifdef NO_F1
-  (center (p40:sp24 ph2):f1 (DELTA1 p3 ph3 0.1u p3 ph4 DELTA1):f2 )
-#else
-  (center (p40:sp24 ph2):f1 (DELTA1 p3 ph3 d0 p3 ph4 DELTA1):f2 )
-#endif /* NO_F1 */
+  ; 1H F1 and 13C F2 evolution (MQ)
+  (lalign
+    (DELTA1 d0 d0 d10 p40:sp24 ph2):f1
+    (d5 p3 ph12 d0 p4 ph1 d0 d10 d10 p3 ph1 d5):f2
+  )
 
+  4u
   p16:gp2
   d16
-  (p39:sp23 ph5):f1
+  (p41:sp25 ph1):f1
 
 ;------------------------start NOE period
-  10u
+  4u
   p16:gp3*0.71
   d16
   (p3 ph1):f2
-  10u
+  4u
   p16:gp3
   d16
 
@@ -116,25 +111,29 @@ aqseq 321	; for info only
 
 
 ;------------------------start second 13C HMQC element
-  (p39:sp23 ph6):f1
+  (p39:sp23 ph1):f1
   p16:gp4
   d16
-#ifdef NO_F2
-  (center (p40:sp24 ph2):f1 (DELTA1 p3 ph7 0.1u p3 ph8 DELTA1):f2 )
-#else
-  (center (p40:sp24 ph2):f1 (DELTA1 p3 ph7 d10 p3 ph8 DELTA1):f2 )
-#endif /* NO_F2 */
 
-  DELTA2
+  (center (p40:sp24 ph2):f1 (DELTA2 p3 ph13 d30 p3 ph1 DELTA2):f2 )
+
+  DELTA3
   p16:gp4
   d16 pl12:f2
   4u BLKGRAD
   go=2 ph31 cpd2:f2
 
+#ifndef NUWS
   d11 do:f2 mc #0 to 2
-	F2PH(ip7, id10)
-	F1PH(rp7 & rd10 & ip3, id0)
-
+    F3PH(ip13, id30)
+	  F2PH(rp13 & rd30 & ip12, id10)
+	  F1PH(rp13 & rd30 & rp12 & rd10 & ip11, id0)
+#else
+  d11 do:f2 mc #0 to 2
+	  F1PH(calph(ph11), caldel(d0))
+	  F2PH(calph(ph12), caldel(d10))
+	  F3PH(calph(ph13), caldel(d30))
+#endif /*NUS*/
   4u BLKGRAD
 
 exit
@@ -142,13 +141,9 @@ exit
 
 ph1= 0
 ph2= 1
-ph3= 0 2
-ph4= 0
-ph5= 0
-ph6= 0
-ph7= 0 0 2 2
-ph8= 0
-ph29=0
+ph11=0
+ph12=0 2
+ph13=0 0 2 2
 ph31=0 2 2 0
 
 
@@ -214,13 +209,5 @@ ph31=0 2 2 0
 ;gpnam6: SINE.100
 
                                           ;preprocessor-flags-start
-;LABEL_CN: for 15N decoupling during indirect 13C evolution periods
-;OFFRES_PRESAT: for off-resonance presaturation, set cnst21=o1(water)
-;NOE_SAT: for water saturation during NOE mixing time
-;F2_plane: for zero 13C phase evolution in F3
-;F3_plane: for zero 13C phase evolution in F2
-;F2_SINGLEDWELL: for single-dwell first-point delay in F2
-;F3_SINGLEDWELL: for single-dwell first-point delay in F3
-;TRIMPULSE: to apply trim-pulses in second 13C HMQC element, set p28
 ;NUS: for non-uniform sampling (Topspin 3)
                                           ;preprocessor-flags-end

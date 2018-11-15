@@ -1,10 +1,11 @@
-;SOFAST-H(Z/D)QC
-;run as pseudo-3D (td1 = 2), add and subtract to obtain Z/D components
-;TODO check which is Z and D!
+;methyl-SOFAST-H(Z/D)QC
+;with multiplet filter
+;run as 2D with td = 6 * actual td
+;aqmod QF - sw WILL be correctly calculated
+;
+;Chris Waudby, 9/10/18
 ;
 ;Added option for off-resonance presat (e.g. to suppress urea signal), 21/6/15
-;
-;With option for 1D (first row)
 ;
 ;sfhmqcf3gpph
 ;avance-version (09/11/18)
@@ -34,21 +35,18 @@ prosol relations=<triple>
 "d11=30m"
 "d12=20u"
 "d13=4u"
-"d21=1s/(cnst4*2)"
+"d21=1s/(cnst2*2)"
+"d22=1s/(cnst2*8)" 
+"p4=p3*2"
+
+"in0=inf1"
+"d0=in0/2"
 
 
-"in0=inf2"
-
-# ifdef ONE_D
-"d0=0.1u"
-#else
-"d0=in0/2-p21*4/3.1415"
-# endif /*ONE_D*/
-
-
-"DELTA1=d21-p16-d16-p39*cnst39"
-"DELTA2=p39*cnst39-de-4u"
-"DELTA3=DELTA1-p40*0.5"
+"DELTA1=d21-p16-d16*2-p39*cnst39"
+"DELTA2=d21-p16-d16*2-4u-de"
+"DELTA3=d22+d16-p40*0.5"
+"DELTA4=d22-p3*1.6366"
 "acqt0=de"
 
 
@@ -59,76 +57,80 @@ prosol relations=<triple>
 # endif /*OFFRES_PRESAT*/
 
 
-"spoff23=bf1*(cnst19/1000000)-o1"
-"spoff24=bf1*(cnst19/1000000)-o1"
+;"spoff23=bf1*(cnst19/1000000)-o1"
+;"spoff24=bf1*(cnst19/1000000)-o1"
 
 
-"td1=2"
-"l0=1"
-
-aqseq 312
-
+"l0=0"
 
 
 1 ze 
-  d11 pl26:f3
-2 10m do:f3
+  d11 pl12:f2
+2 10m do:f2
 
 # ifdef OFFRES_PRESAT
-
   30u fq=cnst21(bf hz):f1
   d12 pl9:f1
   TAU cw:f1 ph29
   d13 do:f1
   d12 pl1:f1
   30u fq=0:f1
-
 # else
-
   TAU
-
 # endif /*OFFRES_PRESAT*/
 
-3 d12 pl3:f3
+3 d12 pl2:f2
   50u UNBLKGRAD
 
-  ; purge Nz
-  (p21 ph1):f3
+  ; purge Cz
+  (p3 ph1):f2
   p16:gp2
   d16
 
   ; begin main sequence
-  (p39:sp23 ph11):f1
+  (p39:sp23 ph13):f1
   p16:gp1
   d16
+  DELTA1
 
-  if "l0 %2 == 1"
+  if "l0 % 4 == 0"
      {
-  (lalign (DELTA3 p40:sp24 ph1) (DELTA1 p21 ph12 d0 p21 ph1 DELTA1):f3 )
+  (lalign (DELTA3 p40:sp24 ph1) (d16 p3 ph11 DELTA4 p4 ph1 d0 DELTA4 p3 ph12 d16):f2)
      }
-  else
+  if "l0 % 4 == 1"
      {
-  (ralign (p40:sp24 ph1 DELTA3 ) (DELTA1 p21 ph12 d0 p21 ph1 DELTA1):f3 )
+  (lalign (DELTA3 p40:sp24 ph1) (d16 p3 ph21 DELTA4 d0 p4 ph1 DELTA4 p3 ph22 d16):f2)
+     }
+  if "l0 % 4 == 2"
+     {
+  (lalign (DELTA3 d0 p40:sp24 ph1) (d16 p3 ph11 DELTA4 d0 p4 ph1 DELTA4 p3 ph12 d16):f2)
+     }
+  if "l0 % 4 == 3"
+     {
+  (lalign (DELTA3 d0 p40:sp24 ph1) (d16 p3 ph21 DELTA4 p4 ph1 d0 DELTA4 p3 ph22 d16):f2)
      }
 
   DELTA2
   p16:gp1
-  d16 pl26:f3
+  d16 pl12:f2
   4u BLKGRAD
 
-  go=2 ph31 cpd3:f3 
-  10m do:f3 mc #0 to 2 
-     F1QF(ip12)
-     F2EA(rp12 & iu0, id0)
+  go=2 ph31 cpd2:f2
+  10m do:f2 mc #0 to 2 
+     F1I(ip11*2 & ip21*2, 3, iu0, 4)
+     F1QF(id0)
 
 exit 
   
 
 ph1=0 
-ph2=0 
-ph11=0 
-ph12=0 2 
-ph31=0 2
+ph11=(6) 0 ;2 4
+ph21=(6) 3 ;5 1
+ph12=0 2
+ph22=2 0
+ph13=0 0 2 2
+ph29=0
+ph31=0 2 2 0
 
 
 ;pl3 : f3 channel - power level for pulse (default)
