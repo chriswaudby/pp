@@ -57,7 +57,7 @@ prosol relations=<triple>
 # ifdef OFFRES_PRESAT
   30u fq=cnst21(bf hz):f1
   d12 pl9:f1
-  TAU cw:f1 ph29
+  TAU cw:f1 ph1
   d13 do:f1
   d12 pl1:f1
   30u fq=0:f1
@@ -77,11 +77,13 @@ prosol relations=<triple>
   ; begin main sequence
   if "l0 %2 == 1"
      {
-  (lalign (p39:sp23 ph1) (d2 p21 ph11):f3 ) 
+  ;(lalign (p39:sp23 ph10) (d2 p21 ph11):f3 ) 
+  (p39:sp23 ph10) (d2 p21 ph11):f3
      }
   else
      {
-  (lalign (p39:sp23 ph1) (d2 p21 ph21):f3 ) 
+  ;(lalign (p39:sp23 ph10) (d2 p21 ph21):f3 ) 
+  (p39:sp23 ph10) (d2 p21 ph21):f3
      }
 
   DELTA1
@@ -96,13 +98,14 @@ prosol relations=<triple>
 
   if "l0 %2 == 1"
      {
-  (ralign (p40:sp24 ph1) (DELTA2 p21 ph13 d0 p21 ph1 d3):f3 )
+  (ralign (p40:sp24 ph16) (DELTA2 p21 ph13 d0 p21 ph1 d3):f3 )
   DELTA3
      }
   else
      {
   DELTA3
-  (lalign (p40:sp24 ph1) (d3 p21 ph23 d0 p21 ph1 DELTA2):f3 )
+  ;(lalign (p40:sp24 ph16) (d3 p21 ph23 d0 p21 ph1 DELTA2):f3 )
+  (p40:sp24 ph16) (d3 p21 ph23 d0 p21 ph1 DELTA2):f3 
      }
   4u
   p16:gp2
@@ -116,12 +119,13 @@ prosol relations=<triple>
 
   go=2 ph31 
   d11 mc #0 to 2 
-     F1EA(iu0 & ip13*2 & ip14*2, id0)
+     F1EA(iu0 & ip13*2 & ip14*2, id0 & ip10*2 & ip31*2)
 
 exit 
   
 ph1=0 
-ph11=2 0 3 1
+ph10=0
+ph11=2 0 3 1 
 ph21=2 0 1 3
 ph12=0 
 #ifdef DQ
@@ -133,7 +137,8 @@ ph13=1 3 0 2
 ph23=1 3 2 0
 ph14=1
 #endif
-ph31=0 2 3 1
+ph16=0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
+ph31=0 2 3 1 2 0 1 3
 
 ;pl3 : f3 channel - power level for pulse (default)
 ;pl26: f3 channel - power level for CPD/BB decoupling (low power)
