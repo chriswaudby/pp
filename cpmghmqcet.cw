@@ -92,12 +92,12 @@ DELTA1
   ; first spin-echo for gradient selection
   p17:gp1
   d17
-  (p4 ph1):f2
+  (p4 ph12):f2
   TAU
 
   ; t1 and central refocusing pulse
   d0
-  (p2 ph12):f1
+  (p2 ph1):f1
   d0
 
   ; second spin-echo for gradient selection
@@ -151,7 +151,7 @@ DELTA1
   ; extra spin-echo for gradient selection
   p17:gp2*EA
   d17 pl12:f2
-  (p2 ph1):f1
+  (p2 ph2):f1
   DELTA2 BLKGRAD
 
   ; acqusition
