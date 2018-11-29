@@ -12,13 +12,14 @@
 
 
 "p2=p1*2"
+"p4=p3*2"
 "d11=30m"
 "d12=20u"
 "d13=4u"
 
 "d2=1s/(cnst2*2)"
 "DELTA1=d2/32-larger(p1,p3)"
-"DELTA=DELTA*2"
+"DELTA=DELTA1*2"
 
 "in0=inf1/2"
 "d0=in0/2-p1-p3*0.6366"
@@ -129,7 +130,9 @@ DELTA1 pl12:f2
 #endif /* CPMG2 */
 
   go=2 ph31 cpd2:f2 
-  d1 do:f2 mc #0 to 2 F1PH(calph(ph13, +90), caldel(d0, +in0))
+  ;d1 do:f2 mc #0 to 2 F1PH(calph(ph13, +90), caldel(d0, +in0))
+  d1 do:f2 mc #0 to 2
+      F1PH(calph(ph13, +90), caldel(d0, +in0) & calph(ph13, +180) & calph(ph31, +180))
 exit 
   
 
