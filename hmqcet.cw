@@ -47,11 +47,11 @@ prosol relations=<triple>
   (p3 ph3):f2
   p17:gp1
   d17
-  (p4 ph2):f2
+  (p4 ph1):f2
   DELTA
 
   d0
-  (p2 ph1):f1
+  (p2 ph2):f1
   d0
 
   DELTA
