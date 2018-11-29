@@ -34,10 +34,11 @@
 
 1 ze
   d11 pl12:f2
-  d11 cpd2:f2
-2 d11
-3 d1
+  d11 
+2 d11 do:f2
+  d1
   50u UNBLKGRAD
+  50u cpd2:f2
 
   p1 ph1
 
@@ -61,7 +62,8 @@
   4u BLKGRAD
 
   go=2 ph31
-  d11 mc #0 to 2 F1EA(calgrad(EA), caldel(d0, +in0) & calph(ph1, +180) & calph(ph31, +180))
+  d11 do:f2 mc #0 to 2
+      F1EA(calgrad(EA), caldel(d0, +in0) & calph(ph1, +180) & calph(ph31, +180))
   d11 do:f2
 exit
 
