@@ -17,10 +17,10 @@ from subprocess import *
 PLOTDISPERSION = False
 
 # SETUP BITS
-analysis_script_path = '/home/nmrsu/pp_cw/od'  # path to scripts for numerical analysis in proper python
-data_directory = '/opt/topspin3.5pl2/data/jc/nmr'
-experiment_name = 'charles_ccr_750ile_180418'
-BF2 = 201.2230230  # Apr 2018 (800)
+analysis_script_path = '/home/waudbyc/pp_950/od'  # path to scripts for numerical analysis in proper python
+data_directory = '/home/waudbyc/nmr'
+experiment_name = 'charles_ccr_750ile_171218'
+BF2 = 238.9908430 
 
 
 
@@ -31,9 +31,9 @@ def split_csv(inputstring):
 
 # get experiment
 proton_template_expt = 2
-diffusion_template_expt = 0
-hsqc_template_expt = 7
-first_expt = 20
+diffusion_template_expt = 6
+hsqc_template_expt = 5
+first_expt = 10
 dlg_title = 'Adaptive methyl CCR measurement' # default title for dialogs
 result = INPUT_DIALOG(title=dlg_title,
     header='Please input the experiment name and IDs of reference experiments.',
@@ -124,6 +124,17 @@ peak_S2tc = split_csv(result[5])
 priming_times = split_csv(result[6])
 priming_phases = split_csv(result[7])
 integration_width = float(result[8])
+
+print("1H peak positions")
+print(peak_positions_1H)
+print("13C peak positions")
+print(peak_positions_13C)
+
+savevar(peak_positions_1H, "peak_positions_1H")
+savevar(peak_positions_13C, "peak_positions_13C")
+savevar(integration_width, "integration_width")
+savevar(priming_times, "priming_times")
+savevar(priming_phases, "priming_phases")
 
 # form initial parameter matrix
 theta = [peak_amplitudes,
