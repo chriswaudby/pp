@@ -24,7 +24,7 @@ prosol relations=<triple>
 
 "d0=3u"
 "DELTA1=d21/32-larger(p1,p3)"
-"DELTA=DELTA*2"
+"DELTA=DELTA1*2"
 
 "DELTA2=p17+d17-p1*0.6366"
 "TAU=p3*0.6366+p17+d17-p1-d0"
@@ -92,12 +92,12 @@ DELTA1
   ; first spin-echo for gradient selection
   p17:gp1
   d17
-  (p4 ph12):f2
+  (p4 ph1):f2
   TAU
 
   ; t1 and central refocusing pulse
   d0
-  (p2 ph1):f1
+  (p2 ph12):f1
   d0
 
   ; second spin-echo for gradient selection
