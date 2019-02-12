@@ -14,7 +14,7 @@ gH = 2.675e8
 gC = 6.726e7
 rCH = 1.117e-10 # Tugarinov 2004
 rHH = np.sqrt(3) * rCH * np.sin(110.4*np.pi/180) # Tugarinov 2004
-wC = 2*np.pi * gC/gH * 800e6   # 700 MHz
+wC = 2*np.pi * gC/gH * 950e6   # 700 MHz
 P2cosb = -1./3.  # for 109 degree tetrahedral geometry
 carbon_csa = 18e-6   # 18 ppm for Ile, 25 ppm for Leu/Val
 

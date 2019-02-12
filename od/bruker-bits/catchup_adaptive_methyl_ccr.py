@@ -21,10 +21,10 @@ from subprocess import *
 PLOTDISPERSION = False
 
 # SETUP BITS
-analysis_script_path = '/home/nmrsu/pp_cw/od'  # path to scripts for numerical analysis in proper python
-data_directory = '/opt/topspin3.5pl2/data/jc/nmr'
-experiment_name = 'charles_ccr_750ile_180418'
-BF2 = 201.2230230  # Apr 2018 (800)
+analysis_script_path = '/home/waudbyc/pp_950/od'  # path to scripts for numerical analysis in proper python
+data_directory = '/home/waudbyc/nmr'
+experiment_name = 'charles_ccr_750ile_171218'
+BF2 = 238.9908430 
 
 
 
@@ -35,9 +35,9 @@ def split_csv(inputstring):
 
 # get experiment
 proton_template_expt = 2
-diffusion_template_expt = 0
-hsqc_template_expt = 7
-first_expt = 20
+diffusion_template_expt = 6
+hsqc_template_expt = 5
+first_expt = 10
 dlg_title = 'Adaptive methyl CCR measurement' # default title for dialogs
 result = INPUT_DIALOG(title=dlg_title,
     header='Please input the experiment name and IDs of reference experiments.',

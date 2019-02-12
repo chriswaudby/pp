@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-##!/home/waudbyc/anaconda3/bin/python
+#!/home/waudbyc/anaconda3/bin/python
+##!/usr/bin/env python
 """Extract and analyse the final results of a methyl CCR measurement.
 
 The working directory should be specified as a command line argument. This
@@ -66,11 +66,11 @@ N_expts = len(taus)
 if N_expts > N_expts_max: N_expts = N_expts_max
 N_spins = len(omega)
 
-#utils.pprint_array(omega, label='omega')
-#utils.pprint_array(yobs, label='integrals')
-#utils.pprint_array(taus, label='taus')
-#utils.pprint_array(phases, label='phases')
-#utils.pprint_array(theta_0, 'theta0')
+utils.pprint_array(omega, label='omega')
+utils.pprint_array(yobs, label='integrals')
+utils.pprint_array(taus, label='taus')
+utils.pprint_array(phases, label='phases')
+utils.pprint_array(theta_0, 'theta0')
 
 
 # calculate running estimates of parameters
@@ -115,7 +115,7 @@ for i in range(N_spins):
     plt.plot(np.arange(N_expts), S2tc[:,i], 'r-')
     plt.xlabel('Iteration number')
     #plt.ylabel('S2tc estimate / ns')
-    plt.ylim(ymin=0,ymax=80)
+    plt.ylim()
     #plt.title('spin {:g}'.format(i+1))
 plt.savefig('parameter_evolution.pdf')
 plt.show()
