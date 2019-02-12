@@ -1,4 +1,5 @@
 ;hsqcrexetf3gpsi3d.cw
+;modifications for topspin 3.5pl7 (hopefully!)
 ;15N CW-CPMG HSQC
 ;avance-version (10/01/20)
 ;3D H-1/X correlation via double inept transfer
@@ -43,7 +44,7 @@
 ;
 ;----------------------------------------------------------
 
-prosol relations=<triple2>
+;prosol relations=<triple>
 
 
 #include <Avance.incl>
@@ -75,7 +76,7 @@ define loopcounter COUNTER2
 
 
 "d31=0"  ; Feb 2014
-"l11=0"  ; Feb 2014
+"l11=0"  ; Feb 2014, loopcounter for cpmg
 
 
 #   ifdef LABEL_CN
@@ -103,28 +104,29 @@ aqseq 312
 
 
 1 ze
+  10m st0 ; interleaving
   d11
 
-  if "d1 < 1.5s"
-    {
-    d11
-    print "error: recycle delay too short, d1 must be >= 2.5 s, aborting..."
-    goto stop
-    }
- 
-  if "d21 > 20m"
-    {
-    d11
-    print "error: CPMG train too long, d21 must be <= 20 ms, aborting..."
-    goto stop
-    }
- 
-  if "p25 < 90u"
-    {
-    d11
-    print "error: CPMG 180deg pulse too short, p25 must be >= 90 us, aborting..."
-    goto stop
-    }
+;  if "d1 < 1.5s"
+;    {
+;    d11
+;    print "error: recycle delay too short, d1 must be >= 1.5 s, aborting..."
+;    goto stop
+;    }
+; 
+;  if "d21 > 20m"
+;    {
+;    d11
+;    print "error: CPMG train too long, d21 must be <= 20 ms, aborting..."
+;    goto stop
+;    }
+; 
+;  if "p25 < 90u"
+;    {
+;    d11
+;    print "error: CPMG 180deg pulse too short, p25 must be >= 90 us, aborting..."
+;    goto stop
+;    }
 
   ;if "DELTA9 < 2*p25"
   ; {
@@ -142,42 +144,44 @@ aqseq 312
 
   20u   ; Feb 2014
   "d31=vd_list[l11]"   ; Feb 2014
+  10u
   "rflist.idx = l11"
   ; d31 replaces vd
-  20u   ; Feb 2014
+  10u   ; Feb 2014
 
-  if "d31 > 1000"
-    {
-    d11
-    print "error: CPMG frequency too high, vd must be <= 1000 Hz, aborting..."
-    goto stop
-    }
+;  if "d31 > 1000"
+;    {
+;    d11
+;    print "error: CPMG frequency too high, vd must be <= 1000 Hz, aborting..."
+;    goto stop
+;    }
 
-  if "d31 == 0"
-     {
-     20u
-     "DELTA3=(1 / (1000*4) ) - p25/2000000"	;1000 = max. B1-field as defined in VDLIST
-     20u
-     "COUNTER=d21*1000*2 + 0.5"
-     }
-  else
-     {
-     20u
-     "DELTA3=(1 / (d31*4) ) - p25/2000000"
-     20u
-     "COUNTER=d21*d31*2 + 0.5"
-     }
+if "l11==0" goto 71
+; this branch - l11 > 0 - not reference plane
+  20u
+  "DELTA3=(1 / (d31*4) ) - p25/2000000"
+  20u
+  "COUNTER=d21*d31*2 + 0.5"
+  20u
+  goto 72
+; this branch - l11 = 0 - reference plane
+  20u
+  "DELTA3=(1 / (1000*4) ) - p25/2000000"	;1000 = max. B1-field as defined in VDLIST
+  20u
+  "COUNTER=d21*1000*2 + 0.5"
+  20u
+72 10u
 
-  if "DELTA3 < 2*p25/1000000"
-    {
-    d11
-    print "error: CPMG duty cycle too high, aborting..."
-    goto stop
-    }
+;  if "DELTA3 < 2*p25/1000000"
+;    {
+;    d11
+;    print "error: CPMG duty cycle too high, aborting..."
+;    goto stop
+;    }
 
 
-  if "d31 == 0"
-     {
+  if "l11 > 0" goto 73
+     ; reference plane - temperature compensation
      (p11:sp1 ph2:r):f1  ; H2O flip-down
      2u fq=cnst19(bf ppm):f1  ; 1H on amides
      2u pl33:f1 pl23:f3
@@ -185,11 +189,7 @@ aqseq 312
      2u do:f1
      2u fq=cnst18(bf ppm):f1  ; 1H on H2O
      (p11:sp1 ph4:r):f1  ; H2O flip-up
-     }
-  else
-     {
-     8u
-     }
+73   8u
 
 
   ; recycle delay
@@ -198,23 +198,12 @@ aqseq 312
 
   ; 15N compensation
   ; initial delay to keep d1 constant:
-  if "d31 == 0"
-    {
-    4u
-    }
-  else
-    {
+  if "l11==0" goto 74
 9   1000u  ; 2*(DELTA3+p25+DELTA3)
     lo to 9 times COUNTER
-    4u
-    }
-  ; now the 15N compensation pulses
-  if "d31 == 1000"
-    {
-    36u
-    }
-  else
-    {
+74  4u
+  ; now the 15N compensation pulses (unless d31 is at max 1000 Hz frequency)
+  if "d31 == 1000" goto 75
      ; keep total number of pulses constant throughout experiment
      ; (pulses applied at maximum frequency)
      20u
@@ -230,8 +219,7 @@ aqseq 312
 
      4u fq=cnst16(bf ppm):f3  ; 15N on-resonance
      4u ;rpp20
-    }
-
+75  10u
 
   ; crush Boltzmann Nz
   50u UNBLKGRAD
@@ -280,42 +268,30 @@ aqseq 312
 
   2u rflist:f1 ; Feb 2014
 
-  if "d31 == 0"
-     {
-     4u
-     }
-  else
-     {
-     4u
+  if "l11 == 0" goto 76
      2u cpd1:f1 ph1
 6    DELTA3
      (p25 ph2):f3
      DELTA3 ;ipp20
      lo to 6 times COUNTER
      2u do:f1
-     }
+76  4u
 
   2u pl33:f1 
    (center (p45 ph1) (p25 ph7):f3 )
   2u rflist:f1  ; Feb 2014
   
-  if "d31 == 0"
-     {
-     4u
-     }
-  else
-     {
+  if "l11 == 0" goto 77
      2u cpd1:f1 ph1
 7    DELTA3
      (p25 ph2):f3
      DELTA3 ;ipp21
      lo to 7 times COUNTER
-     4u
      2u do:f1
-     }
+77   4u
   
   2u pl1:f1 
- (p24 ph1):f3
+  (p24 ph1):f3
   (p2 ph8)
   DELTA4 pl3:f3 ;rpp20  ; zeta (back to high power on 15N)
   (p1 ph1)
