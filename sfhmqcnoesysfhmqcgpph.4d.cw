@@ -1,8 +1,7 @@
 ;4D HCCH SFHMQC-NOESY-SFHMQC
 ;for methyl-methyl NOES
 ;Option for NUS using Topspin 3
-;Derived from hmqcnoesyhmqcccgpphpr.jk
-;Chris W, July 2018
+;Chris Waudby, July 2018
 
 ;F1(H) -> F2(C[mq],t1) ---NOE--> F1(H) -> F2(C[mq],t2) -> F1(H,t3)
 ;
@@ -123,7 +122,7 @@
   4u BLKGRAD
   go=2 ph31 cpd2:f2
 
-#ifndef NUWS
+#ifndef NUS
   d11 do:f2 mc #0 to 2
     F3PH(ip13, id30)
 	  F2PH(rp13 & rd30 & ip12, id10)
@@ -160,6 +159,14 @@ ph31=0 2 2 0
 ;p19: second gradient pulse                          [250 usec]
 ;p22: f3 channel - 180 degree high power pulse
 ;p28: f1 channel - trim pulse                        [1 msec]
+;p39: f1 channel - 120 degree shaped pulse for excitation
+;                      Pc9_4_120.1000 (120o)
+;p40: f1 channel - 180 degree shaped pulse for refocussing
+;                      Rsnob.1000  /  Reburp
+;p41: f1 channel - 90 degree shaped pulse for excitation
+;                      Pc9_4_90.1000 
+;cnst39: compensation of chemical shift evolution during p39
+;           Pc9_4_120.1000: 0.529
 ;d0 : incremented delay (4D)
 ;d10: incremented delay (4D)
 ;d20: decremented delay (4D)
