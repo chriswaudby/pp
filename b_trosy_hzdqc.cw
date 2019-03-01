@@ -37,14 +37,16 @@ prosol relations=<triple>
 
 
 # ifdef OFFRES_PRESAT
-  "TAU=d1-d11-60u-d12*2-d13-d12-50u-p21-p16-d16-4u"
+  "TAU=d1-d11-60u-d12*2-d13-d12-50u-p21-2*p16-2*d16-12u"
 # else
-  "TAU=d1-d11-d12-50u-p21-p16-d16-4u"
+  "TAU=d1-d11-d12-50u-p21-2*p16-2*d16-12u"
 # endif /*OFFRES_PRESAT*/
 
 
-"spoff23=bf1*(cnst19/1000000)-o1"
-"spoff24=bf1*(cnst19/1000000)-o1"
+;"spoff23=bf1*(cnst19/1000000)-o1"
+;"spoff24=bf1*(cnst19/1000000)-o1"
+"spoff23=0" ; for amides on-resonance (recommended)
+"spoff24=0"
 
 
 "l0=1"  ; loop counter for shifting 1H 180 pulse between echo/anti-echoes
@@ -53,6 +55,11 @@ prosol relations=<triple>
 1 ze 
   d11 
 2 d11 
+
+  4u UNBLKGRAD
+  p16:gp3
+  d16
+  4u BLKGRAD
 
 # ifdef OFFRES_PRESAT
   30u fq=cnst21(bf hz):f1
@@ -180,11 +187,13 @@ ph31=0 2 3 1 2 0 1 3
 ;gpz0: -16%
 ;gpz1: 11%
 ;gpz2:  7%
+;gpz3: -23%
 
 ;use gradient files:   
 ;gpnam0: SMSQ10.100
 ;gpnam1: SMSQ10.100
 ;gpnam2: SMSQ10.100
+;gpnam3: SMSQ10.100
 
 
 
