@@ -70,7 +70,7 @@ define list<gradient> EA7 = { 1.0000 0.6595 }
 
 "d0=3u"
 
-"in0=inf1/2"
+"in0=inf2/2"
 
 
 "DELTA1=d26-p29-d16-larger(p56,p42)/2-p41*cnst41"
