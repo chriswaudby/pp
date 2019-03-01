@@ -35,6 +35,12 @@ prosol relations=<triple>
 "DELTA4=d21-0.5*p40-p16-d16-4u-p21-de"
 "acqt0=de"
 
+#ifdef LABEL_CN
+"d10=DELTA3+d3+p21+d0*0.5-p8*0.5"
+"d9=DELTA3+d3+p21+d0*0.5-p8*0.5"
+"in10=in0*0.5"
+"in9=in0*0.5"
+#endif
 
 # ifdef OFFRES_PRESAT
   "TAU=d1-d11-60u-d12*2-d13-d12-50u-p21-2*p16-2*d16-12u"
@@ -105,14 +111,21 @@ prosol relations=<triple>
 
   if "l0 %2 == 1"
      {
+#ifdef LABEL_CN
+  (ralign (p40:sp24 ph16 DELTA3) (DELTA2 p21 ph13 d0 p21 ph1 d3 DELTA3):f3 (p8:sp13 ph1 d10):f2 )
+#else
   (ralign (p40:sp24 ph16) (DELTA2 p21 ph13 d0 p21 ph1 d3):f3 )
   DELTA3
+#endif /*LABEL_CN*/
      }
   else
      {
+#ifdef LABEL_CN
+  (DELTA3 p40:sp24 ph16) (DELTA3 d3 p21 ph23 d0 p21 ph1 DELTA2):f3 (d9 p8:sp13 ph1):f2
+#else
   DELTA3
-  ;(lalign (p40:sp24 ph16) (d3 p21 ph23 d0 p21 ph1 DELTA2):f3 )
   (p40:sp24 ph16) (d3 p21 ph23 d0 p21 ph1 DELTA2):f3 
+#endif /*LABEL_CN*/
      }
   4u
   p16:gp2
@@ -125,8 +138,13 @@ prosol relations=<triple>
   (p21 ph14):f3
 
   go=2 ph31 
+#ifdef LABEL_CN
+  d11 mc #0 to 2 
+     F1EA(iu0 & ip13*2 & ip14*2, id0 & id10 & id9 & ip10*2 & ip31*2)
+#else
   d11 mc #0 to 2 
      F1EA(iu0 & ip13*2 & ip14*2, id0 & ip10*2 & ip31*2)
+#endif /*LABEL_CN*/
 
 exit 
   
