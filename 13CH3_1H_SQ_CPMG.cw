@@ -216,13 +216,13 @@ if "time_T2 > 40.1m" {
     print "error: ncyc_max too large; < 80 !!!"
     goto HaltAcqu
   }
-  if "DELTA8 > 10m" {
+  if "DELTA8 > 11m" {
     2u
     print "error: CPMG pulse duration too long; < 10ms !!!"
     goto HaltAcqu
   }
 #endif
-if "cnst21 > 2.0" {
+if "cnst21 > 6.0" {
   2u
   print "error: dpwr pl21 too large; < 2.0W !!!"
   goto HaltAcqu
@@ -267,11 +267,11 @@ if "l2 > 80" {
 }
 if "l2 > 0" {
   "tauCPMG = (time_T2*0.25)/l2"
-  #ifdef no_compensate
+#ifdef no_compensate
   "tauCPMG1 = tauCPMG - pwh_cp*cnst51"
-  #else
+#else
   "tauCPMG1 = tauCPMG - (DELTA8*0.25 + 0.2u*l3)/l2"
-  #endif
+#endif
 }
 else {
   "tauCPMG = time_T2*0.25"
