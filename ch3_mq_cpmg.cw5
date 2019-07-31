@@ -47,7 +47,15 @@ aqseq 312
   10m st0
 2 2u do:f2
 3 2u do:f2
-4 d1 do:f2
+4 d11 do:f2
+# ifdef OFFRES_PRESAT
+    30u fq=cnst21(bf hz):f1
+# endif /*OFFRES_PRESAT*/
+
+  20u pl9:f1
+  d1 cw:f1 ph29
+  20u do:f1
+
 
 if "ncyc==0" goto 71
   4u
@@ -76,12 +84,14 @@ if "ncyc==0" goto 71
 
   1m UNBLKGRAD
   10u pl8:f2
+#ifdef FLIPBACKS
   10u pl0:f1
   (p2:sp2 ph0:r):f1    ; SOLVENT SUPPRESSION FLIP-BACKS
   2u pl0:f1
   (p8 ph0):f2
   2u
   p20:gp0
+#endif
   2.0m pl1:f1
   
 
@@ -162,7 +172,7 @@ lo to 20 times COUNTER
    lo to 3 times ns  ; CPMG innermost loop, then ns
 
 ;   1m BLKGRAD
-   d1 mc #0 to 4
+   d11 mc #0 to 4
       F1QF()
       F2PH(calph(ph4, +90) & exec(rppall), caldel(d0,+in0))
 
@@ -176,6 +186,7 @@ ph3=0 0 0 0 1 1 1 1
 ph4=0
 ph5=1
 ph7=1
+ph29=0
 ph31=0 2 0 2 2 0 2 0
 
 
