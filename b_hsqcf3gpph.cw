@@ -50,6 +50,8 @@ prosol relations=<triple>
 "spoff27=bf1*(cnst19/1000000)-o1"
 "d42=p42"
 
+"acqt0=de"
+
 
 1 ze
   d11 pl26:f3 pl0:f1
