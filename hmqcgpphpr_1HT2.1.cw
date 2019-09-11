@@ -71,6 +71,8 @@ define delay vdmin
 "DELTA1=d2-p16-d16"
 "DELTA2=d2-p16-d16-d12-4u-de+0.6366*p1"
 "acqt0=de"
+aqseq 312
+baseopt_echo
 
 1 ze 
   vdmin
