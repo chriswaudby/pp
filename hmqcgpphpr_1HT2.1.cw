@@ -40,7 +40,7 @@
 "d12=20u"
 "d13=4u"
 
-"in0=inf1/2"
+"in0=inf2/2"
 
 # ifndef ONE_D
 
