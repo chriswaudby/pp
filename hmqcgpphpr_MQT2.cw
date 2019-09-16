@@ -47,12 +47,12 @@ define delay vdMin
 
 "DELTA1=d2-0.6366*p1-p3"
 "DELTA2=d2-d12-4u"
-"XI1=d2/4-p17-d17-larger(p2,p4)"
-"XI2=d2/4-p17-d17-p3-larger(p2,p4)"
+"XI1=d2/4-p17-d17-larger(p1,p3)"
+"XI2=d2/4-p17-d17-p3-larger(p1,p3)"
 "vdMin=4*p19+4*d17+4*p3"
 
-"in0=inf2"
-"d0=in0/2"
+"in0=inf2/2"
+"d0=in0/2-p1"
 
 "acqt0=0"
 baseopt_echo
@@ -73,8 +73,8 @@ aqseq 312
   ; recycle delay - calculate new delays for relaxation in this time
   d12 pl9:f1
   d1 cw:f1 ph29
-  "d20=vd-p3-p19-d17"
-  "d21=vd-p3"
+  "d20=vd/4-p3-p19-d17"
+  "d21=vd/4-p3"
   d13 do:f1
   d12 pl1:f1 pl2:f2
   30u fq=0:f1
@@ -95,26 +95,29 @@ aqseq 312
   (p3 ph11):f2
 
   ;begin purge element
-  ;"XI1=d2/4-p17-d17-larger(p2,p4)"
+  ;"XI1=d2/4-p17-d17-larger(p1,p3)
   XI1
   p17:gp1
   d17
   (center (p2 ph1):f1 (p4 ph1):f2 )
   p17:gp1
   d17
-  ;"XI2=d2/4-p17-d17-p3-larger(p2,p4)"
+  ;"XI2=d2/4-p17-d17-p3-larger(p1,p3)"
   XI2
   (p3 ph12):f2
 
   ;begin relaxation/t1 evolution
-  ;"d20=vd-p3-p19-d17"
+  ;"d20=vd/4-p3-p19-d17"
   d20
   p19:gp2
   d17
   (p4 ph1):f2
-  ;"d21=vd-p3"
+  ;"d21=vd/4-p3"
   d21
-  (center (p2 ph1):f1 (d0):f2 )
+  ;(center (p2 ph1):f1 (d0):f2 )
+  d0
+  (p2 ph1):f1
+  d0
   d20
   p19:gp2
   d17
@@ -141,6 +144,7 @@ ph11=0 2
 ph12=1 1 3 3
 ph13=0 0 0 0 2 2 2 2
 ph14=0
+ph29=0
 ph31=0 2
 
 ;pl1 : f1 channel - power level for pulse (default)
