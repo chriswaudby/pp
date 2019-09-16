@@ -1,7 +1,8 @@
 ;BEST-TROSY-H(Z/D)QC
-;Chris Waudby, June 2018
+;  Waudby, Ouvry, Davis & Christodoulou (submitted, 2019)
 ;
 ;options:
+; -DLABEL_CN = 13C decoupling
 ; -DDQ = HDQC (otherwise runs HZQC)
 ; -DONE_D = first-row
 ; -DOFFRES_PRESAT = presat, pl9 on cnst21 (Hz bf)
@@ -11,7 +12,6 @@ prosol relations=<triple>
 #include <Avance.incl>
 #include <Grad.incl>
 #include <Delay.incl>
-
 
 "d11=30m"
 "d12=20u"
@@ -54,9 +54,7 @@ prosol relations=<triple>
 "spoff23=0" ; for amides on-resonance (recommended)
 "spoff24=0"
 
-
 "l0=1"  ; loop counter for shifting 1H 180 pulse between echo/anti-echoes
-
 
 1 ze 
   d11 
@@ -90,12 +88,10 @@ prosol relations=<triple>
   ; begin main sequence
   if "l0 %2 == 1"
      {
-  ;(lalign (p39:sp23 ph10) (d2 p21 ph11):f3 ) 
   (p39:sp23 ph10) (d2 p21 ph11):f3
      }
   else
      {
-  ;(lalign (p39:sp23 ph10) (d2 p21 ph21):f3 ) 
   (p39:sp23 ph10) (d2 p21 ph21):f3
      }
 
@@ -107,7 +103,6 @@ prosol relations=<triple>
   4u
   p16:gp1
   d16
-
 
   if "l0 %2 == 1"
      {
@@ -166,17 +161,16 @@ ph16=0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
 ph31=0 2 3 1 2 0 1 3
 
 ;pl3 : f3 channel - power level for pulse (default)
+;pl9 : f1 channel - power level for presaturation
 ;pl26: f3 channel - power level for CPD/BB decoupling (low power)
-;sp23: f1 channel - shaped pulse 120 degree 
-;                   (Pc9_4_120.1000 or Q5.1000)
-;sp24: f1 channel - shaped pulse 180 degree (Rsnob.1000)
+;sp23: f1 channel - shaped pulse 90 degree (Pc9_4_90.1000)
+;sp24: f1 channel - shaped pulse 180 degree (Reburp.1000)
 ;p16: homospoil/gradient pulse                       [1 msec]
 ;p21: f3 channel -  90 degree high power pulse
-;p39: f1 channel - 120 degree shaped pulse for excitation
-;                      Pc9_4_120.1000 (120o)    (3.0ms at 600.13 MHz)
-;                  (or Q5.1000 (90o)            (2.0ms at 600.13 MHz) )
+;p39: f1 channel - 90 degree shaped pulse for excitation
+;                      Pc9_4_120.1000 (120o)    (1958us at 950 MHz)
 ;p40: f1 channel - 180 degree shaped pulse for refocussing
-;                      Rsnob.1000               (1.0ms at 600.13 MHz)
+;                      Reburp.1000              (1432us at 950 MHz)
 ;d0 : incremented delay (2D) = in0/2-p21*4/3.1415
 ;d1 : relaxation delay
 ;d11: delay for disk I/O                             [30 msec]
@@ -184,22 +178,17 @@ ph31=0 2 3 1 2 0 1 3
 ;d16: delay for homospoil/gradient recovery
 ;d21 : 1/(4J)NH
 ;cnst4: = J(NH)
-;cnst19: H(N) chemical shift (offset, in ppm)
+;cnst19: H(N) chemical shift (offset, in ppm)  [8.2 ppm]
+;cnst21: frequency (in Hz) for off-resonance presaturation
 ;cnst39: compensation of chemical shift evolution during p39
 ;           Pc9_4_90.1000: 0.514
-;           Pc9_4_120.1000: 0.529
-;inf1: 1/SW(N) = 2 * DW(N)
-;in0: 1/ SW(N) = 2 * DW(N)
-;nd0: 1
 ;NS: 4 * n
 ;DS: 16
 ;td1: number of experiments
 ;FnMODE: Echo-AntiEcho
 
-
 ;use gradient ratio:	gp 0 : gp 1 : gp 2
 ;			-16 :  11 :    7
-
 
 ;for z-only gradients:
 ;gpz0: -16%
@@ -213,11 +202,7 @@ ph31=0 2 3 1 2 0 1 3
 ;gpnam2: SMSQ10.100
 ;gpnam3: SMSQ10.100
 
-
-
-
 ;Processing
-
 ;PHC0(F1): 90
 ;PHC1(F1): -180
 ;FCOR(F1): 1
