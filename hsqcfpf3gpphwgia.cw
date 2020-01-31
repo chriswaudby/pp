@@ -105,7 +105,7 @@ prosol relations=<triple>
   d16
   (p1 ph2) 
 
-  4u pl0:f1
+  4u ;pl0:f1
   (p11:sp11 ph8:r):f1	; flipback(-x), -y -> +z
   4u
   p16:gp3
@@ -203,7 +203,7 @@ prosol relations=<triple>
 
   4u
   p16:gp6
-  d16 pl0:f1
+  d16 ;pl0:f1
   (p11:sp1 ph7:r):f1	; flipdown(-x), z -> y
   4u
   4u pl1:f1
@@ -212,12 +212,12 @@ prosol relations=<triple>
   4u
   p19:gp7
   d16
-  DELTA2 pl0:f1
+  DELTA2 ;pl0:f1
   (p11:sp1 ph7:r):f1	; flipdown(-x), z -> y
   4u
   4u pl1:f1
   (center (p2 ph1) (p22 ph1):f3 )
-  4u pl0:f1
+  4u ;pl0:f1
   (p11:sp11 ph9:r):f1	; flipback(-x), -y -> z
   4u
   p19:gp7
