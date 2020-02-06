@@ -47,6 +47,8 @@ prosol relations=<triple>
 "spoff30=0.0" /*  BIP offset */
 "spw30=plw1"  /* BIP power level  */
 
+"p25=pcpd1"
+
 /*******************************************************************/
 /*   calculation of shaped 13C pulse parameters                    */
 /*******************************************************************/
@@ -221,8 +223,10 @@ baseopt_echo
 /* CA->CO transfer                                                 */
 /*******************************************************************/
  50u fq=cnst22(bf ppm):f2   /* 13C carrier at CA  */
+ 10u fq=cnst20(bf hz):f1 /* 1H carrier on water */
   d12 pl19:f1
-  d12 cpds1:f1 ph1
+  p25 ph1 
+  d12 cpds1:f1 ph2
 
 if "l0 ==1"   /* selective CA->CO transfer   */
 {
@@ -262,7 +266,8 @@ else   /* non-selective CA-CO transfer   */
   (p13:sp8 ph1):f2
 
   4u do:f1
-
+  p25 ph20  /* -x */
+  10u fq=0:f1 /* 1H carrier back to default */
 /*******************************************************************/
 /* N->CO transfer  & semi-CT 15N editing                           */
 /*******************************************************************/
@@ -333,8 +338,9 @@ ph9=2
 ph10=0 0 0 0 2 2 2 2
 ph11=0
 ph12=0 2
-ph14=0 0 2 2
 ph13=1
+ph14=0 0 2 2
+ph20=2
 ph23=0
 ph25=2
 ph31=0 2 2 0 2 0 0 2
@@ -380,6 +386,7 @@ ph31=0 2 2 0 2 0 0 2
 ;cnst2: H(N) excitation band width (in ppm)
 ;cnst9: Ser/Thr CB chemical shift (offset, in ppm) [72 ppm]
 ;cnst11: 15N decoupling bandwidth in detection [40 ppm]
+;cnst20: water frequency (Hz)
 ;cnst21: CO chemical shift (offset, in ppm) [180]
 ;cnst22: Calpha chemical shift (offset, in ppm) [54]
 ;cnst23: Caliphatic chemical shift (offset, in ppm) [39]
