@@ -1,5 +1,5 @@
 ;SOFAST-H(Z/D)QC
-;  Waudby, Ouvry, Davis & Christodoulou (submitted, 2019)
+;  Waudby, Ouvry, Davis & Christodoulou (J Biomol NMR, in press)
 ;  for simultaneous collection of SOFAST-HZQC and SOFAST-HDQC spectra
 ;
 ;run as pseudo-3D (td1 = 2)
@@ -107,9 +107,9 @@ ph31=0 2
 ;p16: homospoil/gradient pulse                       [1 msec]
 ;p21: f3 channel -  90 degree high power pulse
 ;p39: f1 channel - 120 degree shaped pulse for excitation
-;                      Pc9_4_120.1000 (120o)    (2657us at 700 MHz)
+;                      Pc9_4_120.1000 (120o)    (2325 us at 800 MHz)
 ;p40: f1 channel - 180 degree shaped pulse for refocussing
-;                      Reburp.1000              (1935us at 700 MHz)
+;                      Reburp.1000              (1700 us at 800  MHz)
 ;d0 : incremented delay (2D) = in0/2-p21*4/3.1415
 ;d1 : relaxation delay
 ;d11: delay for disk I/O                             [30 msec]

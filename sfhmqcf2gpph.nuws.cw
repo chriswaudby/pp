@@ -108,27 +108,23 @@ ph31=0 2 2 0 2 0 0 2
 
 ;pl2 : f2 channel - power level for pulse (default)
 ;pl12: f2 channel - power level for CPD/BB decoupling (low power)
-;sp23: f1 channel - shaped pulse 120 degree
-;                   (Pc9_4_120.1000 or Q5.1000)
-;sp24: f1 channel - shaped pulse 180 degree (Rsnob.1000)
+;sp23: f1 channel - shaped pulse 120 degree (Pc9_4_120.1000)
+;sp24: f1 channel - shaped pulse 180 degree (Reburp.1000)
 ;p16: homospoil/gradient pulse                       [1 msec]
 ;p3:  f2 channel -  90 degree high power pulse
 ;p39: f1 channel - 120 degree shaped pulse for excitation
-;                      Pc9_4_120.1000 (120o)    (3.0ms at 600.13 MHz)
-;                  (or Q5.1000 (90o)            (2.0ms at 600.13 MHz) )
+;                      Pc9_4_120.1000 (120o)
 ;p40: f1 channel - 180 degree shaped pulse for refocussing
-;                      Rsnob.1000               (1.0ms at 600.13 MHz)
+;                      Reburp.1000
 ;d0 : incremented delay (2D) = in0/2-p3*4/3.1415
 ;d1 : relaxation delay
 ;d11: delay for disk I/O                             [30 msec]
 ;d12: delay for power switching                      [20 usec]
 ;d16: delay for homospoil/gradient recovery
-;d21 : 1/(2J)NH
 ;cnst2: = J(CH) [125 Hz for methyls]
-;cnst19: H(N) chemical shift (offset, in ppm)
+;cnst19: H(met) chemical shift (offset, in ppm)
 ;cnst39: compensation of chemical shift evolution during p39
 ;           Pc9_4_120.1000: 0.529
-;           Q5.1000: -0.07
 ;inf1: 1/SW(C) = 2 * DW(C)
 ;in0: 1/ SW(C) = 2 * DW(C)
 ;nd0: 1

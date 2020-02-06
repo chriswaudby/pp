@@ -123,17 +123,15 @@ ph31=0 2 2 0
 ;pl3 : f3 channel - power level for pulse (default)
 ;pl26: f3 channel - power level for CPD/BB decoupling (low power)
 ;sp13: f2 channel - shaped pulse 180 degree (adiabatic)
-;sp23: f1 channel - shaped pulse 120 degree 
-;                   (Pc9_4_120.1000 or Q5.1000)
-;sp24: f1 channel - shaped pulse 180 degree (Rsnob.1000)
+;sp23: f1 channel - shaped pulse 120 degree (Pc9_4_120.1000)
+;sp24: f1 channel - shaped pulse 180 degree (Reburp.1000)
 ;p8 : f2 channel - 180 degree shaped pulse for inversion (adiabatic)
 ;p16: homospoil/gradient pulse                       [1 msec]
 ;p21: f3 channel -  90 degree high power pulse
 ;p39: f1 channel - 120 degree shaped pulse for excitation
-;                      Pc9_4_120.1000 (120o)    (3.0ms at 600.13 MHz)
-;                  (or Q5.1000 (90o)            (2.0ms at 600.13 MHz) )
+;                      Pc9_4_120.1000 (120o)    (2325 us at 800 MHz)
 ;p40: f1 channel - 180 degree shaped pulse for refocussing
-;                      Rsnob.1000               (1.0ms at 600.13 MHz)
+;                      Reburp.1000              (1700 us at 800  MHz)
 ;d0 : incremented delay (2D) = in0/2-p21*4/3.1415
 ;d1 : relaxation delay
 ;d11: delay for disk I/O                             [30 msec]
@@ -141,10 +139,9 @@ ph31=0 2 2 0
 ;d16: delay for homospoil/gradient recovery
 ;d21 : 1/(2J)NH
 ;cnst4: = J(NH)
-;cnst19: H(N) chemical shift (offset, in ppm)
+;cnst19: H(N) chemical shift (offset, in ppm)  [8.2 ppm]
 ;cnst39: compensation of chemical shift evolution during p39
 ;           Pc9_4_120.1000: 0.529
-;           Q5.1000: -0.07
 ;inf1: 1/SW(N) = 2 * DW(N)
 ;in0: 1/ SW(N) = 2 * DW(N)
 ;nd0: 1
@@ -185,4 +182,3 @@ ph31=0 2 2 0
 
 
 
-;$Id: sfhmqcf3gpph,v 1.1.2.8 2009/11/18 11:19:58 ber Exp $
