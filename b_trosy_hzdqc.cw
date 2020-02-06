@@ -1,5 +1,5 @@
 ;BEST-TROSY-H(Z/D)QC
-;  Waudby, Ouvry, Davis & Christodoulou (submitted, 2019)
+;  Waudby, Ouvry, Davis & Christodoulou (J Biomol NMR, in press)
 ;
 ;options:
 ; -DLABEL_CN = 13C decoupling
