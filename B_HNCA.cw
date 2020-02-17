@@ -205,6 +205,8 @@ aqseq 312
 /************************************************/
 /*  13CA editing                               **/
 /************************************************/
+; total transverse time for evolution of 1JCC
+; larger(p44,p14,p50)*2 + p14 + 20u [+ p13]?
   (p13:sp2 ph14):f2   /* CA 90deg Exc  */
   d0
   (center (p44:sp30 ph1):f1 (p14:sp7 ph1):f2 (p50:sp50 ph1):f3 )   /* H, CO ,N 180deg  */
