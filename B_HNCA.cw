@@ -315,11 +315,9 @@ aqseq 312
   goto 2  ; repeat following ds (without counting it as part of vclist)
 10 4u
   ; repeat acquisition block according to schedule in vclist
-  lo to 2 times c
+  lo to 2 times nuwslist
 #endif /* NUWS */
 
-
-  3m ivc
 
 
   d11 do:f3 mc #0 to 2 
