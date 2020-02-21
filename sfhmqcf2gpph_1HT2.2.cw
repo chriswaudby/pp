@@ -25,7 +25,7 @@ define delay XI2
 "XI2=d2*0.25-p3-p40*0.5-p19-d19"
 
 define delay vdmin
-"vdmin=4*(p1+p3+4u+p17+d17)+2*p40"
+"vdmin=4*(p1+p3*2+4u+p17+d17)+2*p40"
 
 "spoff23=bf1*(cnst19/1000000)-o1"
 "spoff24=bf1*(cnst19/1000000)-o1"
@@ -42,10 +42,10 @@ aqseq 312
 
   20u
   "d3=d2*0.25-p40-p19-d19+d0*0.5"
-  "d20=vd/4-p3-p17-d17"
-  "d21=vd/4-p3-0.5*p40"
-  "d22=vd/4-p3-p17-d17-0.5*p40"
-  "d23=vd/4-p3"
+  "d20=vd/4-p3*2"
+  "d21=vd/4-p3*2-p17-d17-0.5*p40"
+  "d22=vd/4-p3*2-p17-d17-0.5*p40"
+  "d23=vd/4-p3*2"
 
   ; relaxation period
   ;"TAU=d1-d11-20u-d12-50u-p3-d13-p16-d16"
@@ -59,7 +59,7 @@ aqseq 312
   d16
 
   ; start main sequence
-  (p39:sp23 ph1):f1  ; INEPT
+  (p39:sp23 ph10):f1  ; INEPT
   ;"DELTA1=d2-p39*cnst39"
   DELTA1
 
@@ -68,25 +68,29 @@ aqseq 312
   d19
   ;"XI1=d2*0.25-p40*0.5-p19-d19"
   XI1
-  (center (p40:sp24 ph1):f1 (p4 ph1):f2 )
+  (center (p40:sp24 ph1):f1 (p3 ph1 p4 ph2 p3 ph1):f2 )
   p19:gp3
   d19
   ;"XI2=d2*0.25-p3-p40*0.5-p19-d19"
   ;"d3=d2*0.25-p40-p19-d19+d0*0.5"
-  ;"d20=vd/4-p3-p17-d17"
+  ;"d20=vd/4-p3*2"
   (lalign (d3 p40:sp24 ph14):f1 (XI2 p3 ph12 d0 p3 ph13 d20):f2 )
+  (p3 ph1):f2
+  (p4 ph2):f2
+  (p3 ph1):f2
+  ;"d21=vd/4-p3*2-0.5*p40-p17-d17"
+  d21
   p17:gp4
   d17
-  (p4 ph1):f2
-  ;"d21=vd/4-p3-0.5*p40"
-  d21
   (p40:sp24 ph1):f1
   p17:gp4
   d17
-  ;"d22=vd/4-p3-p17-d17-0.5*p40"
+  ;"d22=vd/4-p3*2-p17-d17-0.5*p40"
   d22
-  (p4 ph1):f2
-  ;"d23=vd/4-p3"
+  (p3 ph1):f2
+  (p4 ph2):f2
+  (p3 ph1):f2
+  ;"d23=vd/4-p3*2"
   d23
 
   ; back-transfer
@@ -107,15 +111,15 @@ aqseq 312
   4u BLKGRAD
 exit 
   
-
-ph1= 0 
+ph1= 0
 ph2= 1 
+ph10=0
 ph11=0 2
 ph12=1 1 3 3
-ph13=0
-ph14=0 0 0 0 2 2 2 2
+ph13=0 0 0 0 2 2 2 2
+ph14=(3) {{0}*8}^1^2
 ph29=0
-ph31=0 2
+ph31=(6) {{{0 3 0 3}^2}^2^4}
 
 
 ;pl1 : f1 channel - power level for pulse (default)
@@ -158,7 +162,7 @@ ph31=0 2
 ;in0: 1/(2 * SW(X)) = DW(X)
 ;nd0: 2
 ;l0: number of repeats for entire experiment
-;NS: 8 * n
+;NS: 8 * n, 24 * n
 ;DS: 16
 ;td1: number of experiments
 ;FnMODE: States-TPPI, TPPI, States or QSEQ
