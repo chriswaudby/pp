@@ -13,16 +13,16 @@
 "d12=20u"
 "d13=4u"
 
-"in0=inf1/2"
-"d0=in0"
+"in0=inf1"
+"d0=in0/2"
 
 define list<grad_scalar> gl1 = { 0.13 }
 define list<grad_scalar> gl2 = { 0.1 }
-define list<grad_scalar> gl3 = { -0.87 0.73 }
+define list<grad_scalar> gl3 = { -0.737 0.65 }
 
 "DELTA1=d2-p16-d16"
 ;"DELTA2=d2-p16-d16-d12-4u-de+0.6366*p1"
-"acqt0=0.6366*p1"
+"acqt0=-0.6366*p1"
 baseopt_echo
 
 1 ze 
@@ -39,6 +39,7 @@ baseopt_echo
   d13 do:f1
   30u fq=0:f1
 
+  ; purge Cz
   d12 pl1:f1 pl2:f2
   50u UNBLKGRAD
   (p3 ph1):f2
@@ -46,13 +47,13 @@ baseopt_echo
   p16:gp1
   d16*2 
 
-  (p1 ph1):f1
-
+  ; begin main sequence
+  (p1 ph11):f1
   ; note this is NOT an inept transfer - delays are 1/2J - transfer to CxHyHzHz
   DELTA1 ; 1/2J
   p16:gp2*gl1
   d16
-  (center (p2 ph1):f1 (p3 ph1):f2 )
+  (center (p2 ph1):f1 (p3 ph12):f2 )
   p16:gp2*gl1
   d16
   DELTA1
@@ -65,7 +66,7 @@ baseopt_echo
   (center (p2 ph1):f1 (p4 ph1):f2 )
   p16:gp2*gl2*-1
   d16
-  p1 ph3
+  p1 ph1
 
   p16:gp2*gl3
   d16
@@ -82,9 +83,13 @@ exit
   
   
 ph1=0 
+ph2=1
 ph3=2
+ph11=0 2
+ph12=0 0 2 2 
+ph13=0 
 ph29=0
-ph31=0
+ph31=0 2 2 0
 
 
 ;pl1 : f1 channel - power level for pulse (default)
