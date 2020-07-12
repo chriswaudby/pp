@@ -44,7 +44,7 @@ define pulse pwd
 /************************/
 /*   Define f1180       */
 /************************/
-  "d0=larger((in0)/2 - 2.0*pwh_cp, 2e-7)"
+  "d0=larger((in0)/2 - 2.0*pwh, 2e-7)"
 
 define delay taua
   "taua=d3"              /* d3 ~ 1.8-2ms ~ 1.0s/(4*125.3)"  ~ 1 / 4J(CH) */
@@ -100,7 +100,7 @@ aqseq 312
 d1 cw:f1 ph26
 4u do:f1
 30u fq=0:f1
-20y pl1:f1
+20u pl1:f1
 
   50u LOCKH_ON
   15u H2_PULSE
@@ -167,7 +167,7 @@ d1 cw:f1 ph26
 /* Hahn echo */
 /*************/
   (pwh ph1):f1
-  "tauEcho=l2*666.7u - phw*2.6366"
+  "tauEcho=l2*666.7u - pwh*2.6366"
   tauEcho
   (pwh ph29 pwh*2 ph26 pwh ph29):f1
   tauEcho
@@ -277,7 +277,6 @@ ph31={{{0 2}*3}^2}^2
 ;pl4  : power level for 2H high power pulses
 ;pl9 : tsatpwr - power level for presat
 ;pl11 : tpwrmess - power level for Messerle purge
-;pl15 : power level for 1H CPMG pulses pwh_cp
 ;pl21 : dpwr - power level for  13C decoupling cpd2
 ;pl17 : power level for 2H waltz decoupling
 ;p10 : 1000usec water flip-back
