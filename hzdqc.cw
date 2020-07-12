@@ -61,9 +61,16 @@ aqseq 312
   d11 pl12:f2
 2 10m do:f2
 
-  d1
+# ifdef OFFRES_PRESAT
+    30u fq=cnst21(bf hz):f1
+# endif /*OFFRES_PRESAT*/
 
-  d12 pl2:f2
+  d12 pl9:f1
+  d1 cw:f1 ph29
+  20u do:f1
+  30u fq=0:f1
+
+  d12 pl1:f1 pl2:f2
   50u UNBLKGRAD
 
   ; purge equilibrium magnetisation
@@ -104,6 +111,7 @@ ph2=0
 ph11=0 
 ph12=0 2 
 ph13=0 0 1 1 2 2 3 3
+ph29=0
 ph31=0 2 2 0
 
 
