@@ -1,5 +1,5 @@
-; Gradient-selected HZQC (gsHZQC) methyl-TROSY with  methyl filter and ZQ Hahn-echo relaxation delay
-; For recording 1H-13C ZQ relaxation rates in fully protonated methyl groups
+; Gradient-selected HZQC (gsHZQC) methyl-TROSY with methyl filter and DQ Hahn-echo relaxation delay
+; For recording 1H-13C DQ relaxation rates in fully protonated methyl groups
 ; With or without 13C polarization enhancement
 ; Reference: Gill, ML and Palmer, III, AG, Journal of Biomolecular NMR (2011) XX:XXX-XXX, Figure 3
 ;$CLASS=HighRes
@@ -46,7 +46,7 @@ prosol relations=<triple>
 "TAU2=0.75m"    ; sin(2piJCH*TAU2) = 3^(–1/2)
 "in0=inf1"      ; t1 increment
 "d0=in0/2"      ; initial t1 delay (1/2 dwell)
-"l0=td1/4"      ; number of t1 complex points
+"l0=td1/2"      ; number of t1 complex points
 "l1=0"          ; initialize loop counter
 
 "DELTA1=TAU/4"
@@ -54,24 +54,24 @@ prosol relations=<triple>
 "DELTA7=TAU*cnst2/2"
 "DELTA8=(TAU*cnst2/2)-p16-d16-d11"
 
-#ifdef NOPOL
-"DELTA3=TAU-d11-p1*0.6366"
-"DELTA4=TAU-p16-d16-d11"
-#endif
-
-#ifdef POL1
+#   ifdef POL1
 "DELTA3=TAU/2-1*TAU2-larger(p1,p2)-p1*0.6366-p17-d16"
 "DELTA4=TAU/2+1*TAU2-larger(p1,p2)"
 "DELTA5=TAU/2+1*TAU2-larger(p1,p2)-p17-d16-4u"
 "DELTA6=TAU/2-1*TAU2-d16-p16-d11-4u-larger(p1,p2)"
-#endif
+#   endif
 
-#ifdef POL2
+#   ifdef POL2
 "DELTA3=TAU-p1*0.6366"
 "DELTA4=TAU-p16-d16-d11"
 "DELTA5=TAU/2+TAU2-p1-p17-d16"
 "DELTA6=TAU/2-TAU2-p1-p17-d16-4u"
-#endif
+#   endif
+
+#   ifdef NOPOL
+"DELTA3=TAU-d11-p1*0.6366"
+"DELTA4=TAU-p16-d16-d11"
+#   endif
 
 
 1 ze
@@ -104,7 +104,7 @@ prosol relations=<triple>
   p15:gp1
   d16
   ;***transfer polarization from 13C to 1H***
-  (p2 ph2):f2
+  (p2 ph7):f2
   TAU2
   TAU2
   (p1 ph1):f1
@@ -112,7 +112,7 @@ prosol relations=<triple>
   DELTA3
   p17:gp6
   d16
-  (center (p11 ph20):f1 (p21 ph2):f2 )
+  (center (p11 ph20):f1 (p21 ph7):f2 )
   4u
   p17:gp6
   d16
@@ -127,7 +127,7 @@ prosol relations=<triple>
   p15:gp1
   d16
   ;***transfer polarization from 13C to 1H***
-  (p2 ph2):f2
+  (p2 ph7):f2
   DELTA5
   p17:gp6
   d16
@@ -136,7 +136,7 @@ prosol relations=<triple>
   p17:gp7
   d16
   DELTA6
-  (ralign (p1 ph1):f1 (p21 ph7):f2 )
+  (ralign (p1 ph1):f1 (p21 ph2):f2 )
   ;***evolve AP to MQ***
   DELTA3
   if "l1 % 4 == 0" goto 4
@@ -145,57 +145,57 @@ prosol relations=<triple>
   if "l1 % 4 == 3" goto 7
 #endif
 
- 4  d29
     ;***create MQ magnetization***
-    (p2 ph2):f2
+ 4  (p2 ph2):f2
     4u
     (p21 ph20):f2
-    ;***J-filter***
-    DELTA1
-    4u
     ;***Relaxation delay (T/2)***
     DELTA7
+    ;***J-filter***
+    4u
+    DELTA1
+    d29
+    (p21 ph20):f2
     ;***t1***
     d0
     (p1 ph10 4u p11 ph11 4u p1 ph10):f1
-    (p21 ph20):f2
-    ;***J-filter***
-    DELTA1
-    d29
     ;***Relaxation delay (T/2)***
-    DELTA8
+    DELTA7
+    ;***J-filter***
+    DELTA2
     d11 UNBLKGRAD
-    p16:gp2 ; ZQ encode gradient
+    p16:gp3 ; DQ encode gradient
     d16
     ;***create AP magnetization***
     (p2 ph5):f2
+    d29
     8u
  goto 8
 
  5  d29
     ;***create MQ magnetization***
-    (p2 ph2):f2
-    4u
-    ;***J-filter***
-    DELTA1
-    (p21 ph20):f2
+    (p2 ph7):f2
     4u
     ;***Relaxation delay (T/2)***
     DELTA7
+    (p21 ph20):f2
+    ;***J-filter***
+    4u
+    DELTA1
     ;***t1***
     d0
     (p1 ph10 4u p11 ph11 4u p1 ph10):f1
-    ;***J-filter***
-    DELTA1
+    ;***Relaxation delay (T/2)***
+    DELTA7
     (p21 ph20):f2
     d29
-    ;***Relaxation delay (T/2)***
-    DELTA8
+    ;***J-filter***
+    DELTA2
     d11 UNBLKGRAD
     p16:gp2 ; ZQ encode gradient
     d16
     ;***create AP magnetization***
-    (p2 ph5):f2
+    (p2 ph6):f2
     8u
  goto 8
 
@@ -204,21 +204,22 @@ prosol relations=<triple>
     (p2 ph2):f2
     4u
     (p21 ph20):f2
-    ;***Relaxation delay (T/2)***
-    DELTA7
-    4u
     ;***J-filter***
     DELTA1
-    (p1 ph10 4u p11 ph11 4u p1 ph10):f1
-    (p21 ph20):f2
-    d0
+    4u
     ;***Relaxation delay (T/2)***
     DELTA7
-    d29
+    (p1 ph10 4u p11 ph11 4u p1 ph10):f1
+    ;***t1***
+    d0
+    (p21 ph20):f2
     ;***J-filter***
-    DELTA2
+    DELTA1
+    d29
+    ;***Relaxation delay (T/2)***
+    DELTA8
     d11 UNBLKGRAD
-    p16:gp2 ; ZQ encode gradient
+    p16:gp3 ; DQ encode gradient
     d16
     ;***create AP magnetization***
     (p2 ph5):f2
@@ -227,30 +228,31 @@ prosol relations=<triple>
 
  7  d29
     ;***create MQ magnetization***
-    (p2 ph7):f2
+    (p2 ph2):f2
+    ;***J-filter***
+    4u
+    DELTA1
+    (p21 ph20):f2
     4u
     ;***Relaxation delay (T/2)***
     DELTA7
-    (p21 ph20):f2
-    4u
-    ;***J-filter***
-    DELTA1
     (p1 ph10 4u p11 ph11 4u p1 ph10):f1
     ;***t1***
     d0
-    ;***Relaxation delay (T/2)***
-    DELTA7
+    ;***J-filter***
+    DELTA1
     (p21 ph20):f2
     d29
-    ;***J-filter***
-    DELTA2
+    ;***Relaxation delay (T/2)***
+    DELTA8
     d11 UNBLKGRAD
     p16:gp3 ; DQ encode gradient
     d16
     ;***create AP magnetization***
-    (p2 ph6):f2
+    (p2 ph5):f2
     8u
  goto 8
+
 
 #ifdef POL1
  8  DELTA4
@@ -261,11 +263,13 @@ prosol relations=<triple>
     d11 BLKGRAD
     DELTA6
 #else
- 8  p16:gp4 ; SQ decode gradient
+ 8  4u
+    p16:gp4 ; SQ decode gradient
     d16 pl12:f2
     d11 BLKGRAD
-    DELTA4 
+    DELTA4
 #endif
+
 
     ;***detect***
     go=2 ph30 cpd2:f2
