@@ -1,4 +1,4 @@
-/* 1H TQ relaxation measurement in methyl groups
+/* 1H QQ relaxation measurement in methyl groups
 based on 2016 Yuwen sequence
 
     Assumes that sample is specifically 13CH3 labeled
@@ -9,10 +9,6 @@ based on 2016 Yuwen sequence
        13C: O2 centre at 20 ppm 
             pwc = p2 13C pw90 @ power level pl2 highest power
             power level pl21 is used for 13C decoupling.
-
-        2H: O4 centre at ~0.8 ppm (methyl 1H resonances)
-            pwd = p4 2H pw90 @ power level pl4 high power
-            power level pl41 is used for 2H waltz-16 decoupling.
 */
 
 prosol relations=<triple>
@@ -32,8 +28,6 @@ define pulse pwh
   "pwh=p1"               /* 1H hard pulse at power level p1 (tpwr) */
 define pulse pwc
   "pwc=p3"               /* 13C pulse at power level pl2 (dhpwr) */
-define pulse pwd
-  "pwd=p30"               /* 2H pulse at power pl4 */
 
 /************************/
 /*   Define delays      */
@@ -51,39 +45,17 @@ define delay taua
 define delay taub
   "taub=d4"              /* d4 = 1/4JCH exactly */ 
 
-/*************************************/
-/* Define parameters related to CPMG */
-/*************************************/
-define delay tauEcho
-  "tauEcho=666.7u"
-
-define list<loopcounter> ncyc=<$VCLIST>
-
-
-/****************************/
-/* Initialize loop counters */
-/****************************/
-"l1=0"
-"l2=0"
-"l3=0"
 
 "acqt0=0"              /* select 'DIGIMOD = baseopt' to execute */
 
 aqseq 312
 
 1 ze
-; d11 LOCKDEC_ON /* Not required for AvanceIII-HD */
-  50u LOCKH_ON
-  d11 H2_PULSE
-  2u pl17:f4
 
 2 d11 do:f2
-  "l2 = (trunc(ncyc[l1] + 0.3))"
 
   20u pl1:f1 pl2:f2
 
-  d11 H2_LOCK
-  6m LOCKH_OFF
 
 /******************/
 /* Messerle purge */
@@ -102,15 +74,13 @@ d1 cw:f1 ph26
 30u fq=0:f1
 20u pl1:f1
 
-  50u LOCKH_ON
-  15u H2_PULSE
 
 /****************************************/
 /* Destroy 13C equlibrium magnetization */
 /****************************************/
   (pwc ph26):f2
 
-  20u UNBLKGRAMP
+  20u UNBLKGRAD
 
   2u
   p50:gp0
@@ -138,7 +108,7 @@ d1 cw:f1 ph26
   "DELTA = taua - 2u - p51 - d16"
   DELTA
 
-  (pwc ph26):f2
+  (pwc ph3):f2
 
   2u
   p52:gp2
@@ -153,45 +123,36 @@ d1 cw:f1 ph26
   p52:gp2
   d16
 
-  "DELTA = taub - 2u - p52 - d16 - 2u - pwd - 2u - 2u"
+  "DELTA = taub - 2u - p52 - d16"
   DELTA
 
-  2u pl4:f4
-  (pwd ph27):f4
-  2u pl17:f4
-  (2u cpds4 ph26):f4
-
-  (pwc ph26):f2
+  ;(pwc ph26):f2
 
 /*************/
 /* Hahn echo */
 /*************/
   (pwh ph1):f1
-  ;"tauEcho=l2*666.7u - pwh*2.6366"
-  ;tauEcho
-  ;(pwh ph29 pwh*2 ph26 pwh ph29):f1
-  ;tauEcho
-  "tauEcho=l2*333.3u - pwh*1.3183 - pwc"
-  tauEcho
-  (pwc*2 ph26):f2
-  tauEcho
-  (pwh ph29 pwh*2 ph26 pwh ph29):f1
-  tauEcho
-  (pwc*2 ph26):f2
-  tauEcho
+
+  ;2u
+  ;p58:gp8*0
+  ;d16
+  vd*0.5
+
+  (center (pwh ph29 pwh*2 ph26 pwh ph29):f1 (pwc*2 ph2):f2 )
+
+  ;2u
+  ;p58:gp8
+  ;d16
+  vd*0.5
 
   (pwh ph26):f1
-  (pwc ph3):f2
-
-  2u do:f4
-  2u pl4:f4
-  (pwd ph29):f4
+  ;(pwc ph3):f2
 
   2u
   p53:gp3
   d16
 
-  "DELTA = taub - 2u - 2u - pwd - 2u - p53 - d16"
+  "DELTA = taub - 2u - p53 - d16"
   DELTA
 
 /********/
@@ -243,7 +204,7 @@ d1 cw:f1 ph26
   p57:gp7
   d16 
 
-  4u BLKGRAMP
+  4u BLKGRAD
 
   (pwc ph26):f2
   (pwc ph5):f2
@@ -255,43 +216,40 @@ d1 cw:f1 ph26
 /********************************/
   go=2 ph31 cpds2:f2
   d11 do:f2 mc #0 to 2
-    F1QF(iu1)
-    F2PH(ru1 & ip4, id0); & ip31*2)
+    F1I(ip1, 7, ip3, 3)
+    F1QF(ivd)
+    F2PH(ip4, id0); & ip31*2)
 ;    F1QF(calclc(l1,1))
 ;    F2PH(calph(ph4,-90), caldel(d0,+in0) & calph(ph31,+180))
 
-  d11 H2_LOCK
-  d11 LOCKH_OFF
-; d11 LOCKDEC_OFF        /* use statement for earlier hardware */
 
 HaltAcqu, 1m
 exit
 
 ph0=1
-ph1=(6) 0 1 2 3 4 5
-ph3={{0}*6}^2
-ph4={{0}*12}^2
+;ph1=(6) 0 1 2 3 4 5
+ph1=(7) 0
+ph2=0 2
+ph3=(3) 0
+ph4=0
 ph5=0 2
 ph26=0
 ph27=1
 ph28=2
 ph29=3
-ph31={{{0 2}*3}^2}^2
+ph31=0 2
 
 ;pl1 : tpwr - power level for pwh
 ;pl2 : dhpwr - power level for 13C pulse pwc (p2)
-;pl4  : power level for 2H high power pulses
 ;pl9 : tsatpwr - power level for presat
 ;pl11 : tpwrmess - power level for Messerle purge
 ;pl21 : dpwr - power level for  13C decoupling cpd2
-;pl17 : power level for 2H waltz decoupling
 ;p10 : 1000usec water flip-back
 ;sp10 : water flip-back (on H2O)
 ;spw14 : power level for eburp1 pulse
 ;spnam14: eburp1 pulse on water
 ;p1 : pwh
 ;p3 : pwc
-;p30 : 2H high power pulse
 ;p14 : eburp1 pulse width, typically 7000u
 ;p50 : gradient pulse 50                                [1000 usec]
 ;p51 : gradient pulse 51                                [400 usec]
@@ -302,16 +260,13 @@ ph31={{{0 2}*3}^2}^2
 ;p56 : gradient pulse 56                                [500 usec]
 ;p57 : gradient pulse 57                                [800 usec]
 ;pcpd2 : 13C pulse width for 13C decoupling
-;pcpd4 : 2H pulse width for 2H decoupling
 ;d1 : Repetition delay D1
 ;d3 : taua ~1/(4*JCH)  ~1.8-2ms
 ;d4 : taub - set to 1/4JHC = 2.0 ms
 ;d11 : delay for disk i/o, 30ms
 ;d16 : gradient recovery delay, 200us
 ;cpd2 : 13C decoupling during t2 according to program defined by cpdprg2
-;cpd4 : 2H decoupling during t1
 ;cpdprg2 : 13C decoupling during t2
-;cpdprg4 : 2H decoupling during t1
 ;cnst10: water frequency for presat
 ;l1 : counter for the ncyc_cp values for cpmg
 ;l2 : actual value of ncyc_cp
