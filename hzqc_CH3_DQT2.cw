@@ -34,7 +34,6 @@ prosol relations=<triple>
 #undef NOPOL
 #endif
 
-
 "cnst21=o1/bf1" ; acquisition frequency should be set the same as O1P
 "p11=p1*2"      ; 1H 180degree pulse at hard power
 "p21=p2*2"      ; 13C 180degree pulse at hard power
@@ -43,7 +42,7 @@ prosol relations=<triple>
 "d28=p21"       ; compensation for 13C 180
 "d29=p1*4+8u"   ; compensation for 1H composite pulse
 "TAU=3.91m"     ; 1/(2JCH), JCH=128 Hz
-"TAU2=0.75m"    ; sin(2piJCH*TAU2) = 3^(â€“1/2)
+"TAU2=0.75m"    ; sin(2piJCH*TAU2) = 3^(â1/2)
 "in0=inf1"      ; t1 increment
 "d0=in0/2"      ; initial t1 delay (1/2 dwell)
 "l0=td1/2"      ; number of t1 complex points
@@ -73,6 +72,7 @@ prosol relations=<triple>
 "DELTA4=TAU-p16-d16-d11"
 #   endif
 
+"acqt0=0"
 
 1 ze
   d11 BLKGRAD
