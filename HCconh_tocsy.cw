@@ -384,7 +384,7 @@ ph31=0 2 2 0 2 0 0 2
 ;d30: decremented delay (F2 in 3D) = d21/2-p14/2
 ;cnst1: H(N) excitation frequency (in ppm)
 ;cnst2: H(N) excitation band width (in ppm)
-;cnst9: Ser/Thr CB chemical shift (offset, in ppm) [72 ppm]
+;cnst3: 13C excitation band width (in ppm) [80 ppm]
 ;cnst11: 15N decoupling bandwidth in detection [40 ppm]
 ;cnst20: water frequency (Hz)
 ;cnst21: CO chemical shift (offset, in ppm) [180]
@@ -420,7 +420,7 @@ ph31=0 2 2 0 2 0 0 2
 ;gpz3: 8.1%
 ;gpz4: 5%
 ;gpz5: -2%
-;gpz7: 50%
+;gpz6: 33%
 
 ;use gradient files:
 ;gpnam1: SINE.100
@@ -428,7 +428,7 @@ ph31=0 2 2 0 2 0 0 2
 ;gpnam3: SINE.100
 ;gpnam4: SINE.100
 ;gpnam5: SINE.100
-;gpnam7: SINE.20
+;gpnam6: SINE.100
 
 
 ;;         WAVEMAKER -> execute: wvm_p.py
