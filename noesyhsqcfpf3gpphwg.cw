@@ -47,6 +47,7 @@ prosol relations=<triple>
     "d10=in10/2-0.5*(10u+p1+0.63662*p21)"
 # endif /*N_SINGLEDWELL*/
 
+"acqt0=0"
 
 aqseq 321
 
