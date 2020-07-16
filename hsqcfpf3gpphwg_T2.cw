@@ -81,13 +81,20 @@ aqseq 312
 
 # ifndef NOPROTCRUSH
 
-# ifndef WATERCRUSH
-    10u pl0:f1
-    (p11:sp1 ph10:r):f1	; flipdown(-x): +z -> +y
-# endif /*WATERCRUSH*/
+;# ifndef WATERCRUSH
+;    10u pl0:f1
+;    (p11:sp1 ph10:r):f1	; flipdown(-x): +z -> +y
+;# endif /*WATERCRUSH*/
+;
+;  10u pl1:f1
+;  (p1 ph1):f1
 
-  10u pl1:f1
-  (p1 ph1):f1
+; purge water before recycle delay
+10u pl8:f1
+2mp ph1
+3mp ph2
+10u pl1:f1
+
   4u
   p16:gp1*0.73		; crush 1H magnetisation at start of scan
   d16
@@ -321,6 +328,7 @@ ph31=0 2 2 0 2 0 0 2
 ;pl0 : 120dB
 ;pl1 : f1 channel - power level for pulse (default)
 ;pl3 : f3 channel - power level for pulse (default)
+;pl8: 1H purge power (ca. 10 kHz) 
 ;pl16: f3 channel - power level for CPD/BB decoupling
 ;sp1: f1 channel - shaped pulse  90 degree (flip-down)
 ;sp11: f1 channel - shaped pulse  90 degree (flip-back)
