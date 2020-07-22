@@ -44,11 +44,16 @@
 "DELTA2=d4-p19-d16-p10-p1-12u"
 "acqt0=0"
 
+define delay vdMin
+"vdMin = 2*p19 + 2*d16"
+
 ; calculate offset for WFB
 "spoff1=cnst21-o1"
 
+aqseq 312
 
 1 ze
+  vdMin
   d11 pl12:f2
 2 d11 do:f2
 3 d12
@@ -85,14 +90,15 @@
   ; 13C t1
   (p3 ph11):f2
   d0
-  vd*0.5
+  "TAU = vd*0.5 - p19 - d16"
+  TAU
   p19:gp5
   d16
   (p4 ph1):f2
   4u
   p19:gp5
   d16
-  vd*0.5
+  TAU
   (p3 ph12):f2
 
   ; zz purge
