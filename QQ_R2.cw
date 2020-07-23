@@ -253,12 +253,12 @@ ph31=0 2
 ;p14 : eburp1 pulse width, typically 7000u
 ;p50 : gradient pulse 50                                [1000 usec]
 ;p51 : gradient pulse 51                                [400 usec]
-;p52 : gradient pulse 52                                [600 usec]
+;p52 : gradient pulse 52                                [200 usec]
 ;p53 : gradient pulse 53                                [300 usec]
 ;p54 : gradient pulse 54                                [500 usec]
 ;p55 : gradient pulse 55                                [300 usec]
 ;p56 : gradient pulse 56                                [500 usec]
-;p57 : gradient pulse 57                                [800 usec]
+;p57 : gradient pulse 57                                [700 usec]
 ;pcpd2 : 13C pulse width for 13C decoupling
 ;d1 : Repetition delay D1
 ;d3 : taua ~1/(4*JCH)  ~1.8-2ms
@@ -273,13 +273,13 @@ ph31=0 2
 ;inf1 : 1/SW(X) = 2*DW(X)
 ;in0 : 1/(2*SW(x))=DW(X)
 ;nd0 : 2
-;ns : 6*n
+;ns : 1*n
 ;FnMODE : States-TPPI, TPPI, States
 
 ;for z-only gradients:
 ;gpz0: 20%
 ;gpz1: 25%
-;gpz2: 30%
+;gpz2: 20%
 ;gpz3: -25%
 ;gpz4: 50%
 ;gpz5: -40%
