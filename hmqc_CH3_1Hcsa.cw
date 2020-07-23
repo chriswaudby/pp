@@ -48,7 +48,7 @@ aqseq 312
 
 1 ze 
   vdmin
-  d11 ph1:f1 pl3:f2
+  d11 pl1:f1 pl2:f2
 2 d11 
 
   20u
@@ -161,7 +161,6 @@ ph31=0 2 2 0
 
 ;pl1 : f1 channel - power level for pulse (default)
 ;pl2 : f2 channel - power level for pulse (default)
-;pl3 : f3 channel - power level for pulse (default)
 ;pl9 : f1 channel - power level for presaturation
 ;p1 : f1 channel -  90 degree high power pulse
 ;p2 : f1 channel - 180 degree high power pulse
@@ -169,7 +168,6 @@ ph31=0 2 2 0
 ;p4 : f2 channel - 180 degree high power pulse
 ;p16: homospoil/gradient pulse
 ;p17: gradient pulse [300 usec]
-;p22 : f3 channel - 180 degree high power pulse
 ;d0 : incremented delay (2D)                         [3 usec]
 ;d1 : relaxation delay; 1-5 * T1
 ;d2 : 1/(2J)CH
