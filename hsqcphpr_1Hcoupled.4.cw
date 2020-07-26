@@ -56,7 +56,10 @@ aqseq 312
   vdMin
   d11 pl12:f2
 2 d11 do:f2
-3 d12
+  ; purge before d1
+  20u pl6:f1
+  (2mp ph1):f1
+  (3mp ph2):f1
 
   ; off-resonance presat
   30u pl9:f1
