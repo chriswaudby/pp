@@ -33,7 +33,7 @@
 "d13=4u"
 
 "in0=inf2"
-"d0=in0/2-2*0.63662*p3"
+"d0=2*0.63662*p3 + in0/2"
 
 ; loop counter for ZQ/DQ and E/AE blocks
 "l1 = 0"
@@ -46,6 +46,11 @@ aqseq 321
 1 ze 
   d11 pl12:f2
 2 d11 do:f2
+  ; purge before d1
+  20u pl6:f1
+  (2mp ph1):f1
+  (3mp ph2):f1
+
   4u BLKGRAD
 
   ; relaxation period, with off-res presat
@@ -64,7 +69,7 @@ aqseq 321
 
   ; start main sequence
   (p1 ph1):f1  ; INEPT
-  "DELTA1 = d2 - p16 - d16 - p1*0.6366"
+  "DELTA1 = d2 - p1*0.6366"
   DELTA1
 
   if "l1 % 4 == 0"
