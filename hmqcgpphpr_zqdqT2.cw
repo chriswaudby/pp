@@ -172,7 +172,7 @@ aqseq 321
   d11 do:f2 mc #0 to 2
     F2I(ip11, 3, iu1, 2)
     F2EA(iu1, id0)
-    F1QF(ivd)
+    F1QF(rd0 & rp11 & ru1 & ivd)
 
   4u BLKGRAD
 exit 
