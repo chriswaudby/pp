@@ -349,8 +349,10 @@ aqseq 321
   4u BLKGRAD
   go=2 ph31 cpd3:f3
   d11 do:f3 mc #0 to 2 
-     F1PH(rd10 & rd29 & rd30 & rp6 & rp8 & rp31 & ip4, id0) 
-     F2EA(igrad EA & ip7*2, id10 & id29 & dd30 & ip6*2 & ip8*2 & ip31*2)
+     F1PH(calph(p4, +90), caldel(d0, +in0))
+     F2EA(calgrad(EA) & calph(p7, +180), caldel(d10, +in10) & caldel(d29, +in29) & caldel(d30, -in30) & calph(p6, +180) & calph(p8, +180) & calph(p31, +180))
+     ;F1PH(rd10 & rd29 & rd30 & rp6 & rp8 & rp31 & ip4, id0) 
+     ;F2EA(igrad EA & ip7*2, id10 & id29 & dd30 & ip6*2 & ip8*2 & ip31*2)
 exit
 
 
