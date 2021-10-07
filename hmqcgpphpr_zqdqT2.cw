@@ -37,11 +37,12 @@
 
 ; loop counter for ZQ/DQ and E/AE blocks
 "l1 = 0"
+"l2 = td2 / 12"
 
 "acqt0=0"
 baseopt_echo
 
-aqseq 321
+aqseq 312
 
 1 ze 
   d11 pl12:f2
@@ -169,20 +170,36 @@ aqseq 321
   ; acquisition
   go=2 ph31 cpd2:f2 
 
-  d11 do:f2 mc #0 to 2
-    F2I(ip11, 3, iu1, 2)
-    F2EA(iu1, id0)
-    F1QF(rd0 & rp11 & ru1 & ivd)
+  4u do:f2
+  d11 wr #0 if #0 zd
 
+  4u ivd
+  lo to 2 times td1
+
+  4u ip11*2
+  lo to 2 times 3
+
+  4u iu1
+  4u rp11
+  lo to 2 times 4
+
+  4u id0
+  lo to 2 times l2
+
+  ;d11 do:f2 mc #0 to 2
+  ;  F1QF(ivd)
+  ;  F2I(ip11, 3, iu1, 2)
+  ;  F2EA(iu1, id0)
+    ;F1QF(rd0 & rp11 & ru1 & ivd)
   4u BLKGRAD
 exit 
   
 
 ph1= 0 
 ph2= 1 
-ph11= (3) 0
+ph11= (6) 0 3
 ph29=0
-ph31=0
+ph31=0 2
 
 
 ;pl1 : f1 channel - power level for pulse (default)
