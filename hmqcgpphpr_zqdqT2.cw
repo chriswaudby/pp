@@ -78,7 +78,7 @@ aqseq 312
   (p3 ph11):f2
   "DELTA = d3 - p3"
   DELTA
-  (p3*2 ph1):f2
+  (p3*2 ph12):f2
   "DELTA = vd*0.5 + d0*0.5 - p3 - p1*2 - p19 - d16"
   DELTA
   p19:gp2
@@ -88,7 +88,7 @@ aqseq 312
   (p1 ph2):f1
   "DELTA = d3 + d0*0.5 - p3 - p1*2"
   DELTA
-  (p3*2 ph1):f2
+  (p3*2 ph13):f2
   p19:gp2
   d16
   "DELTA = vd*0.5 - p3 - p19 - d16"
@@ -99,7 +99,7 @@ aqseq 312
   if "l1 % 4 == 1"
     {
   (p3 ph11):f2
-  (p3*2 ph1):f2
+  (p3*2 ph12):f2
   "DELTA = d3 - p3 + vd*0.5 + d0*0.5 - p3 - p1*2 - p19 - d16"
   DELTA
   p19:gp2
@@ -109,7 +109,7 @@ aqseq 312
   (p1 ph2):f1
   "DELTA = d0*0.5 - p1*2"
   DELTA
-  (p3*2 ph1):f2
+  (p3*2 ph13):f2
   p19:gp2
   d16
   "DELTA = d3 - p3 + vd*0.5 - p3 - p19 - d16"
@@ -124,7 +124,7 @@ aqseq 312
   DELTA
   p19:gp2
   d16
-  (p3*2 ph1):f2
+  (p3*2 ph12):f2
   "DELTA = d3 + d0*0.5 - p3 - p1*2"
   DELTA
   (p1 ph2):f1
@@ -134,7 +134,7 @@ aqseq 312
   d16
   "DELTA = vd*0.5 + d0*0.5 - p3 - p1*2 - p19 - d16"
   DELTA
-  (p3*2 ph1):f2
+  (p3*2 ph13):f2
   "DELTA = d3 - p3"
   DELTA
   (p3 ph1):f2
@@ -147,7 +147,7 @@ aqseq 312
   DELTA
   p19:gp2
   d16
-  (p3*2 ph1):f2
+  (p3*2 ph12):f2
   "DELTA = d0*0.5 - p1*2"
   DELTA
   (p1 ph2):f1
@@ -157,7 +157,7 @@ aqseq 312
   d16
   "DELTA = vd*0.5 + d0*0.5 - p3 - p1*2 - p19 - d16 + d3 - p3"
   DELTA
-  (p3*2 ph1):f2
+  (p3*2 ph13):f2
   (p3 ph1):f2
     }
 
@@ -197,7 +197,13 @@ exit
 
 ph1= 0 
 ph2= 1 
+;<<<<<<< HEAD
 ph11= (6) 0 3
+;=======
+;ph11= (3) 0
+ph12=0 2
+ph13=0 2
+;>>>>>>> 098425397462ac83e48e6dd7a5e03501e4541cdc
 ph29=0
 ph31=0 2
 
