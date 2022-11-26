@@ -100,9 +100,9 @@ baseopt_echo
 12  d22         ; A'
     (p4 ph1):f2
     d20*0.5
-    (p4 ph1):f2
-    d22
     (p2 ph13):f1
+    d22
+    (p4 ph1):f2
     d20*0.5
     d0
     goto 20
