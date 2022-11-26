@@ -41,7 +41,7 @@ define pulse pwc
   "d0=larger((in0)/2 - 2.0*pwh, 2e-7)"
 
 define delay taua
-  "taua=d3"              /* d3 ~ 1.8-2ms ~ 1.0s/(4*125.3)"  ~ 1 / 4J(CH) */
+  "taua=d3"              /* d3 ~ 1.8-2ms ~ 1.0s/(4*125.3)  ~ 1 / 4J(CH) */
 define delay taub
   "taub=d4"              /* d4 = 1/4JCH exactly */ 
 
