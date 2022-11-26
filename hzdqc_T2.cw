@@ -1,5 +1,6 @@
 ;H(Z/D)QC T2
 ; set d20 = relaxation time
+; set td = 4x desired number of real points
 ;for 13C, same processing as SFHZDQC
 ;run as pseudo-3D (td1 = 2), add and subtract to obtain Z/D components
 ;TODO check which is Z and D!
@@ -42,16 +43,16 @@ prosol relations=<triple>
 "p2=p1*2"
 "p4=p3*2"
 
-"in0=inf2"
+"in0=inf1"
 "d0=in0/2-p3*4/3.1415"
-"l2=td1/2"
+"l2=td1/8"
 
 "l0=0"
 
 baseopt_echo
 "acqt0=0"
 
-aqseq 312
+;aqseq 312
 
 
 
@@ -127,7 +128,7 @@ aqseq 312
 
 20  (p3 ph1):f2
     "DELTA2=d21-4u"
-    DELTA2
+    DELTA2 pl12:f2
     4u BLKGRAD
 
     go=2 ph31 cpd2:f2 
