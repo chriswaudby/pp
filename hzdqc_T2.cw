@@ -1,30 +1,10 @@
 ;H(Z/D)QC T2
 ; set d20 = relaxation time
-; set td = 4x desired number of real points
-;for 13C, same processing as SFHZDQC
-;run as pseudo-3D (td1 = 2), add and subtract to obtain Z/D components
+; set td = 4x desired number of (real) points
+;          (2x multiplet suppression, 2x ZQ/DQ selection)
 ;TODO check which is Z and D!
 ;
-;Added option for off-resonance presat (e.g. to suppress urea signal), 21/6/15
-;
-;With option for 1D (first row)
-;
-;sfhmqcf2gpph
-;avance-version (09/11/18)
-;SOFAST HMQC
-;2D H-1/X correlation via heteronuclear zero and double quantum
-;   coherence
-;phase sensitive
-;with decoupling during acquisition
-;
-;P.Schanda and B. Brutscher, J. Am. Chem. Soc. 127, 8014 (2005)
-;
-;$CLASS=HighRes
-;$DIM=2D
-;$TYPE=
-;$SUBTYPE=
-;$COMMENT=
-
+;Option for off-resonance presat (-DOFFRES_PRESAT)
 
 prosol relations=<triple>
 
@@ -43,22 +23,29 @@ prosol relations=<triple>
 "p2=p1*2"
 "p4=p3*2"
 
-"in0=inf1"
+"in0=inf2"
 "d0=in0/2-p3*4/3.1415"
-"l2=td1/8"
 
 "l0=0"
+"l1=td1"
+"l2=td2/8"
+
 
 baseopt_echo
 "acqt0=0"
 
-;aqseq 312
+aqseq 312
 
 
 
   ze 
 1 d11 pl12:f2
-2 10m do:f2
+2 100u do:f2
+
+  20u pl11:f1
+  (2mp ph1):f1
+  20u
+  (3mp ph2):f1
 
 # ifdef OFFRES_PRESAT
     30u fq=cnst21(bf hz):f1
@@ -90,38 +77,38 @@ baseopt_echo
 
 11  (p4 ph1):f2 ; A
     d22
-    d20*0.5
+    vd*0.5
     (center (p2 ph13):f1 (p4 ph1):f2)
     d22
-    d20*0.5
+    vd*0.5
     d0
     goto 20
 
 12  d22         ; A'
     (p4 ph1):f2
-    d20*0.5
+    vd*0.5
     (p2 ph13):f1
     d22
     (p4 ph1):f2
-    d20*0.5
+    vd*0.5
     d0
     goto 20
 
 13  d0           ; B
-    d20*0.5
+    vd*0.5
     d22
     (center (p2 ph13):f1 (p4 ph1):f2)
-    d20*0.5
+    vd*0.5
     d22
     (p4 ph1):f2
     goto 20
 
 14  d0          ; B'
-    d20*0.5
+    vd*0.5
     (p4 ph1):f2
     d22
     (p2 ph13):f1
-    d20*0.5
+    vd*0.5
     (p4 ph1):f2
     d22
     goto 20
@@ -145,6 +132,10 @@ baseopt_echo
     30u ip12
     lo to 1 times 2
 
+    ; loop over relaxation delays
+    30u ivd
+    lo to 1 times l1
+
     ; outer loop (d0)
     30u id0
     lo to 1 times l2
@@ -152,8 +143,8 @@ baseopt_echo
 exit 
   
 
-ph1=0 
-ph2=0 
+ph1=0
+ph2=1
 ph11=0 0 2 2
 ph12=0 2
 ph13=0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
@@ -178,7 +169,7 @@ ph31=0 2 2 0 2 0 0 2
 ;inf1: 1/SW(C) = 2 * DW(C)
 ;in0: 1/ SW(C) = 2 * DW(C)
 ;nd0: 1
-;NS: 2 * n
+;NS: 4 * n
 ;DS: 16
 ;td1: number of experiments
 ;FnMODE: States-TPPI, TPPI, States or QSEC

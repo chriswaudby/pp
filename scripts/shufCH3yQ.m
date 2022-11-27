@@ -1,7 +1,7 @@
 /***/
-/* shufCH3xQ.M: shuffling H(Z/D)QC input to extract XQ spectrum 
+/* shufCH3yQ.M: shuffling H(Z/D)QC input to extract XQ spectrum 
 /*
-/* Example: | nmrPipe -fn MAC -all -noRd -noWr -macro shufCH3xQ.M \
+/* Example: | nmrPipe -fn MAC -all -noRd -noWr -macro shufCH3yQ.M \
 /***/
 
 /***/
@@ -84,43 +84,43 @@ float vAA[size], vBB[size], vCC[size], vDD[size];
 
 /***/
 /* Desired output:
-/*    cos component = i(fid 12)  + i(fid 34)  + i(fid 56[-90])  + i(fid 78[+90])
-/*                  = i(A + iB) + i(C + iD) + i(F - iE) + i(-H + iG)
-/*                  = iA - B + iC - D + iF + E - iH - G
-/*                  = (-B - D + E - G) + i(A + C + F - H)
+/*    cos component = i(fid 12)  + i(fid 34)  + i(fid 56[+90])  + i(fid 78[-90])
+/*                  = i(A + iB) + i(C + iD) - i(F - iE) - i(-H + iG)
+/*                  = iA - B + iC - D - iF - E + iH + G
+/*                  = (-B - D - E + G) + i(A + C - F + H)
 /*
-/*    sin component = (fid 12)  - (fid 34)  + (fid 56[-90])  - (fid 78[+90])
-/*                  = (A + iB) - (C + iD) + (F - iE) - (-H + iG)
-/*                  = A + iB - C - iD + F -iE + H - iG
-/*                  = (A - C + F + H) + i(B - D - E - G)
+/*    sin component = (fid 12)  - (fid 34)  + (fid 56[+90])  - (fid 78[-90])
+/*                  = (A + iB) - (C + iD) + (-F + iE) - (H - iG)
+/*                  = A + iB - C - iD - F + iE - H + iG
+/*                  = (A - C - F - H) + i(B - D + E + G)
 /*
-/* AA = (t1 = 1 real, t2 = real) = (-B) - D + E - G
-/* BB = (t1 = 1 real, t2 = imag) = A + C + F - H
+/* AA = (t1 = 1 real, t2 = real) = (-B) - D - E + G
+/* BB = (t1 = 1 real, t2 = imag) = A + C - F + H
 /* 
-/* CC = (t1 = 2 imag, t2 = real) = A - C + F + H
-/* DD = (t1 = 2 imag, t2 = imag) = B - D - E - G
+/* CC = (t1 = 2 imag, t2 = real) = A - C - F - H
+/* DD = (t1 = 2 imag, t2 = imag) = B - D + E + G
 /***/
 
 (void) vvCopy( vAA, vB, size );
 (void) vNeg( vAA, size );
 (void) vvSub( vAA, vD, size );
-(void) vvAdd( vAA, vE, size );
-(void) vvSub( vAA, vG, size );
+(void) vvSub( vAA, vE, size );
+(void) vvAdd( vAA, vG, size );
 
 (void) vvCopy( vBB, vA, size );
 (void) vvAdd( vBB, vC, size );
-(void) vvAdd( vBB, vF, size );
-(void) vvSub( vBB, vH, size );
+(void) vvSub( vBB, vF, size );
+(void) vvAdd( vBB, vH, size );
 
 (void) vvCopy( vCC, vA, size );
 (void) vvSub( vCC, vC, size );
-(void) vvAdd( vCC, vF, size );
-(void) vvAdd( vCC, vH, size );
+(void) vvSub( vCC, vF, size );
+(void) vvSub( vCC, vH, size );
 
 (void) vvCopy( vDD, vB, size );
 (void) vvSub( vDD, vD, size );
-(void) vvSub( vDD, vE, size );
-(void) vvSub( vDD, vG, size );
+(void) vvAdd( vDD, vE, size );
+(void) vvAdd( vDD, vG, size );
 
 (void) dWrite( outUnit, vAA, wordLen*size );
 (void) dWrite( outUnit, vBB, wordLen*size );
