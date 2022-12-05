@@ -28,6 +28,10 @@ define pulse pwh
   "pwh=p1"               /* 1H hard pulse at power level p1 (tpwr) */
 define pulse pwc
   "pwc=p3"               /* 13C pulse at power level pl2 (dhpwr) */
+#ifdef Ddec
+define pulse pwd
+  "pwd=p30"               /* 2H pulse at power pl4 */
+#endif
 
 /************************/
 /*   Define delays      */
@@ -41,7 +45,7 @@ define pulse pwc
   "d0=larger((in0)/2 - 2.0*pwh, 2e-7)"
 
 define delay taua
-  "taua=d3"              /* d3 ~ 1.8-2ms ~ 1.0s/(4*125.3)"  ~ 1 / 4J(CH) */
+  "taua=d3"              /* d3 ~ 1.8-2ms ~ 1.0s/(4*125.3)  ~ 1 / 4J(CH) */
 define delay taub
   "taub=d4"              /* d4 = 1/4JCH exactly */ 
 
@@ -51,11 +55,21 @@ define delay taub
 aqseq 312
 
 1 ze
+#ifdef Ddec
+; d11 LOCKDEC_ON /* Not required for AvanceIII-HD */
+  50u LOCKH_ON
+  d11 H2_PULSE
+  2u pl41:f4
+#endif /*Ddec*/
 
 2 d11 do:f2
 
   20u pl1:f1 pl2:f2
 
+#ifdef Ddec
+  d11 H2_LOCK
+  6m LOCKH_OFF
+#endif /*Ddec*/
 
 /******************/
 /* Messerle purge */
@@ -74,13 +88,21 @@ d1 cw:f1 ph26
 30u fq=0:f1
 20u pl1:f1
 
+#ifdef Ddec
+  50u LOCKH_ON
+  15u H2_PULSE
+#endif
 
 /****************************************/
 /* Destroy 13C equlibrium magnetization */
 /****************************************/
   (pwc ph26):f2
 
+#ifdef Ddec
+  20u UNBLKGRAMP
+#else
   20u UNBLKGRAD
+#endif
 
   2u
   p50:gp0
@@ -123,9 +145,20 @@ d1 cw:f1 ph26
   p52:gp2
   d16
 
+
+#ifdef Ddec
+  "DELTA = taub - 2u - p52 - d16 - 2u - pwd - 2u - 2u"
+#else
   "DELTA = taub - 2u - p52 - d16"
+#endif
   DELTA
 
+#ifdef Ddec
+  2u pl4:f4
+  (pwd ph27):f4
+  2u pl41:f4
+  (2u cpds4 ph26):f4
+#endif
   ;(pwc ph26):f2
 
 /*************/
@@ -148,11 +181,21 @@ d1 cw:f1 ph26
   (pwh ph26):f1
   ;(pwc ph3):f2
 
+#ifdef Ddec
+  2u do:f4
+  2u pl4:f4
+  (pwd ph29):f4
+#endif
+
   2u
   p53:gp3
   d16
 
+#ifdef Ddec
+  "DELTA = taub - 2u - 2u - pwd - 2u - p53 - d16"
+#else
   "DELTA = taub - 2u - p53 - d16"
+#endif
   DELTA
 
 /********/
@@ -204,7 +247,11 @@ d1 cw:f1 ph26
   p57:gp7
   d16 
 
+#ifdef Ddec
+  4u BLKGRAMP
+#else
   4u BLKGRAD
+#endif
 
   (pwc ph26):f2
   (pwc ph5):f2
@@ -222,6 +269,11 @@ d1 cw:f1 ph26
 ;    F1QF(calclc(l1,1))
 ;    F2PH(calph(ph4,-90), caldel(d0,+in0) & calph(ph31,+180))
 
+#ifdef Ddec
+  d11 H2_LOCK
+  d11 LOCKH_OFF
+; d11 LOCKDEC_OFF        /* use statement for earlier hardware */
+#endif
 
 HaltAcqu, 1m
 exit
@@ -241,15 +293,18 @@ ph31=0 2
 
 ;pl1 : tpwr - power level for pwh
 ;pl2 : dhpwr - power level for 13C pulse pwc (p2)
+;pl4  : power level for 2H high power pulses
 ;pl9 : tsatpwr - power level for presat
 ;pl11 : tpwrmess - power level for Messerle purge
 ;pl21 : dpwr - power level for  13C decoupling cpd2
+;pl41 : power level for 2H waltz decoupling
 ;p10 : 1000usec water flip-back
 ;sp10 : water flip-back (on H2O)
 ;spw14 : power level for eburp1 pulse
 ;spnam14: eburp1 pulse on water
 ;p1 : pwh
 ;p3 : pwc
+;p30: 2H high power pulse
 ;p14 : eburp1 pulse width, typically 7000u
 ;p50 : gradient pulse 50                                [1000 usec]
 ;p51 : gradient pulse 51                                [400 usec]
@@ -260,6 +315,7 @@ ph31=0 2
 ;p56 : gradient pulse 56                                [500 usec]
 ;p57 : gradient pulse 57                                [700 usec]
 ;pcpd2 : 13C pulse width for 13C decoupling
+;pcpd4 : 2H pulse width for 2H decoupling
 ;d1 : Repetition delay D1
 ;d3 : taua ~1/(4*JCH)  ~1.8-2ms
 ;d4 : taub - set to 1/4JHC = 2.0 ms
@@ -267,6 +323,7 @@ ph31=0 2
 ;d16 : gradient recovery delay, 200us
 ;cpd2 : 13C decoupling during t2 according to program defined by cpdprg2
 ;cpdprg2 : 13C decoupling during t2
+;cpdprg4 : 2H decoupling during relaxation period
 ;cnst10: water frequency for presat
 ;l1 : counter for the ncyc_cp values for cpmg
 ;l2 : actual value of ncyc_cp
