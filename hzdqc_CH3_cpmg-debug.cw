@@ -102,14 +102,21 @@ aqseq 312
 11  (p4 ph1):f2 ; A
     d22
     ; begin CPMG (A)
-31  DELTA
-    (center (p1 ph24 p2 ph21 p1 ph24):f1 (p3 ph24 p4 ph21 p3 ph24):f2 )
-    DELTA ipp21 ipp22 ipp23 ipp24 ipp25
-    lo to 31 times ncyc
-41  DELTA dpp21 dpp22 dpp23 dpp24 dpp25
-    (center (p1 ph23 p2 ph22 p1 ph23):f1 (p3 ph23 p4 ph22 p3 ph23):f2 )
+31  DELTA    
+    (center (p1 ph1 p2 ph2 p1 ph1):f1 (p3 ph1 p4 ph2 p3 ph1):f2 )
     DELTA
-    lo to 41 times ncyc
+    DELTA
+    (center (p1 ph2 p2 ph3 p1 ph2):f1 (p3 ph2 p4 ph3 p3 ph2):f2 )
+    DELTA
+    lo to 31 times ncyc
+; 31  DELTA
+;     (center (p1 ph24 p2 ph21 p1 ph24):f1 (p3 ph24 p4 ph21 p3 ph24):f2 )
+;     DELTA ipp21 ipp22 ipp23 ipp24 ipp25
+;     lo to 31 times ncyc
+; 41  DELTA dpp21 dpp22 dpp23 dpp24 dpp25
+;     (center (p1 ph23 p2 ph22 p1 ph23):f1 (p3 ph23 p4 ph22 p3 ph23):f2 )
+;     DELTA
+;     lo to 41 times ncyc
 ; 31  DELTA
 ;     (center (p2 ph2):f1 (p4 ph2):f2)
 ;     DELTA
@@ -123,14 +130,21 @@ aqseq 312
 12  d22         ; A'
     (p4 ph1):f2
     ; begin CPMG (A')
-32  DELTA
-    (center (p1 ph24 p2 ph21 p1 ph24):f1 (p3 ph24 p4 ph21 p3 ph24):f2 )
-    DELTA ipp21 ipp22 ipp23 ipp24 ipp25
-    lo to 32 times ncyc
-42  DELTA dpp21 dpp22 dpp23 dpp24 dpp25
-    (center (p1 ph23 p2 ph22 p1 ph23):f1 (p3 ph23 p4 ph22 p3 ph23):f2 )
+32  DELTA    
+    (center (p1 ph1 p2 ph2 p1 ph1):f1 (p3 ph1 p4 ph2 p3 ph1):f2 )
     DELTA
-    lo to 42 times ncyc
+    DELTA
+    (center (p1 ph2 p2 ph3 p1 ph2):f1 (p3 ph2 p4 ph3 p3 ph2):f2 )
+    DELTA
+    lo to 32 times ncyc
+; 32  DELTA
+;     (center (p1 ph24 p2 ph21 p1 ph24):f1 (p3 ph24 p4 ph21 p3 ph24):f2 )
+;     DELTA ipp21 ipp22 ipp23 ipp24 ipp25
+;     lo to 32 times ncyc
+; 42  DELTA dpp21 dpp22 dpp23 dpp24 dpp25
+;     (center (p1 ph23 p2 ph22 p1 ph23):f1 (p3 ph23 p4 ph22 p3 ph23):f2 )
+;     DELTA
+;     lo to 42 times ncyc
 ; 32  DELTA
 ;     (center (p2 ph2):f1 (p4 ph2):f2)
 ;     DELTA
@@ -144,14 +158,21 @@ aqseq 312
 
 13  d0           ; B
     ; begin CPMG (B)
-33  DELTA
-    (center (p1 ph24 p2 ph21 p1 ph24):f1 (p3 ph24 p4 ph21 p3 ph24):f2 )
-    DELTA ipp21 ipp22 ipp23 ipp24 ipp25
-    lo to 33 times ncyc
-43  DELTA dpp21 dpp22 dpp23 dpp24 dpp25
-    (center (p1 ph23 p2 ph22 p1 ph23):f1 (p3 ph23 p4 ph22 p3 ph23):f2 )
+33  DELTA    
+    (center (p1 ph1 p2 ph2 p1 ph1):f1 (p3 ph1 p4 ph2 p3 ph1):f2 )
     DELTA
-    lo to 43 times ncyc
+    DELTA
+    (center (p1 ph2 p2 ph3 p1 ph2):f1 (p3 ph2 p4 ph3 p3 ph2):f2 )
+    DELTA
+    lo to 33 times ncyc
+; 33  DELTA
+;     (center (p1 ph24 p2 ph21 p1 ph24):f1 (p3 ph24 p4 ph21 p3 ph24):f2 )
+;     DELTA ipp21 ipp22 ipp23 ipp24 ipp25
+;     lo to 33 times ncyc
+; 43  DELTA dpp21 dpp22 dpp23 dpp24 dpp25
+;     (center (p1 ph23 p2 ph22 p1 ph23):f1 (p3 ph23 p4 ph22 p3 ph23):f2 )
+;     DELTA
+;     lo to 43 times ncyc
 ; 33  DELTA
 ;     (center (p2 ph2):f1 (p4 ph2):f2)
 ;     DELTA
@@ -165,14 +186,21 @@ aqseq 312
 
 14  d0          ; B'
     ; begin CPMG (B')
-34  DELTA
-    (center (p1 ph24 p2 ph21 p1 ph24):f1 (p3 ph24 p4 ph21 p3 ph24):f2 )
-    DELTA ipp21 ipp22 ipp23 ipp24 ipp25
-    lo to 34 times ncyc
-44  DELTA dpp21 dpp22 dpp23 dpp24 dpp25
-    (center (p1 ph23 p2 ph22 p1 ph23):f1 (p3 ph23 p4 ph22 p3 ph23):f2 )
+34  DELTA    
+    (center (p1 ph1 p2 ph2 p1 ph1):f1 (p3 ph1 p4 ph2 p3 ph1):f2 )
     DELTA
-    lo to 44 times ncyc
+    DELTA
+    (center (p1 ph2 p2 ph3 p1 ph2):f1 (p3 ph2 p4 ph3 p3 ph2):f2 )
+    DELTA
+    lo to 34 times ncyc
+; 34  DELTA
+;     (center (p1 ph24 p2 ph21 p1 ph24):f1 (p3 ph24 p4 ph21 p3 ph24):f2 )
+;     DELTA ipp21 ipp22 ipp23 ipp24 ipp25
+;     lo to 34 times ncyc
+; 44  DELTA dpp21 dpp22 dpp23 dpp24 dpp25
+;     (center (p1 ph23 p2 ph22 p1 ph23):f1 (p3 ph23 p4 ph22 p3 ph23):f2 )
+;     DELTA
+;     lo to 44 times ncyc
 ; 34  DELTA
 ;     (center (p2 ph2):f1 (p4 ph2):f2)
 ;     DELTA
@@ -254,6 +282,8 @@ exit
   
 ph1=0
 ph2=1
+ph3=2
+ph4=3
 ph11=0 0 2 2
 ph12=0 2
 ph13=0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
