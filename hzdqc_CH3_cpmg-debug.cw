@@ -103,10 +103,10 @@ aqseq 312
     d22
     ; begin CPMG (A)
 31  DELTA    
-    (center (p1 ph1 p2 ph2 p1 ph1):f1 (p3 ph1 p4 ph2 p3 ph1):f2 )
+    (center (p2 ph1):f1 (p4 ph1):f2 )
     DELTA
     DELTA
-    (center (p1 ph2 p2 ph3 p1 ph2):f1 (p3 ph2 p4 ph3 p3 ph2):f2 )
+    (center (p2 ph2):f1 (p4 ph2):f2 )
     DELTA
     lo to 31 times ncyc
 ; 31  DELTA
@@ -131,10 +131,10 @@ aqseq 312
     (p4 ph1):f2
     ; begin CPMG (A')
 32  DELTA    
-    (center (p1 ph1 p2 ph2 p1 ph1):f1 (p3 ph1 p4 ph2 p3 ph1):f2 )
+    (center (p2 ph1):f1 (p4 ph1):f2 )
     DELTA
     DELTA
-    (center (p1 ph2 p2 ph3 p1 ph2):f1 (p3 ph2 p4 ph3 p3 ph2):f2 )
+    (center (p2 ph2):f1 (p4 ph2):f2 )
     DELTA
     lo to 32 times ncyc
 ; 32  DELTA
@@ -159,10 +159,10 @@ aqseq 312
 13  d0           ; B
     ; begin CPMG (B)
 33  DELTA    
-    (center (p1 ph1 p2 ph2 p1 ph1):f1 (p3 ph1 p4 ph2 p3 ph1):f2 )
+    (center (p2 ph1):f1 (p4 ph1):f2 )
     DELTA
     DELTA
-    (center (p1 ph2 p2 ph3 p1 ph2):f1 (p3 ph2 p4 ph3 p3 ph2):f2 )
+    (center (p2 ph2):f1 (p4 ph2):f2 )
     DELTA
     lo to 33 times ncyc
 ; 33  DELTA
@@ -187,10 +187,10 @@ aqseq 312
 14  d0          ; B'
     ; begin CPMG (B')
 34  DELTA    
-    (center (p1 ph1 p2 ph2 p1 ph1):f1 (p3 ph1 p4 ph2 p3 ph1):f2 )
+    (center (p2 ph1):f1 (p4 ph1):f2 )
     DELTA
     DELTA
-    (center (p1 ph2 p2 ph3 p1 ph2):f1 (p3 ph2 p4 ph3 p3 ph2):f2 )
+    (center (p2 ph2):f1 (p4 ph2):f2 )
     DELTA
     lo to 34 times ncyc
 ; 34  DELTA
