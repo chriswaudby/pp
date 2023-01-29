@@ -26,12 +26,56 @@ prosol relations=<triple>
 "in0=inf2"
 "d0=in0/2-p3*4/3.1415"
 
-"l0=0"
-"l1=td1"
-"l2=td2/8"
 
-define list<loopcounter> ncyc=<$VCLIST>
-;"DELTA=d20"
+define delay tauCPMG
+define delay tauCPMG1
+define list<loopcounter> ncyc_cp=<$VCLIST>
+
+define pulse pwh
+  "pwh=p1" /* 1H hard pulse at power level p1 */
+define pulse pwc
+  "pwc=p3" /* 13C pulse at power level pl2 */
+define pulse pwh_cp /* 1H CPMG pulse power level */
+  "pwh_cp=p15"
+
+define delay time_T2
+  "time_T2=d20" /* CPMG duration <= 40 ms */
+"TAU2=0.2u"
+
+
+/**********************/
+/* Define CPMG pulses */
+/**********************/
+#ifdef comp180_flg
+  #define cpmg_11 (center (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1 (p4 ph11):f2 )
+  #define cpmg_13 (center (pwh_cp ph14 pwh_cp*2.66667 ph13 pwh_cp ph14):f1 (p4 ph13):f2 )
+  #define cpmg_21 (center (pwh_cp ph22 pwh_cp*2.66667 ph21 pwh_cp ph22):f1 (p4 ph21):f2 )
+  #define cpmg_23 (center (pwh_cp ph24 pwh_cp*2.66667 ph23 pwh_cp ph24):f1 (p4 ph23):f2 )
+  "cnst51=2.333335"
+#else
+  #define cpmg_11 (center (pwh_cp*2.0 ph11):f1 (p4 ph11):f2 )
+  #define cpmg_13 (center (pwh_cp*2.0 ph13):f1 (p4 ph13):f2 )
+  #define cpmg_21 (center (pwh_cp*2.0 ph21):f1 (p4 ph21):f2 )
+  #define cpmg_23 (center (pwh_cp*2.0 ph23):f1 (p4 ph23):f2 )
+  "cnst51=1.0"
+#endif
+
+; #define cpmg_F if "(nsdone+2)%8 < 4" {\n cpmg_11 \n}\n else {\n cpmg_13 \n}
+; #define cpmg_R if "(nsdone+2)%8 < 4" {\n cpmg_21 \n}\n else {\n cpmg_23 \n}
+#define cpmg_F cpmg_11
+#define cpmg_R cpmg_21
+
+define loopcounter ncyc_max /* max value of ncyc used */
+"ncyc_max=l8"
+"DELTA8 = pwh_cp*2.0*cnst51*ncyc_max*2.0"
+
+"l0=0"
+"l1=0"
+"l2=0"
+"l3=0"
+"l4=td1"
+"l5=td2/8"
+
 
 baseopt_echo
 "acqt0=0"
@@ -66,186 +110,226 @@ aqseq 312
   p16:gp2
   d16
 
-  ; calculate CPMG delays
-    if "ncyc == 0" goto 77
-    "DELTA = d20/(4*ncyc)-larger(p2,p4)"
-    ;goto 78
-77  4u; "DELTA = d20*1"
-78  4u
+2u
+"ncyc_cp.idx=l1"
+2u rpp11 rpp12 rpp13 rpp14 rpp21 rpp22 rpp23 rpp24
 
-  ; reset phase cycling for XY16 CPMG
-  d12 rpp21 rpp22 rpp23 rpp24
+; l2 = ncyc
+"l2 = (trunc(ncyc_cp + 0.3))"
+2u
+; l3 = ncyc_max - ncyc (unless ncyc = 0)
+if "l2 > 0 " {
+  "l3 = (trunc(ncyc_max - l2 + 0.3))"
+}
+else {
+  "l3 = 0"
+}
+
+; calculate delay times
+if "l2 > 0" {
+  "tauCPMG = (time_T2*0.25)/l2"
+  "tauCPMG1 = tauCPMG - (DELTA8*0.25 + 0.2u*l3)/l2"
+}
+else {
+  "tauCPMG = time_T2*0.25"
+  "tauCPMG1 = 2u"
+}
 
   ; begin main sequence
-  (p1 ph11):f1
+  (p1 ph5):f1
   "DELTA1=d21-p1*0.6366"
   DELTA1
 
-  (p3 ph12):f2
-  if "ncyc == 0" goto 20
+  (p3 ph6):f2
+  if "l1 == 0" goto 51
 
   if "l0 % 4 == 0" goto 11
-  if "l0 % 4 == 1" goto 12
-  if "l0 % 4 == 2" goto 13
-  if "l0 % 4 == 3" goto 14
+  if "l0 % 4 == 1" goto 21
+  if "l0 % 4 == 2" goto 31
+  if "l0 % 4 == 3" goto 41
 
-; 2u rpp21 rpp22 rpp23 rpp24 rpp25
-; first half of CPMG
-;   DELTA
-;   (center (p1 ph24 p2 ph21 p1 ph24):f1 (p3 ph24 p4 ph21 p3 ph24):f2 )
-;   DELTA ipp21 ipp22 ipp23 ipp24 ipp25
-; second half of CPMG
-;   DELTA dpp21 dpp22 dpp23 dpp24 dpp25
-;   (center (p1 ph23 p2 ph22 p1 ph23):f1 (p3 ph23 p4 ph22 p3 ph23):f2 )
-;   DELTA
+
 
 11  (p4 ph1):f2 ; A
     d22
     ; begin CPMG (A)
-31  DELTA    
-    (center (p2 ph1):f1 (p4 ph1):f2 )
-    DELTA
-    DELTA
-    (center (p2 ph2):f1 (p4 ph2):f2 )
-    DELTA
-    lo to 31 times ncyc
-; 31  DELTA
-;     (center (p1 ph24 p2 ph21 p1 ph24):f1 (p3 ph24 p4 ph21 p3 ph24):f2 )
-;     DELTA ipp21 ipp22 ipp23 ipp24 ipp25
-;     lo to 31 times ncyc
-; 41  DELTA dpp21 dpp22 dpp23 dpp24 dpp25
-;     (center (p1 ph23 p2 ph22 p1 ph23):f1 (p3 ph23 p4 ph22 p3 ph23):f2 )
-;     DELTA
-;     lo to 41 times ncyc
-; 31  DELTA
-;     (center (p2 ph2):f1 (p4 ph2):f2)
-;     DELTA
-;     lo to 31 times 2
-    ; end CPMG (A)
-    (center (p2 ph13):f1 (p4 ph1):f2)
+; First half of CPMG
+  if "l2 > 0" {
+13   tauCPMG1
+    cpmg_F
+    tauCPMG1 ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
+    lo to 13 times l2
+  }
+  if "l3 > 0" {
+14   0.2u
+    cpmg_F
+    0.2u ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
+    lo to 14 times l3
+
+}
+; Central 180o 1H and 13C pulses
+  (center (pwh_cp*2.0 ph7):f1 (p4 ph2):f2 )
+; Second half of CPMG
+  if "l3 > 0" {
+15   0.2u dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
+    cpmg_R
+    0.2u
+    lo to 15 times l3
+  }
+  if "l2 > 0" {
+16   tauCPMG1 dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
+    cpmg_R
+    tauCPMG1
+    lo to 16 times l2
+  }
+    ;(center (p2 ph7):f1 (p4 ph1):f2)
     d22
     d0
     goto 99
 
-12  d22         ; A'
-    (p4 ph1):f2
-    ; begin CPMG (A')
-32  DELTA    
-    (center (p2 ph1):f1 (p4 ph1):f2 )
-    DELTA
-    DELTA
-    (center (p2 ph2):f1 (p4 ph2):f2 )
-    DELTA
-    lo to 32 times ncyc
-; 32  DELTA
-;     (center (p1 ph24 p2 ph21 p1 ph24):f1 (p3 ph24 p4 ph21 p3 ph24):f2 )
-;     DELTA ipp21 ipp22 ipp23 ipp24 ipp25
-;     lo to 32 times ncyc
-; 42  DELTA dpp21 dpp22 dpp23 dpp24 dpp25
-;     (center (p1 ph23 p2 ph22 p1 ph23):f1 (p3 ph23 p4 ph22 p3 ph23):f2 )
-;     DELTA
-;     lo to 42 times ncyc
-; 32  DELTA
-;     (center (p2 ph2):f1 (p4 ph2):f2)
-;     DELTA
-;     lo to 32 times 2
-    ; end CPMG (A')
-    (p2 ph13):f1
+21  d22         ; A'
+; First half of CPMG
+  if "l2 > 0" {
+23   tauCPMG1
+    cpmg_F
+    tauCPMG1 ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
+    lo to 23 times l2
+  }
+  if "l3 > 0" {
+24   0.2u
+    cpmg_F
+    0.2u ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
+    lo to 24 times l3
+
+}
+; Central 180o 1H and 13C pulses
+  (center (pwh_cp*2.0 ph7):f1 (p4 ph2):f2 )
+; Second half of CPMG
+  if "l3 > 0" {
+25   0.2u dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
+    cpmg_R
+    0.2u
+    lo to 25 times l3
+  }
+  if "l2 > 0" {
+26   tauCPMG1 dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
+    cpmg_R
+    tauCPMG1
+    lo to 26 times l2
+  }
     d22
     (p4 ph1):f2
     d0
     goto 99
 
-13  d0           ; B
+31  d0           ; B
+    d22
     ; begin CPMG (B)
-33  DELTA    
-    (center (p2 ph1):f1 (p4 ph1):f2 )
-    DELTA
-    DELTA
-    (center (p2 ph2):f1 (p4 ph2):f2 )
-    DELTA
-    lo to 33 times ncyc
-; 33  DELTA
-;     (center (p1 ph24 p2 ph21 p1 ph24):f1 (p3 ph24 p4 ph21 p3 ph24):f2 )
-;     DELTA ipp21 ipp22 ipp23 ipp24 ipp25
-;     lo to 33 times ncyc
-; 43  DELTA dpp21 dpp22 dpp23 dpp24 dpp25
-;     (center (p1 ph23 p2 ph22 p1 ph23):f1 (p3 ph23 p4 ph22 p3 ph23):f2 )
-;     DELTA
-;     lo to 43 times ncyc
-; 33  DELTA
-;     (center (p2 ph2):f1 (p4 ph2):f2)
-;     DELTA
-;     lo to 33 times 2
-    ; end CPMG (B)
-    d22
-    (center (p2 ph13):f1 (p4 ph1):f2)
+; First half of CPMG
+  if "l2 > 0" {
+33   tauCPMG1
+    cpmg_F
+    tauCPMG1 ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
+    lo to 33 times l2
+  }
+  if "l3 > 0" {
+34   0.2u
+    cpmg_F
+    0.2u ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
+    lo to 34 times l3
+
+}
+; Central 180o 1H and 13C pulses
+  (center (pwh_cp*2.0 ph7):f1 (p4 ph2):f2 )
+; Second half of CPMG
+  if "l3 > 0" {
+35   0.2u dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
+    cpmg_R
+    0.2u
+    lo to 35 times l3
+  }
+  if "l2 > 0" {
+36   tauCPMG1 dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
+    cpmg_R
+    tauCPMG1
+    lo to 36 times l2
+  }
+    ;(center (p2 ph7):f1 (p4 ph1):f2)
     d22
     (p4 ph1):f2
     goto 99
 
-14  d0          ; B'
+41  d0          ; B'
     ; begin CPMG (B')
-34  DELTA    
-    (center (p2 ph1):f1 (p4 ph1):f2 )
-    DELTA
-    DELTA
-    (center (p2 ph2):f1 (p4 ph2):f2 )
-    DELTA
-    lo to 34 times ncyc
-; 34  DELTA
-;     (center (p1 ph24 p2 ph21 p1 ph24):f1 (p3 ph24 p4 ph21 p3 ph24):f2 )
-;     DELTA ipp21 ipp22 ipp23 ipp24 ipp25
-;     lo to 34 times ncyc
-; 44  DELTA dpp21 dpp22 dpp23 dpp24 dpp25
-;     (center (p1 ph23 p2 ph22 p1 ph23):f1 (p3 ph23 p4 ph22 p3 ph23):f2 )
-;     DELTA
-;     lo to 44 times ncyc
-; 34  DELTA
-;     (center (p2 ph2):f1 (p4 ph2):f2)
-;     DELTA
-;     lo to 34 times 2
-    ; end CPMG (B')
     (p4 ph1):f2
     d22
-    (p2 ph13):f1
-    (p4 ph1):f2
+; First half of CPMG
+  if "l2 > 0" {
+43   tauCPMG1
+    cpmg_F
+    tauCPMG1 ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
+    lo to 43 times l2
+  }
+  if "l3 > 0" {
+44   0.2u
+    cpmg_F
+    0.2u ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
+    lo to 44 times l3
+
+}
+; Central 180o 1H and 13C pulses
+  (center (pwh_cp*2.0 ph7):f1 (p4 ph2):f2 )
+; Second half of CPMG
+  if "l3 > 0" {
+45   0.2u dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
+    cpmg_R
+    0.2u
+    lo to 45 times l3
+  }
+  if "l2 > 0" {
+46   tauCPMG1 dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
+    cpmg_R
+    tauCPMG1
+    lo to 46 times l2
+  }
     d22
     goto 99
+
+
 
     ; ncyc = 0 - no relaxation delay
-20  0.1u
-    if "l0 % 4 == 0" goto 21
-    if "l0 % 4 == 1" goto 22
-    if "l0 % 4 == 2" goto 23
-    if "l0 % 4 == 3" goto 24
+51  0.1u
+    if "l0 % 4 == 0" goto 52
+    if "l0 % 4 == 1" goto 53
+    if "l0 % 4 == 2" goto 54
+    if "l0 % 4 == 3" goto 55
 
-21  (p4 ph1):f2 ; A
+52  (p4 ph1):f2 ; A
     d22
-    (center (p2 ph13):f1 (p4 ph1):f2)
+    (center (p2 ph7):f1 (p4 ph1):f2)
     d22
     d0
     goto 99
 
-22  d22         ; A'
+53  d22         ; A'
     (p4 ph1):f2
-    (p2 ph13):f1
+    (p2 ph7):f1
     d22
     (p4 ph1):f2
     d0
     goto 99
 
-23  d0           ; B
+54  d0           ; B
     d22
-    (center (p2 ph13):f1 (p4 ph1):f2)
+    (center (p2 ph7):f1 (p4 ph1):f2)
     d22
     (p4 ph1):f2
     goto 99
 
-24  d0          ; B'
+55  d0          ; B'
     (p4 ph1):f2
     d22
-    (p2 ph13):f1
+    (p2 ph7):f1
     (p4 ph1):f2
     d22
     goto 99
@@ -267,12 +351,12 @@ aqseq 312
     lo to 1 times 4
 
     ; middle loop (phases)
-    30u ip12
+    30u ip6
     lo to 1 times 2
 
     ; loop over relaxation delays
-    30u ncyc.inc
-    lo to 1 times l1
+    30u iu1
+    lo to 1 times l4
 
     ; outer loop (d0)
     30u id0
@@ -284,14 +368,17 @@ ph1=0
 ph2=1
 ph3=2
 ph4=3
-ph11=0 0 2 2
-ph12=0 2
-ph13=0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
-ph20=1
-ph21={0 1 0 1 1 0 1 0}^2
-ph22={0 3 0 3 3 0 3 0}^2
-ph23=ph12+ph20
-ph24=ph11-ph20
+ph5=0 0 2 2
+ph6=0 2
+ph7=0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
+ph11=0 1 0 1
+ph12=ph11-ph0
+ph13=1 0 1 0
+ph14=ph13-ph0
+ph21=0 3 0 3
+ph22=ph21+ph0
+ph23=3 0 3 0
+ph24=ph23+ph0
 ph29=0
 ph31=0 2 2 0 2 0 0 2
 
