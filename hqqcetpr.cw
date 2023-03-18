@@ -1,5 +1,6 @@
 ; HQQC (gradient-selected)
 ; Chris Waudby Jul 2019
+; updated Mar 2023, adding switch -DDQ for 4-spin HDQQC experiment
 ;
 
 #include <Avance.incl>
@@ -18,7 +19,11 @@
 
 define list<grad_scalar> gl1 = { 0.13 }
 define list<grad_scalar> gl2 = { 0.1 }
+#ifdef DQ
+define list<grad_scalar> gl3 = { 0.863 -0.31 }
+#else
 define list<grad_scalar> gl3 = { -0.737 0.65 }
+#endif
 
 "DELTA1=d2-p16-d16"
 ;"DELTA2=d2-p16-d16-d12-4u-de+0.6366*p1"
