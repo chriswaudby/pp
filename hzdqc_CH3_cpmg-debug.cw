@@ -46,24 +46,11 @@ define delay time_T2
 /**********************/
 /* Define CPMG pulses */
 /**********************/
-#ifdef comp180_flg
-  #define cpmg_11 (center (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1 (p4 ph11):f2 )
-  #define cpmg_13 (center (pwh_cp ph14 pwh_cp*2.66667 ph13 pwh_cp ph14):f1 (p4 ph13):f2 )
-  #define cpmg_21 (center (pwh_cp ph22 pwh_cp*2.66667 ph21 pwh_cp ph22):f1 (p4 ph21):f2 )
-  #define cpmg_23 (center (pwh_cp ph24 pwh_cp*2.66667 ph23 pwh_cp ph24):f1 (p4 ph23):f2 )
+;#ifdef comp180_flg
   "cnst51=2.333335"
-#else
-  #define cpmg_11 (center (pwh_cp*2.0 ph11):f1 (p4 ph11):f2 )
-  #define cpmg_13 (center (pwh_cp*2.0 ph13):f1 (p4 ph13):f2 )
-  #define cpmg_21 (center (pwh_cp*2.0 ph21):f1 (p4 ph21):f2 )
-  #define cpmg_23 (center (pwh_cp*2.0 ph23):f1 (p4 ph23):f2 )
-  "cnst51=1.0"
-#endif
-
-; #define cpmg_F if "(nsdone+2)%8 < 4" {\n cpmg_11 \n}\n else {\n cpmg_13 \n}
-; #define cpmg_R if "(nsdone+2)%8 < 4" {\n cpmg_21 \n}\n else {\n cpmg_23 \n}
-#define cpmg_F cpmg_11
-#define cpmg_R cpmg_21
+;#else
+;  "cnst51=1.0"
+;#endif
 
 define loopcounter ncyc_max /* max value of ncyc used */
 "ncyc_max=l8"
@@ -141,7 +128,7 @@ else {
   DELTA1
 
   (p3 ph6):f2
-  if "l1 == 0" goto 51
+  if "l2 == 0" goto 51
 
   if "l0 % 4 == 0" goto 11
   if "l0 % 4 == 1" goto 21
@@ -156,13 +143,15 @@ else {
 ; First half of CPMG
   if "l2 > 0" {
 13   tauCPMG1
-    cpmg_F
+    ;(center (pwh_cp*2.0 ph11):f1 (p4 ph11):f2 )
+    (center (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1 (p4 ph11):f2 )
     tauCPMG1 ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
     lo to 13 times l2
   }
   if "l3 > 0" {
 14   0.2u
-    cpmg_F
+    ;(center (pwh_cp*2.0 ph11):f1 (p4 ph11):f2 )
+    (center (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1 (p4 ph11):f2 )
     0.2u ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
     lo to 14 times l3
 
@@ -172,13 +161,15 @@ else {
 ; Second half of CPMG
   if "l3 > 0" {
 15   0.2u dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
-    cpmg_R
+    ;(center (pwh_cp*2.0 ph21):f1 (p4 ph21):f2 )
+    (center (pwh_cp ph22 pwh_cp*2.66667 ph21 pwh_cp ph22):f1 (p4 ph21):f2 )
     0.2u
     lo to 15 times l3
   }
   if "l2 > 0" {
 16   tauCPMG1 dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
-    cpmg_R
+    ;(center (pwh_cp*2.0 ph21):f1 (p4 ph21):f2 )
+    (center (pwh_cp ph22 pwh_cp*2.66667 ph21 pwh_cp ph22):f1 (p4 ph21):f2 )
     tauCPMG1
     lo to 16 times l2
   }
@@ -191,13 +182,15 @@ else {
 ; First half of CPMG
   if "l2 > 0" {
 23   tauCPMG1
-    cpmg_F
+    (center (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1 (p4 ph11):f2 )
+    ;(center (pwh_cp*2.0 ph11):f1 (p4 ph11):f2 )
     tauCPMG1 ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
     lo to 23 times l2
   }
   if "l3 > 0" {
 24   0.2u
-    cpmg_F
+    ;(center (pwh_cp*2.0 ph11):f1 (p4 ph11):f2 )
+    (center (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1 (p4 ph11):f2 )
     0.2u ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
     lo to 24 times l3
 
@@ -207,13 +200,15 @@ else {
 ; Second half of CPMG
   if "l3 > 0" {
 25   0.2u dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
-    cpmg_R
+    ;(center (pwh_cp*2.0 ph21):f1 (p4 ph21):f2 )
+    (center (pwh_cp ph22 pwh_cp*2.66667 ph21 pwh_cp ph22):f1 (p4 ph21):f2 )
     0.2u
     lo to 25 times l3
   }
   if "l2 > 0" {
 26   tauCPMG1 dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
-    cpmg_R
+    ;(center (pwh_cp*2.0 ph21):f1 (p4 ph21):f2 )
+    (center (pwh_cp ph22 pwh_cp*2.66667 ph21 pwh_cp ph22):f1 (p4 ph21):f2 )
     tauCPMG1
     lo to 26 times l2
   }
@@ -228,13 +223,15 @@ else {
 ; First half of CPMG
   if "l2 > 0" {
 33   tauCPMG1
-    cpmg_F
+    ;(center (pwh_cp*2.0 ph11):f1 (p4 ph11):f2 )
+    (center (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1 (p4 ph11):f2 )
     tauCPMG1 ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
     lo to 33 times l2
   }
   if "l3 > 0" {
 34   0.2u
-    cpmg_F
+    ;(center (pwh_cp*2.0 ph11):f1 (p4 ph11):f2 )
+    (center (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1 (p4 ph11):f2 )
     0.2u ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
     lo to 34 times l3
 
@@ -244,13 +241,15 @@ else {
 ; Second half of CPMG
   if "l3 > 0" {
 35   0.2u dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
-    cpmg_R
+    ;(center (pwh_cp*2.0 ph21):f1 (p4 ph21):f2 )
+    (center (pwh_cp ph22 pwh_cp*2.66667 ph21 pwh_cp ph22):f1 (p4 ph21):f2 )
     0.2u
     lo to 35 times l3
   }
   if "l2 > 0" {
 36   tauCPMG1 dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
-    cpmg_R
+    ;(center (pwh_cp*2.0 ph21):f1 (p4 ph21):f2 )
+    (center (pwh_cp ph22 pwh_cp*2.66667 ph21 pwh_cp ph22):f1 (p4 ph21):f2 )
     tauCPMG1
     lo to 36 times l2
   }
@@ -266,13 +265,15 @@ else {
 ; First half of CPMG
   if "l2 > 0" {
 43   tauCPMG1
-    cpmg_F
+    ;(center (pwh_cp*2.0 ph11):f1 (p4 ph11):f2 )
+    (center (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1 (p4 ph11):f2 )
     tauCPMG1 ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
     lo to 43 times l2
   }
   if "l3 > 0" {
 44   0.2u
-    cpmg_F
+    ;(center (pwh_cp*2.0 ph11):f1 (p4 ph11):f2 )
+    (center (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1 (p4 ph11):f2 )
     0.2u ipp11 ipp12 ipp13 ipp14 ipp21 ipp22 ipp23 ipp24
     lo to 44 times l3
 
@@ -282,13 +283,15 @@ else {
 ; Second half of CPMG
   if "l3 > 0" {
 45   0.2u dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
-    cpmg_R
+    ;(center (pwh_cp*2.0 ph21):f1 (p4 ph21):f2 )
+    (center (pwh_cp ph22 pwh_cp*2.66667 ph21 pwh_cp ph22):f1 (p4 ph21):f2 )
     0.2u
     lo to 45 times l3
   }
   if "l2 > 0" {
 46   tauCPMG1 dpp11 dpp12 dpp13 dpp14 dpp21 dpp22 dpp23 dpp24
-    cpmg_R
+    ;(center (pwh_cp*2.0 ph21):f1 (p4 ph21):f2 )
+    (center (pwh_cp ph22 pwh_cp*2.66667 ph21 pwh_cp ph22):f1 (p4 ph21):f2 )
     tauCPMG1
     lo to 46 times l2
   }
@@ -360,10 +363,11 @@ else {
 
     ; outer loop (d0)
     30u id0
-    lo to 1 times l2
+    lo to 1 times l5
 
 exit 
-  
+
+ph0=0
 ph1=0
 ph2=1
 ph3=2

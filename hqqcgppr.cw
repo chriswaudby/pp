@@ -3,6 +3,9 @@
 ; requires post-processing for receiver phase
 ; Chris Waudby Jul 2020
 ;
+; TODO - need to work out correct evolution times and delays for good phase correction
+;
+
 
 #include <Avance.incl>
 #include <Grad.incl>
