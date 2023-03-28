@@ -39,11 +39,13 @@ define list<frequency> fqlist = <$FQ1LIST>
 "l3=0"
 "cnst28=fqlist"
 
+#ifndef adiabatic_flg
 "p3 = p1*pow(10,(10*log10(plw1) – 10*log10(plw25))/20)"       ;90 degree SL pulse
 "p6 = ((cnst28)/((1/(p3*4))))"               ; spin lock offset / spin lock power
 "p7 = atan(p6)"                          ; arc tan from this ratio = angle in rad
 "p8 = p7*360/(2*PI)"                                            ; angle in degree
 "p4 = p1*(1-p8/90)"                                            ; new pulse length
+#endif
 
 aqseq 312
 
@@ -84,10 +86,10 @@ if "p31 > 0.0"
 ; --------------------------------*/
 
 /*    cycle above&below plane     */
-  1u fq=cnst29(bf ppm):f1
-  1u pl1:f1
-  p1 ph7
-  p1 ph8
+;  1u fq=cnst29(bf ppm):f1
+;  1u pl1:f1
+;  p1 ph7
+;  p1 ph8
   if "p32 == 0.0"
   {
     30m
@@ -133,10 +135,10 @@ if "p31 > 0.0"
 ; ----------------------------------
 
 /*  cycle above&below plane BACK  */
-  1u fq=cnst29(bf ppm):f1
-  1u pl1:f1
-  p1 ph7
-p1 ph8
+;  1u fq=cnst29(bf ppm):f1
+;  1u pl1:f1
+;  p1 ph7
+;  p1 ph8
 
 /* ---------------------------------
 ;     anti-ringing
