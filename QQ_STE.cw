@@ -144,7 +144,7 @@ if "pwc > 20u" {
 
 ; This is the real start
 
-(pwh ph1):f1                    ; H90x
+(pwh ph1):f1                    ; H90ph1
 
 2u
 p51:gp1                         ; gradient 1
@@ -164,7 +164,7 @@ p51:gp1           ; gradient 1
 d16
 
 2u pl2:f2
-(pwc ph2):f2      ; C90ph2
+(pwc ph3):f2      ; C90ph3
 
 2u
 p61:gp11          ; gradient 11
@@ -209,7 +209,7 @@ d17
 
 #ifndef Iz
   ; magnetization diffuses as 2IzCz
-  (pwh ph3):f1          ; H90ph3
+  (pwh zero):f1          ; H90x
 
   2u
   p54:gp4               ; gradient 4
@@ -297,9 +297,9 @@ p56:gp6                 ; gradient 6
 d16
 
 #ifndef Iz
-  (pwh ph4):f1          ; H90ph4
+  (pwh one):f1          ; H90y
   1.0u
-  (pwc ph5):f2          ; C90x
+  (pwc zero):f2          ; C90x
 
   2u
   p55:gp5               ; gradient 5
@@ -308,7 +308,7 @@ d16
   "DELTA = taub - 2.0u - p55 - d16"
   DELTA                 ; delay 1/4JCH
 
-  (center(pwh*2 ph4):f1 (pwc ph27 pwc*2 ph26 pwc ph27):f2) ; H180x,C180x
+  (center(pwh*2 zero):f1 (pwc ph27 pwc*2 ph26 pwc ph27):f2) ; H180x,C180x
 
   "DELTA = taub - 2.0u - p55 - d16"
   DELTA                 ; delay 1/4JCH
@@ -317,7 +317,7 @@ d16
   p55:gp5               ; gradient 5
   d16
 
-  (pwh ph6):f1          ; H90ph6
+  (pwh zero):f1          ; H90ph6
 #else
   (pwh ph14):f1         ; H90ph14
 
@@ -380,7 +380,7 @@ d17
 p53:gp3*diff      ; gradient 3 diffusion encoding gradient
 d17
 
-(pwh ph7):f1          ; H90ph7
+(pwh ph2):f1          ; H90ph2
 
 2u
 p58:gp8               ; gradient 8
@@ -408,10 +408,10 @@ d16
   "DELTA = taua - 2.0u - p60 - d16 - pwc + pwh*2/PI"
   DELTA   ; delay 1/4JCH
   
-  (center(pwh*2 ph26):f1 (pwc ph26):f2) ; H180x,C180x
+  (center(pwh*2 ph26):f1 (pwc*2 ph26):f2) ; H180x,C180x
   
   2u pl2:f2
-  "DELTA = taua - 2u - 2u - p60 - d16 - pwc - 4u - pwc - pwc - pwh*2/PI"
+  "DELTA = taua - 2u - 2u - p60 - d16 - pwc - 4u" ; - pwc - pwc - pwh*2/PI"
   DELTA                                    ; delay 1/4JCH
   
   2u
@@ -419,10 +419,10 @@ d16
   d16
 
   4u BLKGRAD
-  (pwc zero):f2
-  (pwc ph3):f2
+  ;(pwc zero):f2
+  ;(pwc ph4):f2
 
-  (pwh one):f1
+  ;(pwh one):f1
 #else
   ; w_gate is used
   (pwc zero):f2
@@ -446,7 +446,7 @@ d16
 
   4u BLKGRAD
   (pwc zero):f2
-  (pwc ph3):f2
+  (pwc ph4):f2
 #endif
 
 2u pl21:f2
@@ -461,14 +461,8 @@ exit
 
 
 ph1= (6) 0 1 2 3 4 5  ; 0 60 120 180 240 300
-ph2= 0 0 0 0 0 0 0 0 0 0 0 0
-     0 0 0 0 0 0 0 0 0 0 0 0
-     0 0 0 0 0 0 0 0 0 0 0 0
-     2 2 2 2 2 2 2 2 2 2 2 2
-     2 2 2 2 2 2 2 2 2 2 2 2
-     2 2 2 2 2 2 2 2 2 2 2 2
-ph3= 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-     2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+ph2= (6) 0*12 1*12 2*12 3*12 4*12 5*12
+ph3= 0*6 2*6
 ph4=(12) 3 3 3 3 3 3 5  5  5  5  5  5  7 7 7 7 7 7
          9 9 9 9 9 9 11 11 11 11 11 11 1 1 1 1 1 1
 ph5 = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -478,18 +472,9 @@ ph6= (6) 0 0 0 0 0 0 1 1 1 1 1 1 2 2 2 2 2 2
 ph7= 0
 ph14= (6) 0 0 0 0 0 0 1 1 1 1 1 1 2 2 2 2 2 2
           3 3 3 3 3 3 4 4 4 4 4 4 5 5 5 5 5 5
-ph31= 0 2 0 2 0 2
-      2 0 2 0 2 0
-      0 2 0 2 0 2
-      0 2 0 2 0 2
-      2 0 2 0 2 0
-      0 2 0 2 0 2
-      2 0 2 0 2 0
-      0 2 0 2 0 2
-      2 0 2 0 2 0
-      2 0 2 0 2 0
-      0 2 0 2 0 2
-      2 0 2 0 2 0
+ph31= (6) 0 3 0 3 0 3  3 0 3 0 3 0
+          4 1 4 1 4 1  1 4 1 4 1 4
+          2 5 2 5 2 5  5 2 5 2 5 2
 ph26=0
 ph27=1
 ph28=2
