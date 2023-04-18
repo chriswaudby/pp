@@ -66,10 +66,10 @@ define delay hscuba
   "cnst24 = spw24"  ; power level for selective 13C reburp
 #endif
 
-#ifndef w_gate
-  "acqt0=-pwh*2.0/PI - 2u"  ; select 'DIGIMOD = baseopt' to execute
-#else
+#ifdef w_gate
   "acqt0=-2u"  ; select 'DIGIMOD = baseopt' to execute
+#else
+  "acqt0=-pwh*2.0/3.14159 - 2u"  ; select 'DIGIMOD = baseopt' to execute
 #endif
 
 /*************************************/
@@ -188,7 +188,7 @@ d16
 
 #ifndef C_sel
   ; subtract effects of both 1H 90
-  "DELTA = taua - 2.0u - p51 - d16 - pwc_ad*0.5 - pwh*4/PI - 0.2u"
+  "DELTA = taua - 2.0u - p51 - d16 - pwc_ad*0.5 - pwh*4/3.14159 - 0.2u"
   DELTA                                    ; delay 1/4JCH
 
   (center (pwh*2 ph1):f1 (pwc_ad:sp23 ph26):f2) ; H180x,C180x
@@ -199,7 +199,7 @@ d16
 
 #ifdef C_sel
   ; subtract effects of both 1H 90
-  "DELTA = taua - 2.0u - p51 - d16 - pwc_reb*0.5 - pwh*4/PI - 0.2u"
+  "DELTA = taua - 2.0u - p51 - d16 - pwc_reb*0.5 - pwh*4/3.14159 - 0.2u"
   DELTA                                    ; delay 1/4JCH
   (center(pwh*2 ph1):f1 (pwc_reb:sp24 ph26):f2) ; H180x,C180x
   "DELTA = taua - 2.0u - p51 - d16 - pwc_reb*0.5 - 2u"
@@ -302,7 +302,7 @@ p53:gp3*-1.0*diff ; -gradient 3 diffusion encoding gradient
 
   (center(pwh ph27 pwh*2 ph26 pwh ph27):f1 (pwc ph27 pwc*2 ph26 pwc ph27):f2) ; H180x,C180x
   
-  "DELTA = taub - 2.0u - p54 - d16 - pwh*2.0/PI"
+  "DELTA = taub - 2.0u - p54 - d16 - pwh*2.0/3.14159"
   DELTA                 ; delay 1/4JCH
 
   2u
@@ -368,7 +368,7 @@ d16
   p55:gp5*0.5           ; gradient 5 * 0.5
   d16
   
-  "DELTA = taub - 2.0u - p55 - d16 - pwh*2.0/PI - 1u"
+  "DELTA = taub - 2.0u - p55 - d16 - pwh*2.0/3.14159 - 1u"
   DELTA                 ; delay 1/4JCH
 
   (center(pwh*2 ph14):f1 (pwc ph27 pwc*2 ph26 pwc ph27):f2) ; H180x,C180x
@@ -433,44 +433,7 @@ DELTA
 p58:gp8                ; gradient 8
 d16
 
-#ifndef w_gate
-  (pwc zero):f2        ; C90x
-
-  2u
-  p60:gp10             ; gradient 10
-  d16
-  
-  #ifndef C_sel
-    "DELTA = taua - 2.0u - p60 - d16 - pwc_ad*0.5 + pwh*2/PI"
-    DELTA   ; delay 1/4JCH
-    
-    (center(pwh*2 ph26):f1 (pwc_ad:sp23 ph26):f2) ; H180x,C180x
-    
-    2u pl2:f2
-    "DELTA = taua - 2u - 2u - p60 - d16 - pwc_ad*0.5 - 4u - pwc - pwc - pwh*2/PI"
-    DELTA                                    ; delay 1/4JCH
-  #endif
-  #ifdef C_sel
-    "DELTA = taua - 2.0u - p60 - d16 - pwc_reb*0.5 + pwh*2/PI"
-    DELTA ; delay 1/4JCH
-    
-    (center(pwh*2 ph26):f1 (pwc_reb:sp24 ph26):f2) ; H180x,C180x
-    
-    2u pl2:f2
-    "DELTA = taua - 2u - 2u - p60 - d16 - pwc_reb*0.5 - 4u - pwc - pwc - pwh*2/PI"
-    DELTA
-  #endif
-  
-  2u
-  p60:gp10
-  d16
-
-  4u BLKGRAD
-  (pwc zero):f2
-  (pwc ph3):f2
-
-  (pwh one):f1
-#else
+#ifdef w_gate
   ; w_gate is used
   (pwc zero):f2
 
@@ -494,6 +457,42 @@ d16
   4u BLKGRAD
   (pwc zero):f2
   (pwc ph3):f2
+#else
+  (pwc zero):f2        ; C90x
+
+  2u
+  p60:gp10             ; gradient 10
+  d16
+  
+#ifdef C_sel
+    "DELTA = taua - 2.0u - p60 - d16 - pwc_reb*0.5 + pwh*2/3.14159"
+    DELTA ; delay 1/4JCH
+    
+    (center(pwh*2 ph26):f1 (pwc_reb:sp24 ph26):f2) ; H180x,C180x
+    
+    2u pl2:f2
+    "DELTA = taua - 2u - 2u - p60 - d16 - pwc_reb*0.5 - 4u - pwc - pwc - pwh*2/3.14159"
+    DELTA
+#else
+    "DELTA = taua - 2.0u - p60 - d16 - pwc_ad*0.5 + pwh*2/3.14159"
+    DELTA   ; delay 1/4JCH
+    
+    (center(pwh*2 ph26):f1 (pwc_ad:sp23 ph26):f2) ; H180x,C180x
+    
+    2u pl2:f2
+    "DELTA = taua - 2u - 2u - p60 - d16 - pwc_ad*0.5 - 4u - pwc - pwc - pwh*2/3.14159"
+    DELTA                                    ; delay 1/4JCH
+#endif
+  
+  2u
+  p60:gp10
+  d16
+
+  4u BLKGRAD
+  (pwc zero):f2
+  (pwc ph3):f2
+
+  (pwh one):f1
 #endif
 
 2u pl21:f2
