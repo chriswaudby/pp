@@ -43,19 +43,18 @@ define delay T_diff
 ; presat during D1
 20u fq=cnst1:f1         ; jump from o1 to water
 4u pl10:f1              ; power(tsatpwr) for presaturation
-d1 cw:f1 zero           ; Hcw(d1)x
+d1 cw:f1 ph26           ; Hcw(d1)x
 4u do:f1                ; cw off
 2u pl1:f1               ; power(tpwr)
 
 
 2u pl1:f1
 2u pl2:f2
-2u pl31:f3
 
 20u UNBLKGRAD   ; dly 20u, unblank gradients and lock on hold
 10u fq=0:f1     ; jump back to o1
 
-(p3 zero):f2   ; C90x - To destroy 13C Boltzman magnetization
+(p3 ph26):f2   ; C90x - To destroy 13C Boltzman magnetization
   2u
   (p16:gp0)     ; gradient 0
   d16
@@ -99,32 +98,32 @@ d16
 (p1 ph1):f1      ; H90ph1 - FIRST DIFFUSION ENCODING PERIOD
 
 2u
-p31:gp6*diff      ; gradient 3 diffusion encoding gradient
+p31:gp6*diff      ; gradient 6 diffusion encoding gradient
 d17
 
 (p3 ph27 p4 ph26 p3 ph27):f2   ; C180x
 
 2u
-p31:gp6*diff      ; gradient 3 diffusion encoding gradient
+p31:gp6*diff      ; gradient 6 diffusion encoding gradient
 d17
 
 (p1 ph27 p2 ph26 p1 ph27):f1
 
 2u
-p31:gp6*-1.0*diff ; -gradient 3 diffusion encoding gradient
+p31:gp6*-1.0*diff ; -gradient 6 diffusion encoding gradient
 d17
 
 (p3 ph27 p4 ph26 p3 ph27):f2   ; C180x
 
 2u
-p31:gp6*-1.0*diff ; -gradient 3 diffusion encoding gradient
+p31:gp6*-1.0*diff ; -gradient 6 diffusion encoding gradient
 d17
 
 ; transfer back to longitudinal for diffusion delay
 (p1 ph26):f1          ; H90x
 
 2u
-p16:gp6               ; gradient 3
+p16:gp3               ; gradient 3
 d16
 "DELTA = taub - 2.0u - p16 - d16"
 DELTA                 ; delay 1/4JCH
@@ -134,7 +133,7 @@ DELTA                 ; delay 1/4JCH
 "DELTA = taub - 2.0u - p16 - d16"
 DELTA                 ; delay 1/4JCH
 2u
-p16:gp6               ; gradient 3
+p16:gp3               ; gradient 3
 d16
 
 (lalign (p1 ph27):f1 (p3 ph26):f2)         ; H90y, C90x
@@ -181,13 +180,13 @@ d17
 (p1 ph27 p2 ph26 p1 ph27):f1    ; H180 composite
 
 2u
-p31:gp6*diff      ; gradient 6 diffusion encoding gradient
+p31:gp6*-1*diff      ; gradient 6 diffusion encoding gradient
 d17
 
 (p3 ph27 p4 ph26 p3 ph27):f2   ; C180x
 
 2u
-p31:gp6*diff      ; gradient 6 diffusion encoding gradient
+p31:gp6*-1*diff      ; gradient 6 diffusion encoding gradient
 d17
 
 (p1 ph2):f1          ; H90ph2
@@ -246,23 +245,25 @@ exit
 
 
 ph1= (6) 0 1 2 3 4 5  ; 0 60 120 180 240 300
-ph2= (6) 0 0 0 0 0 0
-         1 1 1 1 1 1
-         2 2 2 2 2 2
-         3 3 3 3 3 3
-         4 4 4 4 4 4
-         5 5 5 5 5 5
-ph3= 0
+ph2= (6) {{0}*6}^1^2^3^4^5
+;0 0 0 0 0 0
+;         1 1 1 1 1 1
+;         2 2 2 2 2 2
+;         3 3 3 3 3 3
+;         4 4 4 4 4 4
+;         5 5 5 5 5 5
+ph3= {0}*36 {2}*36
 ph26=0
 ph27=1
 ph28=2
 ph29=3
-ph31=(6) 0 3 0 3 0 3
-         4 1 4 1 4 1
-         2 5 2 5 2 5
-         0 3 0 3 0 3
-         4 1 4 1 4 1
-         2 5 2 5 2 5
+ph31=(6) {{{0 3 0 3 0 3}^4^2}*2}^3
+;         0 3 0 3 0 3
+;         4 1 4 1 4 1
+;         2 5 2 5 2 5
+;         0 3 0 3 0 3
+;         4 1 4 1 4 1
+;         2 5 2 5 2 5
 
 
 ;d1 : repetition delay
@@ -276,10 +277,8 @@ ph31=(6) 0 3 0 3 0 3
 ;pl1 : tpwr - power level for p1
 ;pl2 : dhpwr - power level for hard 13C pulse p3
 ;pl21 : dpwr - power level for  13C decoupling cpd2
-;pl31 : dpwr2 - power level for 15N cpd3
 ;p1 : p1
 ;p3 : p3
-;p31 : 6wn at dpwr2 for 15N decoupling during 2*TC(~29ms)
 ;cpd2 : 13C decoupling according to program defined by cpdprg2
 ;pcpd2:  13C 90 degree pulse at pl21 for cpd2
 ;spnam23 : file name for chirp pulse during inepts
