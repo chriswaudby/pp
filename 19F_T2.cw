@@ -4,7 +4,8 @@
 #include <Grad.incl>
 #include <Delay.incl>
 
-
+define delay vdMin
+"vdMin=2*p1*1.6366"
 
 "d11=30m"
 "d12=20u"
@@ -12,19 +13,22 @@
 "p2=p1*2"
 
 ; for baseopt
-"acqt0=p1*2/3.1416"
+"acqt0=0"
 baseopt_echo
 
 1 ze 
+  vdMin
+  
 2 d1 
 
-  "DELTA=vd*0.5-p1"
+  "DELTA1=vd*0.5-p1*1.6366"
+  "DELTA2=vd*0.5-p1"
 
   4u pl1:f1
   p1 ph1
-  DELTA
+  DELTA1
   p2 ph2
-  DELTA
+  DELTA2
   go=2 ph31 
   d1 mc #0 to 2 
      F1QF(ivd)
