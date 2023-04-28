@@ -6,6 +6,8 @@
 #include <Grad.incl>
 #include <Delay.incl>
 
+define list<delay> Trelax = <$VDLIST>
+
 define delay vdMin
 "vdMin=2*p1*1.6366"
 
@@ -25,8 +27,8 @@ aqseq 321
   
 2 d1 
 
-  "DELTA1=vd*0.5-p1*1.6366"
-  "DELTA2=vd*0.5-p1"
+  "DELTA1=Trelax*0.5-p1*1.6366"
+  "DELTA2=Trelax*0.5-p1"
 
   4u pl1:f1
   p1 ph1
@@ -35,7 +37,7 @@ aqseq 321
   DELTA2
   go=2 ph31 
   d11 mc #0 to 2 
-     F2QF(ivd)
+     F2QF(Trelax.inc)
      F1QF()
 
 exit 
