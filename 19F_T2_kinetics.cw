@@ -1,12 +1,13 @@
 ;19F hahn-echo, repeated measurements for kinetics
-;td2 = number of relaxation times
-;td1 = number of points for kinetics
+;td1 = number of relaxation times
+;td2 = number of points for kinetics
 
 #include <Avance.incl>
 #include <Grad.incl>
 #include <Delay.incl>
 
-define list<delay> Trelax = <$VDLIST>
+define list<delay> vd_list = <$VDLIST>
+"l1=0"
 
 define delay vdMin
 "vdMin=2*p1*1.6366"
@@ -20,15 +21,15 @@ define delay vdMin
 "acqt0=0"
 baseopt_echo
 
-aqseq 321
+aqseq 312
 
 1 ze 
   vdMin
   
 2 d1 
 
-  "DELTA1=Trelax*0.5-p1*1.6366"
-  "DELTA2=Trelax*0.5-p1"
+  "DELTA1=vd_list[l1]*0.5-p1*1.6366"
+  "DELTA2=vd_list[l1]*0.5-p1"
 
   4u pl1:f1
   p1 ph1
@@ -37,8 +38,8 @@ aqseq 321
   DELTA2
   go=2 ph31 
   d11 mc #0 to 2 
-     F2QF(Trelax.inc)
-     F1QF()
+     F1QF(calclc(l1,1))
+     F2QF()
 
 exit 
   
