@@ -37,7 +37,7 @@ prosol relations=<triple>
 "p16=1000u"
 
 "in0=inf1"
-"d0=in0/2-p21*4/3.1415"
+"d0=4u"
 
 
 "DELTA=d21-p16-d16-p39*cnst39"
@@ -76,12 +76,13 @@ prosol relations=<triple>
 "p62=350u"
 "plw26=plw3*(pow((p21/p62),2))"   /* CPD power level  */
 
+"d22=0.25*d20-1.6366*p21"
+"d23=0.25*d20-p21-0.5*d0"
+
 
 1 ze
   d11 pl26:f3
 2 10m do:f3
-
-"d22=d20*0.25"
 
 # ifdef OFFRES_PRESAT
   30u fq=cnst21(bf hz):f1
@@ -109,8 +110,7 @@ prosol relations=<triple>
 #   ifdef LABEL_CN
   (center (p40:sp24 ph2):f1 (p8:sp13 ph1):f2 (DELTA p21 ph3 d22 p22 ph11 d22 d0 d22 p22 ph12 d22 p21 ph4 DELTA):f3 )
 #   else
-  (center (p40:sp24 ph2):f1 (DELTA p21 ph3 d22 p22 ph11 d22 d0 d22 p22 ph12 d22 p21 ph4 DELTA):f3 )
-  ;(center (p40:sp24 ph2):f1 (DELTA p21 ph3 d22 d22 d0 d22 d22 p21 ph4 DELTA):f3 )
+  (center (p40:sp24 ph2):f1 (DELTA p21 ph3 d22 p22 ph11 d23 d0 d23 p22 ph12 d22 p21 ph4 DELTA):f3 )
 #   endif /*LABEL_CN*/
 
   ; ****** coherence transfer period ****
