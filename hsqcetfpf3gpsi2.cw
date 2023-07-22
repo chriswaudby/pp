@@ -59,6 +59,8 @@ prosol relations=<triple>
 "p62=350u"
 "plw16=plw3*(pow((p21/p62),2))"   /* CPD power level  */
 
+"p16=1000u"
+"p19=500u"
 
 
 "DELTA1=p16+d16+8u+de-0.6366*p1"
