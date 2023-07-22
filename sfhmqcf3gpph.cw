@@ -55,8 +55,8 @@ prosol relations=<triple>
 # endif /*OFFRES_PRESAT*/
 
 
-"spoff23=bf1*(cnst19/1000000)-o1"
-"spoff24=bf1*(cnst19/1000000)-o1"
+"spoffs23=bf1*(cnst19/1000000)-o1"
+"spoffs24=bf1*(cnst19/1000000)-o1"
 
 
 1 ze 
