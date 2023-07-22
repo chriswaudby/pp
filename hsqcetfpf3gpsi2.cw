@@ -39,12 +39,26 @@ prosol relations=<triple>
 "p2=p1*2"
 "p22=p21*2"
 "d11=30m"
+"cnst4=92"
+"d16=200u"
+"d24=1s/(cnst4*4)"
 "d26=1s/(cnst4*4)"
 
 
 "d0=6u"
 
 "in0=inf1/4"
+
+/*  sinc1.1000 water suppression   */
+"p11=1000u"
+"spw1=plw1*(pow((p1/p11)/0.5889,2))"
+"spoffs1=0"
+"spoal1=0.5"
+
+/* 15N decoupling */
+"p62=350u"
+"plw16=plw3*(pow((p21/p62),2))"   /* CPD power level  */
+
 
 
 "DELTA1=p16+d16+8u+de-0.6366*p1"
@@ -138,6 +152,7 @@ ph31=2 0 0 2
 ;pl3 : f3 channel - power level for pulse (default)
 ;pl16: f3 channel - power level for CPD/BB decoupling
 ;sp1: f1 channel - shaped pulse  90 degree [flipdown]
+;spnam1: f1 channel - Sinc1.1000
 ;sp13: f2 channel - shaped pulse 180 degree (adiabatic)
 ;p1 : f1 channel -  90 degree high power pulse
 ;p2 : f1 channel - 180 degree high power pulse
@@ -154,6 +169,7 @@ ph31=2 0 0 2
 ;d24: 1/(4J)YH for YH
 ;     1/(8J)YH for all multiplicities
 ;d26: 1/(4J(YH))
+;cpdprg3: garp4.p62
 ;cnst4: = J(YH)
 ;inf1: 1/SW(X) = 2 * DW(X)
 ;in0: 1/(2 * SW(X)) = DW(X)
