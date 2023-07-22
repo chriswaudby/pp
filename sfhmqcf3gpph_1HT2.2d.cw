@@ -36,7 +36,7 @@ prosol relations=<triple>
 
 "p16=1000u"
 
-"in0=inf2"
+"in0=inf1"
 # ifndef ONE_D
 "d0=in0/2-p21*4/3.1415"
 # endif /*ONE_D*/
@@ -79,20 +79,18 @@ prosol relations=<triple>
 "plw26=plw3*(pow((p21/p62),2))"   /* CPD power level  */
 
 
-define list<delay> t2delay=<$VDLIST>
-
-define delay vdmin
-"vdmin=4*larger(p21+0.5*p40,p21+cnst39*p39)"
+define delay d20min
+"d20min=4*larger(p21+0.5*p40,p21+cnst39*p39)"
 
 
 1 ze
-  vdmin
+  d20min
   d11 pl26:f3
 2 10m do:f3
 
-  "DELTA1=0.25*t2delay-p21-cnst39*p39"
-  "DELTA2=0.25*t2delay-p21-0.5*p40"
-  "DELTA3=0.25*t2delay-p21"
+  "DELTA1=0.25*d20-p21-cnst39*p39"
+  "DELTA2=0.25*d20-p21-0.5*p40"
+  "DELTA3=0.25*d20-p21"
 
 # ifdef OFFRES_PRESAT
   30u fq=cnst21(bf hz):f1
@@ -148,8 +146,7 @@ define delay vdmin
   ; ****** acquisition ******************
   go=2 ph31 cpd3:f3 
   10m do:f3 mc #0 to 2 
-     F1QF(t2delay.inc)
-     F2PH(ip3, id0)
+     F1PH(ip3, id0)
 exit 
   
 
@@ -183,6 +180,7 @@ ph31=0 2 2 0 2 0 0 2
 ;d11: delay for disk I/O                             [30 msec]
 ;d12: delay for power switching                      [20 usec]
 ;d16: delay for homospoil/gradient recovery
+;d20: relaxation delay
 ;d21 : 1/(2J)NH
 ;cnst4: = J(NH)
 ;cnst19: H(N) chemical shift (offset, in ppm)
