@@ -110,9 +110,9 @@ define list<delay> t2delay=<$VDLIST>
 
   ; ****** DELTA - t1 - DELTA (2D evolution) *****
 #   ifdef LABEL_CN
-  (center (p40:sp24 ph2):f1 (p8:sp13 ph1):f2 (DELTA p21 ph3 d21 p22 ph11 d21 d0 d21 p22 ph12 d21 p21 ph4 DELTA):f3 )
+  (center (p40:sp24 ph2):f1 (p8:sp13 ph1):f2 (DELTA p21 ph3 d22 p22 ph11 d22 d0 d22 p22 ph12 d22 p21 ph4 DELTA):f3 )
 #   else
-  (center (p40:sp24 ph2):f1 (DELTA p21 ph3 d21 p22 ph11 d21 d0 d21 p22 ph12 d21 p21 ph4 DELTA):f3 )
+  (center (p40:sp24 ph2):f1 (DELTA p21 ph3 d22 p22 ph11 d22 d0 d22 p22 ph12 d22 p21 ph4 DELTA):f3 )
 #   endif /*LABEL_CN*/
 
   ; ****** coherence transfer period ****
