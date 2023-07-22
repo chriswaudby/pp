@@ -34,13 +34,11 @@ prosol relations=<triple>
 "d13=4u"
 "d21=1s/(cnst4*2)"
 
+"p16=1000u"
 
 "in0=inf2"
-
 # ifndef ONE_D
-
 "d0=in0/2-p21*4/3.1415"
-
 # endif /*ONE_D*/
 
 
@@ -55,14 +53,33 @@ prosol relations=<triple>
   "TAU=d1-10m"
 # endif /*OFFRES_PRESAT*/
 
+
+/******************************************************/
+/*  Predefined shapes for 1H pulses       *************/
+/*  cnst1: center of excitation band     **************/
+/*  cnst2: excitation band width         **************/
+/******************************************************/
+"cnst19=8.2"
+
+/*  PC9 (p39, sp23)   */
+"p39=3100*600/(bf1/1000000)" /*  PC9  pulse length  */
+"spw23=plw1*(pow((p1*1.01/p39)/0.125,2))" /* PC9  power level  */
+"spoffs23=bf1*(cnst19/1000000)-o1"  /*  PC9  offset */
+"spoal23=1"
+"cnst39=0.529"
+
+/*  REBURP (p40, sp24)   */
+"p40=2257*600/(bf1/1000000)" /* REBURP pulse length  */
+"spw24=plw1*(pow((p1*1.97/p40)/0.0798,2))"   /* REBURP power level  */
+"spoffs24=bf1*(cnst19/1000000)-o1" /* REBURP offset */
+"spoal24=0.5"
+
 define delay vdmin
 "vdmin=4*larger(p21+0.5*p40,p21+cnst39*p39)"
 
-"spoff23=bf1*(cnst19/1000000)-o1"
-"spoff24=bf1*(cnst19/1000000)-o1"
 
-
-1 ze 
+1 ze
+  vdmin
   d11 pl26:f3
 2 10m do:f3
 
@@ -71,18 +88,14 @@ define delay vdmin
   "DELTA3=0.25*vd-p21"
 
 # ifdef OFFRES_PRESAT
-
   30u fq=cnst21(bf hz):f1
   d12 pl9:f1
   TAU cw:f1 ph29
   d13 do:f1
   d12 pl1:f1
   30u fq=0:f1
-
 # else
-
   TAU
-
 # endif /*OFFRES_PRESAT*/
 
 3 d12 pl3:f3
@@ -91,7 +104,10 @@ define delay vdmin
   p16:gp2
   d16
 
+  ; ****** start of sequence ************
   (p39:sp23 ph1):f1
+
+  ; ****** 1H relaxation delays *********
   DELTA1
   (p22 ph1):f3
   DELTA2
@@ -100,11 +116,12 @@ define delay vdmin
   (p22 ph2):f3
   DELTA3
 
+  ; ****** coherence transfer period ****
   p16:gp1
   d16
 
 # ifndef ONE_D
-
+  ; ****** DELTA - t1 - DELTA (2D evolution) *****
 #   ifdef LABEL_CN
   (center (p40:sp24 ph2):f1 (p8:sp13 ph1):f2 (DELTA p21 ph3 d0 p21 ph4 DELTA):f3 )
 #   else
@@ -112,14 +129,16 @@ define delay vdmin
 #   endif /*LABEL_CN*/
 
 # else
-
- (center (p40:sp24 ph2):f1 (DELTA p21 ph3 6u p21 ph4 DELTA):f3 )
-
+  ; ****** 1D - skip t1 evolution *******
+  (center (p40:sp24 ph2):f1 (DELTA p21 ph3 6u p21 ph4 DELTA):f3 )
 # endif /*ONE_D*/
 
+  ; ****** coherence transfer period ****
   p16:gp1
   DELTA4 pl26:f3
   4u BLKGRAD
+
+  ; ****** acquisition ******************
   go=2 ph31 cpd3:f3 
   10m do:f3 mc #0 to 2 
      F1QF(ivd)
