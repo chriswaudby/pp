@@ -69,6 +69,10 @@ prosol relations=<triple>
 "spoffs24=bf1*(cnst19/1000000)-o1" /* REBURP offset */
 "spoal24=0.5"
 
+/* 15N decoupling */
+"p62=350u"
+"spw26=plw3*(pow((p21/p62),2))"   /* CPD power level  */
+
 
 "DELTA1=d21-p16-d16-p39*cnst39"
 "DELTA2=p39*cnst39-de-4u"
@@ -142,8 +146,10 @@ ph31=0 2 2 0
 ;p21: f3 channel -  90 degree high power pulse
 ;p39: f1 channel - 120 degree shaped pulse for excitation
 ;                      Pc9_4_120.1000 (120o)    (2325 us at 800 MHz)
+;spnam23: Pc9_4_120.1000
 ;p40: f1 channel - 180 degree shaped pulse for refocussing
 ;                      Reburp.1000              (1700 us at 800  MHz)
+;spnam24: Reburp.1000
 ;d0 : incremented delay (2D) = in0/2-p21*4/3.1415
 ;d1 : relaxation delay
 ;d11: delay for disk I/O                             [30 msec]
@@ -163,6 +169,7 @@ ph31=0 2 2 0
 ;td1: number of experiments
 ;FnMODE: States-TPPI, TPPI, States or QSEC
 ;cpd3: decoupling according to sequence defined by cpdprg3: garp4.p62
+;cpdprg3: garp4.p62
 ;pcpd3: f3 channel - 90 degree pulse for decoupling sequence
 ;          use pulse of >= 350 usec
 
