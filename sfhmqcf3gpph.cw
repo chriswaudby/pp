@@ -33,19 +33,13 @@ prosol relations=<triple>
 "d13=4u"
 "d21=1s/(cnst4*2)"
 
+"p16=1000u"
 
 "in0=inf1"
 
 # ifndef ONE_D
-
 "d0=in0/2-p21*4/3.1415"
-
 # endif /*ONE_D*/
-
-
-"DELTA1=d21-p16-d16-p39*cnst39"
-"DELTA2=p39*cnst39-de-4u"
-"acqt0=de"
 
 
 # ifdef OFFRES_PRESAT
@@ -55,8 +49,30 @@ prosol relations=<triple>
 # endif /*OFFRES_PRESAT*/
 
 
-"spoffs23=bf1*(cnst19/1000000)-o1"
-"spoffs24=bf1*(cnst19/1000000)-o1"
+/******************************************************/
+/*  Predefined shapes for 1H pulses       *************/
+/*  cnst1: center of excitation band     **************/
+/*  cnst2: excitation band width         **************/
+/******************************************************/
+"cnst19=8.2"
+
+/*  PC9 (p39, sp23)   */
+"p39=3100*600.4/bf1" /*  PC9  pulse length  */
+"spw23=plw1*(pow((p1*1.33/p39)/0.125,2))" /* PC9  power level  */
+"spoffs23=bf1*(cnst19/1000000)-o1"  /*  PC9  offset */
+"spoal23=1"
+"cnst39=0.529"
+
+/*  REBURP (p40, sp24)   */
+"p40=2257*600.4/bf1" /* REBURP pulse length  */
+"spw24=plw1*(pow((p1*1.97/p40)/0.0798,2))"   /* REBURP power level  */
+"spoffs24=bf1*(cnst19/1000000)-o1" /* REBURP offset */
+"spoal24=0.5"
+
+
+"DELTA1=d21-p16-d16-p39*cnst39"
+"DELTA2=p39*cnst39-de-4u"
+"acqt0=de"
 
 
 1 ze 
@@ -64,18 +80,14 @@ prosol relations=<triple>
 2 10m do:f3
 
 # ifdef OFFRES_PRESAT
-
   30u fq=cnst21(bf hz):f1
   d12 pl9:f1
   TAU cw:f1 ph29
   d13 do:f1
   d12 pl1:f1
   30u fq=0:f1
-
 # else
-
   TAU
-
 # endif /*OFFRES_PRESAT*/
 
 3 d12 pl3:f3
