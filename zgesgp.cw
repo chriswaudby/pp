@@ -27,8 +27,8 @@ prosol relations=<triple>
 /*  water supp (p12, sp11)   */
 "p12=2000u"
 "spw11=plw1*(pow(p1*2/p12,2))" /* PC9  power level  */
-"spoffs23=0"  /*  PC9  offset */
-"spoal23=0.5"
+"spoffs11=0"  /*  PC9  offset */
+"spoal11=0.5"
 
 
 "TAU=de+p1*2/3.1416+50u"

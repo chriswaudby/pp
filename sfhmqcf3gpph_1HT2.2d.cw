@@ -35,6 +35,9 @@ prosol relations=<triple>
 "d21=1s/(cnst4*2)"
 
 "p16=1000u"
+"p19=300u"
+"d16=200u"
+"d19=150u"
 
 "in0=inf1"
 # ifndef ONE_D
@@ -89,7 +92,7 @@ define delay d20min
 2 10m do:f3
 
   "DELTA1=0.25*d20-p21-cnst39*p39"
-  "DELTA2=0.25*d20-p21-0.5*p40"
+  "DELTA2=0.25*d20-p21-0.5*p40-p19-d19"
   "DELTA3=0.25*d20-p21"
 
 # ifdef OFFRES_PRESAT
@@ -116,7 +119,11 @@ define delay d20min
   DELTA1
   (p22 ph1):f3
   DELTA2
+  p19:gp3
+  d19
   (p40:sp24 ph13):f1
+  p19:gp3
+  d19
   DELTA2
   (p22 ph2):f3
   DELTA3
@@ -207,6 +214,7 @@ ph31=0 2 2 0 2 0 0 2
 ;for z-only gradients:
 ;gpz1: 11%
 ;gpz2:  7%
+;gpz3: 13%
 
 ;use gradient files:   
 ;gpnam1: SMSQ10.100
