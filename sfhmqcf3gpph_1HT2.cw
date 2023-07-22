@@ -62,17 +62,19 @@ prosol relations=<triple>
 "cnst19=8.2"
 
 /*  PC9 (p39, sp23)   */
-"p39=3100*600/(bf1/1000000)" /*  PC9  pulse length  */
-"spw23=plw1*(pow((p1*1.01/p39)/0.125,2))" /* PC9  power level  */
+"p39=3100*600.4/bf1" /*  PC9  pulse length  */
+"spw23=plw1*(pow((p1*1.33/p39)/0.125,2))" /* PC9  power level  */
 "spoffs23=bf1*(cnst19/1000000)-o1"  /*  PC9  offset */
 "spoal23=1"
 "cnst39=0.529"
 
 /*  REBURP (p40, sp24)   */
-"p40=2257*600/(bf1/1000000)" /* REBURP pulse length  */
+"p40=2257*600.4/bf1" /* REBURP pulse length  */
 "spw24=plw1*(pow((p1*1.97/p40)/0.0798,2))"   /* REBURP power level  */
 "spoffs24=bf1*(cnst19/1000000)-o1" /* REBURP offset */
 "spoal24=0.5"
+
+define list<delay> t2delay=<$VDLIST>
 
 define delay vdmin
 "vdmin=4*larger(p21+0.5*p40,p21+cnst39*p39)"
@@ -83,9 +85,9 @@ define delay vdmin
   d11 pl26:f3
 2 10m do:f3
 
-  "DELTA1=0.25*vd-p21-cnst39*p39"
-  "DELTA2=0.25*vd-p21-0.5*p40"
-  "DELTA3=0.25*vd-p21"
+  "DELTA1=0.25*t2delay-p21-cnst39*p39"
+  "DELTA2=0.25*t2delay-p21-0.5*p40"
+  "DELTA3=0.25*t2delay-p21"
 
 # ifdef OFFRES_PRESAT
   30u fq=cnst21(bf hz):f1
@@ -141,7 +143,7 @@ define delay vdmin
   ; ****** acquisition ******************
   go=2 ph31 cpd3:f3 
   10m do:f3 mc #0 to 2 
-     F1QF(ivd)
+     F1QF(t2delay.inc)
      F2PH(ip3, id0)
 exit 
   
