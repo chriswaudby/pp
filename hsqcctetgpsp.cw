@@ -48,9 +48,9 @@ prosol relations=<triple>
 "DELTA4=d4-larger(p2,p8)/2-p1*2/PI-4u-p16-d16"
 
 
-"spoff3=0"
-"spoff5=bf2*(cnst21/1000000)-o2"
-"spoff13=0"
+"spoffs3=0"
+"spoffs5=bf2*(cnst21/1000000)-o2"
+"spoffs13=0"
 
 
 "acqt0=0"

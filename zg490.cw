@@ -12,7 +12,7 @@
 ;$OWNER=ep
 #include <Avance.incl>
 
-"acqt0=-4*2/3.1416*p1"
+"acqt0=-4*(2/3.1416)*p1"
 
 1 ze
 2 30m
