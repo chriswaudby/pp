@@ -71,7 +71,7 @@ prosol relations=<triple>
 
 /* 15N decoupling */
 "p62=350u"
-"spw26=plw3*(pow((p21/p62),2))"   /* CPD power level  */
+"plw26=plw3*(pow((p21/p62),2))"   /* CPD power level  */
 
 
 "DELTA1=d21-p16-d16-p39*cnst39"
@@ -136,6 +136,7 @@ ph29=0
 ph31=0 2 2 0
 
 
+;p1  : f1 channel - 90 degree high power pulse
 ;pl3 : f3 channel - power level for pulse (default)
 ;pl26: f3 channel - power level for CPD/BB decoupling (low power)
 ;sp13: f2 channel - shaped pulse 180 degree (adiabatic)
