@@ -40,8 +40,8 @@ prosol relations=<triple>
 "d0=in0/2-p21*4/3.1415"
 
 
-"DELTA=d21-p16-d16"
-"DELTA4=d16-de-4u"
+"DELTA=d21-p16-d16-p39*cnst39"
+"DELTA2=p39*cnst39-de-4u"
 "acqt0=de"
 
 
@@ -110,11 +110,13 @@ prosol relations=<triple>
   (center (p40:sp24 ph2):f1 (p8:sp13 ph1):f2 (DELTA p21 ph3 d22 p22 ph11 d22 d0 d22 p22 ph12 d22 p21 ph4 DELTA):f3 )
 #   else
   (center (p40:sp24 ph2):f1 (DELTA p21 ph3 d22 p22 ph11 d22 d0 d22 p22 ph12 d22 p21 ph4 DELTA):f3 )
+  ;(center (p40:sp24 ph2):f1 (DELTA p21 ph3 d22 d22 d0 d22 d22 p21 ph4 DELTA):f3 )
 #   endif /*LABEL_CN*/
 
   ; ****** coherence transfer period ****
   p16:gp1
-  DELTA4 pl26:f3
+  d16
+  DELTA2 pl26:f3
   4u BLKGRAD
 
   ; ****** acquisition ******************
