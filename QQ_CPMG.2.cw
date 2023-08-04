@@ -56,13 +56,13 @@ define pulse pwh_cp      /* 1H CPMG pulse power level */
 /* Define CPMG pulses */
 /**********************/
 #ifdef comp_flg
-  #define cpmg_F (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1
-  #define cpmg_R (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1
-  "cnst51=2.333335"
+#define cpmg_F (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1
+#define cpmg_R (pwh_cp ph12 pwh_cp*2.66667 ph11 pwh_cp ph12):f1
+"cnst51=2.333335"
 #else
-  #define cpmg_F (pwh_cp*2.0 ph11):f1
-  #define cpmg_R (pwh_cp*2.0 ph11):f1
-  "cnst51=1.0"
+#define cpmg_F (pwh_cp*2.0 ph11):f1
+#define cpmg_R (pwh_cp*2.0 ph11):f1
+"cnst51=1.0"
 #endif
 
 /************************/
@@ -139,6 +139,8 @@ aqseq 312
   else 
   {
     "tauCPMG = time_T2*0.25"
+    ; skip compensation pulses
+    "l3=0"
   }
 
   "tauCPMG1 = tauCPMG - pwh_cp*2.0*cnst51"
@@ -192,7 +194,7 @@ d1 cw:f1 ph26
 /* Create TQ coherence */
 /***********************/
   20u pl15:f1
-  2u rpp11 rpp12 rpp21 rpp22
+  2u rpp11 rpp12
 
   (pwh_cp ph1):f1
 
@@ -250,7 +252,7 @@ d1 cw:f1 ph26
   if "l2 > 0" {
 3   tauCPMG1
     cpmg_F
-    tauCPMG1 ipp11 ipp12 ipp21 ipp22
+    tauCPMG1 ipp11 ipp12
     lo to 3 times l2
 
   }
@@ -258,7 +260,7 @@ d1 cw:f1 ph26
   if "l3 > 0" {
 4   tauCPMG2
     cpmg_F
-    tauCPMG2 ipp11 ipp12 ipp21 ipp22
+    tauCPMG2 ipp11 ipp12
     lo to 4 times l3
 
 }
@@ -272,7 +274,7 @@ d1 cw:f1 ph26
 /* The second half of CPMG period */
 /**********************************/
   if "l3 > 0" {
-5   tauCPMG2 dpp11 dpp12 dpp21 dpp22
+5   tauCPMG2 dpp11 dpp12
     cpmg_R
     tauCPMG2
     lo to 5 times l3
@@ -280,7 +282,7 @@ d1 cw:f1 ph26
   }
 
   if "l2 > 0" {
-6   tauCPMG1 dpp11 dpp12 dpp21 dpp22
+6   tauCPMG1 dpp11 dpp12
     cpmg_R
     tauCPMG1
     lo to 6 times l2
