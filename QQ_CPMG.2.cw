@@ -130,7 +130,11 @@ aqseq 312
 /* Continue to check run time variables */
 /****************************************/
   "l2 = (trunc(ncyc_cp[l1] + 0.3))"
+#ifdef cnstpulses
   "l3 = ncyc_max - l2"
+#else
+  "l3 = 0"
+#endif
 
   if "l2 != 0" 
   {
@@ -257,13 +261,14 @@ d1 cw:f1 ph26
 
   }
 
+#ifdef cnstpulses
   if "l3 > 0" {
 4   tauCPMG2
     cpmg_F
     tauCPMG2 ipp11 ipp12
     lo to 4 times l3
-
 }
+#endif
 
 /*****************************/
 /* The central 180o 1H pulse */
@@ -273,6 +278,7 @@ d1 cw:f1 ph26
 /**********************************/
 /* The second half of CPMG period */
 /**********************************/
+#ifdef cnstpulses
   if "l3 > 0" {
 5   tauCPMG2 dpp11 dpp12
     cpmg_R
@@ -280,6 +286,7 @@ d1 cw:f1 ph26
     lo to 5 times l3
 
   }
+#endif
 
   if "l2 > 0" {
 6   tauCPMG1 dpp11 dpp12
