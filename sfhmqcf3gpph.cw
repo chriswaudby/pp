@@ -142,6 +142,8 @@ ph31=0 2 2 0
 ;sp13: f2 channel - shaped pulse 180 degree (adiabatic)
 ;sp23: f1 channel - shaped pulse 120 degree (Pc9_4_120.1000)
 ;sp24: f1 channel - shaped pulse 180 degree (Reburp.1000)
+;spnam23: Pc9_4_120.1000
+;spnam24: Reburp.1000
 ;p8 : f2 channel - 180 degree shaped pulse for inversion (adiabatic)
 ;p16: homospoil/gradient pulse                       [1 msec]
 ;p21: f3 channel -  90 degree high power pulse
@@ -166,7 +168,7 @@ ph31=0 2 2 0
 ;nd0: 1
 ;NS: 2 * n
 ;DS: 16
-;aq: <= 50 msec
+;aq: <= 100 msec
 ;td1: number of experiments
 ;FnMODE: States-TPPI, TPPI, States or QSEC
 ;cpd3: decoupling according to sequence defined by cpdprg3: garp4.p62

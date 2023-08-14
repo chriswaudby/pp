@@ -44,14 +44,36 @@ define loopcounter myCounter
 
 "d0=3u"
 
+/******************************************************/
+/*  Predefined shapes for 1H pulses       *************/
+/*  cnst1: center of excitation band     **************/
+/******************************************************/
+"cnst19=8.2"
+
+/*  PC9 (p39, sp23)   */
+"p39=3100*600.4/bf1" /*  PC9  pulse length  */
+"spw23=plw1*(pow((p1*1.33/p39)/0.125,2))" /* PC9  power level  */
+"spoffs23=bf1*(cnst19/1000000)-o1"  /*  PC9  offset */
+"spoal23=1"
+"cnst39=0.529"
+
+/*  Rsnob.1000 (p40, sp24)   */
+"p40=1073*600.4/bf1" /* Rsnob.1000 pulse length  */
+"spw24=plw1*(pow((p1*1.97/p40)/0.0798,2))"   /* Rsnob.1000 power level  */
+"spoffs24=bf1*(cnst19/1000000)-o1" /* Rsnob.1000 offset */
+"spoal24=0.5"
+
+/* 15N decoupling */
+"p62=350u"
+"plw26=plw3*(pow((p21/p62),2))"   /* CPD power level  */
+
+
+
 "DELTA=p21*0.6366+p17+d17-p40*0.5-d0"
 "DELTA1=d21-p39*cnst39"
 "DELTA2=d21-p17-d16-4u"
 "acqt0=0"
 
-
-"spoffs23=bf1*(cnst19/1000000)-o1"
-"spoffs24=bf1*(cnst19/1000000)-o1"
 
 
 1 ze
@@ -118,6 +140,8 @@ ph31=0 2 2 0 2 0 0 2
 ;sp23: f1 channel - shaped pulse 120 degree
 ;                   (Pc9_4_120.1000 or Q5.1000)
 ;sp24: f1 channel - shaped pulse 180 degree (Rsnob.1000)
+;spnam23: Pc9_4_120.1000
+;spnam24: Rsnob.1000
 ;p16: homospoil/gradient pulse                       [1 msec]
 ;p21: f3 channel -  90 degree high power pulse
 ;p39: f1 channel - 120 degree shaped pulse for excitation
@@ -126,7 +150,7 @@ ph31=0 2 2 0 2 0 0 2
 ;p40: f1 channel - 180 degree shaped pulse for refocussing
 ;                      Rsnob.1000               (1.0ms at 600.13 MHz)
 ;d0 : incremented delay (2D) = in0/2-p3*4/3.1415
-;d1 : relaxation delay
+;d1 : relaxation delay  [>100 ms]
 ;d11: delay for disk I/O                             [30 msec]
 ;d12: delay for power switching                      [20 usec]
 ;d16: delay for homospoil/gradient recovery
@@ -140,7 +164,7 @@ ph31=0 2 2 0 2 0 0 2
 ;nd0: 1
 ;NS: 4 * n
 ;DS: 16
-;aq: <= 50 msec
+;aq: <= 100 msec
 ;td1: number of experiments
 ;FnMODE: Echo-AntiEcho
 ;cpd3: decoupling according to sequence defined by cpdprg3: garp4.p62
@@ -156,10 +180,6 @@ ph31=0 2 2 0 2 0 0 2
 ;gpnam1: SMSQ10.100
 ;gpnam2: SMSQ10.100
 ;gpnam3: SMSQ10.100
-
-
-                                          ;preprocessor-flags-start
-                                          ;preprocessor-flags-end
 
 
 ;Processing
