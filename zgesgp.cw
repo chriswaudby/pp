@@ -24,10 +24,10 @@ prosol relations=<triple>
 "p2=p1*2"
 "d12=20u"
 
-/*  water supp (p12, sp11)   */
+/*  water suppression (p12, sp11)   */
 "p12=2000u"
-"spw11=plw1*(pow(p1*2/p12,2))" /* PC9  power level  */
-"spoffs11=0"  /*  PC9  offset */
+"spw11=plw1*(pow(p1*2/p12,2))" /* power level for Squa100.1000  */
+"spoffs11=0"
 "spoal11=0.5"
 
 
@@ -101,7 +101,7 @@ ph31=0 2 2 0  0 2 2 0  0 2 2 0  0 2 2 0
 ;d16: delay for homospoil/gradient recovery
 ;NS: 8 * n, total number of scans: NS * TD0
 ;DS: 4
-
+;spnam11: Squa100.1000
 
 ;use gradient ratio:    gp 1 : gp 2
 ;                         31 :   11
@@ -111,8 +111,8 @@ ph31=0 2 2 0  0 2 2 0  0 2 2 0  0 2 2 0
 ;gpz2: 11%
 
 ;use gradient files:
-;gpnam1: SINE.100
-;gpnam2: SINE.100
+;gpnam1: SMSQ10.100
+;gpnam2: SMSQ10.100
 
 
 
