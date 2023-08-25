@@ -52,6 +52,18 @@ define pulse pwd
 define pulse pwh_cp      /* 1H CPMG pulse power level */
   "pwh_cp=p15"
 
+"spoffs10=cnst10-o1"
+
+/***********************/
+/*   Gradient pulses   */
+/***********************/
+"p50=1000u"
+"p51=400u"
+"p52=600u"
+"p53=300u"
+"p54=500u"
+"p57=750u"
+
 /**********************/
 /* Define CPMG pulses */
 /**********************/
@@ -70,6 +82,8 @@ define pulse pwh_cp      /* 1H CPMG pulse power level */
 /************************/
 "in0=inf2/2"
 "d11=30m"
+"d3=2m"
+"d4=2m"
 
 /************************/
 /*   Define f1180       */
@@ -422,7 +436,7 @@ ph31=0 2 0 2 0 2
 ;pl2 : dhpwr - power level for 13C pulse pwc (p2)
 ;pl4  : power level for 2H high power pulses
 ;pl10 : tsatpwr - power level for presat
-;pl11 : tpwrmess - power level for Messerle purge
+;pl11 : tpwrmess - power level for Messerle purge [5 kHz]
 ;pl15 : power level for 1H CPMG pulses pwh_cp
 ;pl21 : dpwr - power level for  13C decoupling cpd2
 ;pl41 : power level for 2H waltz decoupling
@@ -442,11 +456,11 @@ ph31=0 2 0 2 0 2
 ;p54 : gradient pulse 54                                [500 usec]
 ;p55 : gradient pulse 55                                [300 usec]
 ;p56 : gradient pulse 56                                [500 usec]
-;p57 : gradient pulse 57                                [800 usec]
+;p57 : gradient pulse 57                                [750 usec]
 ;pcpd2 : 13C pulse width for 13C decoupling
 ;pcpd4 : 2H pulse width for 2H decoupling
 ;d1 : Repetition delay D1
-;d3 : taua ~1/(4*JCH)  ~1.8-2ms
+;d3 : taua - set to 1/4JCH = 2.0 ms
 ;d4 : taub - set to 1/4JHC = 2.0 ms
 ;d6 : time_T2 CPMG duration <= 40ms
 ;d11 : delay for disk i/o, 30ms
@@ -467,6 +481,7 @@ ph31=0 2 0 2 0 2
 ;l1 : counter for the ncyc_cp values for cpmg
 ;l2 : actual value of ncyc_cp
 ;l3 : number of compensation pulses (= ncyc_max - l2)
+;l8 : ncyc_max
 ;inf1 : 1/SW(X) = 2*DW(X)
 ;in0 : 1/(2*SW(x))=DW(X)
 ;nd0 : 2
@@ -493,4 +508,4 @@ ph31=0 2 0 2 0 2
 ;gpnam6: SMSQ10.32
 ;gpnam7: SMSQ10.32
 
-;zgoptns: Dfsat Dmess_flg Dfscuba Dwater_flg Dwtg_flg Df1180 DDdec Dcomp_flg Dmq_flg Dcal_flg
+;zgoptns: Dcnstpulses, DDdec, Dcomp_flg
