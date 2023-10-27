@@ -25,9 +25,9 @@ baseopt_echo
   "DELTA2=vd*0.5-p1"
 
   4u pl1:f1
-  p1 ph1
+  p2 ph1
   DELTA1
-  p2 ph2
+  p1 ph2
   DELTA2
   go=2 ph31 
   d1 mc #0 to 2 

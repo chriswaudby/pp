@@ -28,8 +28,16 @@ define list<frequency> F19sat = <$FQ1LIST>
   d16 pl1:f1 fq=0:f1
   4u BLKGRAD
 
-  ; acquire
-  p1 ph1
+/* ---------------------------------
+; anti-ringing
+; --------------------------------*/
+ p1 ph1
+ 4u
+ p1 ph2
+ 4u
+ p1 ph3
+;------------------------------------
+
   go=2 ph31 
   d1 mc #0 to 2 
      F1QF(F19sat.inc)
@@ -37,7 +45,9 @@ define list<frequency> F19sat = <$FQ1LIST>
 exit 
   
 
-ph1 =0 2 2 0 1 3 3 1
+ph1 =0
+ph2 =2 0
+ph3 =0 0 2 2 1 1 3 3
 ph11=0 
 ph31=0 2 2 0 1 3 3 1
 
