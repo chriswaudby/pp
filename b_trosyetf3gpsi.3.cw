@@ -1,4 +1,4 @@
-;b_trosyetf3gpsi.3
+;b_trosyetf3gpsi.3.cw
 ;avance-version (21/09/15)
 ;best-TROSY
 ;2D H-1/X correlation via TROSY
@@ -45,25 +45,41 @@ define list<gradient> EA7 = { 1.0000 0.6595 }
 
 "p19=500u"
 "p29=250u"
+"d16=200u"
 
 
-#   ifdef CALC_SP
-"p41=(bwfac25/(cnst55*cnst51*bf1))*1000000"
-"spw25=plw1*pow((p1*totrot25)/(p41*90.0*integfac25),2)"
-"spw27=plw1*pow((p1*totrot27)/(p41*90.0*integfac27),2)"
+
+/******************************************************/
+/*  Predefined shapes for 1H pulses       *************/
+/******************************************************/
+"cnst19=8.2"
+
+/*  PC9_4_90 (p41, sp25 & sp27)   */
+"p41=1958*950.45/bf1" /*  PC9  pulse length  */
+"spw25=plw1*(pow((p1/p41)/0.125,2))" /* PC9  power level  */
+"spoffs25=bf1*(cnst19/1000000)-o1"  /*  PC9  offset */
 "spoal25=1"
+"spw27=plw1*(pow((p1/p41)/0.125,2))" /* PC9  power level  */
+"spoffs27=bf1*(cnst19/1000000)-o1"  /*  PC9  offset */
 "spoal27=0"
+"cnst39=0.529"
 
-"p42=(bwfac26/(cnst55*cnst52*bf1))*1000000"
-"spw26=plw1*pow((p1*totrot26)/(p42*90.0*integfac26),2)"
+/*  REBURP (p42, sp26)   */
+"p42=1432*950.45/bf1" /* REBURP pulse length  */
+"spw26=plw1*(pow((p1*2/p42)/0.0798,2))"   /* REBURP power level  */
+"spoffs26=bf1*(cnst19/1000000)-o1" /* REBURP offset */
 "spoal26=0.5"
 
-"p43=(bwfac28/(cnst55*cnst53*bf1))*1000000"
-"spw28=plw1*pow((p1*totrot28)/(p43*90.0*integfac28),2)"
-"spw29=plw1*pow((p1*totrot29)/(p43*90.0*integfac29),2)"
+/*  Eburp2 (p43, sp28 & sp29)   */
+"p43=1251*950.45/bf1" /*  Eburp2  pulse length  */
+"spw28=plw1*(pow((p1/p43)/0.06103,2))" /* Eburp2  power level  */
+"spoffs28=bf1*(cnst19/1000000)-o1"  /*  Eburp2  offset */
 "spoal28=1"
+"spw29=plw1*(pow((p1/p43)/0.06103,2))" /* Eburp2tr  power level  */
+"spoffs29=bf1*(cnst19/1000000)-o1"  /*  Eburp2tr  offset */
 "spoal29=0"
-#   endif /*CALC_SP*/
+"cnst43=0.69"
+
 
 
 "d0=3u"
@@ -84,12 +100,6 @@ define list<gradient> EA7 = { 1.0000 0.6595 }
 
 
 "spoffs13=bf2*(cnst26/1000000)-o2"
-
-"spoffs25=bf1*(cnst54/1000000)-o1"
-"spoffs26=bf1*(cnst54/1000000)-o1"
-"spoffs28=bf1*(cnst54/1000000)-o1"
-"spoffs27=bf1*(cnst54/1000000)-o1"
-"spoffs29=bf1*(cnst54/1000000)-o1"
 
 "spoffs39=0"
 "spoffs40=0"
@@ -216,7 +226,7 @@ ph31=0 2
 ;p56: f3 channel - 180 degree shaped pulse for inversion
 ;p57: f3 channel - 180 degree shaped pulse for refocussing
 ;d0 : incremented delay (F1)                           [3 usec]
-;d1 : relaxation delay; 1-5 * T1
+;d1 : relaxation delay; 1-5 * T1 [100-500 msec]
 ;d11: delay for disk I/O                               [30 msec]
 ;d16: delay for homospoil/gradient recovery
 ;d25: 1/(4J'(NH)                                       [2.7 msec]
@@ -226,14 +236,6 @@ ph31=0 2
 ;           Pc9_4_90.1000: 0.529
 ;cnst43: compensation of chemical shift evolution during p43
 ;           Eburp2.1000: 0.69
-;cnst51: scaling factor for p41 to compensate for transition region
-;           Pc9_4_90.1000: 1.172
-;cnst52: scaling factor for p42 to compensate for transition region
-;           Reburp.1000: 1.426
-;cnst53: scaling factor for p43 to compensate for transition region
-;           Eburp2.1000: 1.000
-;cnst54: H(N) chemical shift (offset, in ppm)
-;cnst55: H(N) bandwidth (in ppm)
 ;inf1: 1/SW(N) = 2 * DW(N)
 ;in0: 1/(2 * SW(N)) = DW(N)
 ;nd0: 2
