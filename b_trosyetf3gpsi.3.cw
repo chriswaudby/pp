@@ -62,7 +62,7 @@ define list<gradient> EA7 = { 1.0000 0.6595 }
 "spw27=plw1*(pow((p1/p41)/0.125,2))" /* PC9  power level  */
 "spoffs27=bf1*(cnst19/1000000)-o1"  /*  PC9  offset */
 "spoal27=0"
-"cnst39=0.529"
+"cnst41=0.529"
 
 /*  REBURP (p42, sp26)   */
 "p42=1432*950.45/bf1" /* REBURP pulse length  */
@@ -192,18 +192,21 @@ ph31=0 2
 ;pl3 : f3 channel - power level for pulse (default)
 ;sp13: f2 channel - shaped pulse 180 degree (Ca and C=O, adiabatic)
 ;sp25: f1 channel - shaped pulse  90 degree (Pc9_4_90.1000)
+;spnam25: Pc9_4_90.100
 ;sp26: f1 channel - shaped pulse 180 degree (Reburp.1000)
+;spnam26: Reburp.1000
 ;sp27: f1 channel - shaped pulse  90 degree (Pc9_4_90.1000)
 ;                   for time reversed pulse
+;spnam27: Pc9_4_90.1000
 ;sp28: f1 channel - shaped pulse  90 degree (Eburp2.1000)
+;spnam28: Eburp2.1000
 ;sp29: f1 channel - shaped pulse  90 degree (Eburp2tr.1000)
 ;                   for time reversed pulse
+;spnam29: Eburp2tr.1000
 ;sp39: f3 channel - shaped pulse 180 degree (Bip720,50,20.1)
+;spnam39: Bip720,50,20.1
 ;sp40: f3 channel - shaped pulse 180 degree (Reburp.1000)
-;sp26: f1 channel - shaped pulse 180 degree (Reburp.1000)
-;sp28: f1 channel - shaped pulse  90 degree (Eburp2.1000)
-;sp29: f1 channel - shaped pulse  90 degree (Eburp2tr.1000)
-;                   for time reversed pulse
+;spnam40: Reburp.1000
 ;p8 : f2 channel - 180 degree shaped pulse for inversion (adiabatic)
 ;p16: homospoil/gradient pulse                         [1 msec]
 ;p19: gradient pulse 2                                 [500 usec]
@@ -266,17 +269,12 @@ ph31=0 2
 
 
                                           ;preprocessor-flags-start
-;CALC_SP: for calculation of all bandselective Proton pulses based on cnst54 and cnst55
-;             option -DCALC_SP (eda: ZGOPTNS)
 ;LABEL_CN: for C-13 and N-15 labeled samples start experiment with 
 ;             option -DLABEL_CN (eda: ZGOPTNS)
                                           ;preprocessor-flags-end
 										  
 
 										  
-;Processing
-
-;PHC0(F1): 45.0
 
 
 										  
