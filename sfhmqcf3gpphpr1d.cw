@@ -36,8 +36,8 @@ prosol relations=<triple>
 "DELTA1=d21-p16-d16-p41*cnst41"
 "DELTA2=d21-p16-d16-de-4u"
 
-"spoff24=bf1*(cnst19/1000000)-o1"
-"spoff25=bf1*(cnst19/1000000)-o1"
+"spoffs24=bf1*(cnst19/1000000)-o1"
+"spoffs25=bf1*(cnst19/1000000)-o1"
 
 
 1 ze 
