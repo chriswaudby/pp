@@ -25,16 +25,20 @@ prosol relations=<triple>
 ;"d26=1s/(cnst4*4)"
 "d26=2.7m" ; 1/4J
 
+define delay vdmin
+"vdmin=2*p21"
+define list<delay> t2delay=<$VDLIST>
 
 "DELTA1=d26-p19-d16-p11-2*d12"
 "DELTA2=d26-p19-d16-p11-2*d12-p21"
 
 
 1 ze 
+  vdmin
 2 d11
 3 d11 pl1:f1 pl3:f3
   d12
-    "TAU=vd/2-p21"
+    "TAU=t2delay/2-p21"
   d1
   50u UNBLKGRAD
 
@@ -106,7 +110,7 @@ prosol relations=<triple>
   (p21 ph12):f3
 
   go=2 ph31
-  d11 mc #0 to 2 F1QF(ivd)
+  d11 mc #0 to 2 F1QF(t2delay.inc)
 exit 
   
 
