@@ -44,6 +44,11 @@ define loopcounter myCounter
 
 "d0=3u"
 
+"p16=1000u"
+"p17=350u"
+"d16=200u"
+"d17=200u"
+
 /******************************************************/
 /*  Predefined shapes for 1H pulses       *************/
 /*  cnst1: center of excitation band     **************/
@@ -59,7 +64,7 @@ define loopcounter myCounter
 
 /*  Rsnob.1000 (p40, sp24)   */
 "p40=1073*600.4/bf1" /* Rsnob.1000 pulse length  */
-"spw24=plw1*(pow((p1*1.97/p40)/0.0798,2))"   /* Rsnob.1000 power level  */
+"spw24=plw1*(pow((p1*2/p40)/0.2137,2))"   /* Rsnob.1000 power level  */
 "spoffs24=bf1*(cnst19/1000000)-o1" /* Rsnob.1000 offset */
 "spoal24=0.5"
 
