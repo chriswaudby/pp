@@ -16,6 +16,9 @@
 
 prosol relations=<triple>
 
+define list<loopcounter> ncyc = <$VCLIST>
+"l1=0"
+
 "p2=p1*2"
 "p27=p1"
 "d2=1m"
@@ -27,6 +30,8 @@ prosol relations=<triple>
 
 1 ze
 2 30m
+
+"ncyc.idx = l1"
 
   ; presaturation
   d12 pl9:f1
@@ -43,7 +48,7 @@ prosol relations=<triple>
   DELTA2
   p2 ph2
   DELTA1
-  lo to 3 times c
+  lo to 3 times ncyc
 
   ; perfect echo watergate
   50u UNBLKGRAD
@@ -103,7 +108,7 @@ prosol relations=<triple>
 
   go=2 ph31
   30m mc #0 to 2
-      F1QF(ivc)
+      F1QF(iu1)
 exit
 
 ph1= 0 2
