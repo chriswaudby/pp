@@ -40,8 +40,9 @@ define list<frequency> fqlist = <$FQ1LIST>
 "cnst28=fqlist"
 
 #ifndef adiabatic_flg
-"p3 = p1*pow(10,(10*log10(plw1) – 10*log10(plw25))/20)"       ;90 degree SL pulse
+;"p3 = p1*pow(10,(10*log10(plw1) - 10*log10(plw25))/20)"       ;90 degree SL pulse
 "p6 = ((cnst28)/((1/(p3*4))))"               ; spin lock offset / spin lock power
+;"p6 = (0/((1/(p3*4))))"               ; spin lock offset / spin lock power
 "p7 = atan(p6)"                          ; arc tan from this ratio = angle in rad
 "p8 = p7*360/(2*PI)"                                            ; angle in degree
 "p4 = p1*(1-p8/90)"                                            ; new pulse length
@@ -86,34 +87,34 @@ if "p31 > 0.0"
 ; --------------------------------*/
 
 /*    cycle above&below plane     */
-;  1u fq=cnst29(bf ppm):f1
-;  1u pl1:f1
-;  p1 ph7
-;  p1 ph8
+  1u fq=cnst29(bf ppm):f1
+  1u pl1:f1
+  p1 ph7
+  p1 ph8
   if "p32 == 0.0"
   {
     30m
-    #ifdef adiabatic_flg
+#ifdef adiabatic_flg
       1u fq=fqlist:f1
       1u pl25:f1
       (p11:sp4(currentpower) ph1):f1
-    #else
+#else
       1u fq=cnst29(bf ppm):f1
       1u pl1:f1
       p4 ph4
-    #endif
+#endif
   }
   else {
     30m
-    #ifdef adiabatic_flg
+#ifdef adiabatic_flg
       1u fq=fqlist:f1
       1u pl25:f1
       (p11:sp4(currentpower) ph6):f1
-    #else
+#else
       1u fq=cnst29(bf ppm):f1
       1u pl1:f1
       p4 ph4
-    #endif
+#endif
     1u fq=fqlist:f1
     1u pl25:f1
     (p32 ph6):f1                                    ; <-- this is the Spin Lock
@@ -135,10 +136,10 @@ if "p31 > 0.0"
 ; ----------------------------------
 
 /*  cycle above&below plane BACK  */
-;  1u fq=cnst29(bf ppm):f1
-;  1u pl1:f1
-;  p1 ph7
-;  p1 ph8
+  1u fq=cnst29(bf ppm):f1
+  1u pl1:f1
+  p1 ph7
+  p1 ph8
 
 /* ---------------------------------
 ;     anti-ringing
@@ -160,9 +161,6 @@ if "p31 > 0.0"
   F2QF(calclist(fqlist,1))
 exit
 
-HaltAcqu, 1m
-exit
-
 ph1=0
 ph2=2 2 0 0
 ph3=0 0 0 0 2 2 2 2 1 1 1 1 3 3 3 3
@@ -176,6 +174,7 @@ ph31=0 0 2 2 2 2 0 0 1 1 3 3 3 3 1 1
 ;pl1 : f1 channel - power level for pulse (default)
 ;p1 : f1 channel -  90 degree high power pulse
 ;p2 : f1 channel - 180 degree high power pulse
+;p3 : f1 channel - 90 degree pulse at spin lock power
 ;d1 : relaxation delay; 1-5 * T1
 ;d11: delay for disk I/O    [30 msec]
 ;ns: 16 * n
