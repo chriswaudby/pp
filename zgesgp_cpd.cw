@@ -98,6 +98,7 @@ ph31=0 2 2 0  0 2 2 0  0 2 2 0  0 2 2 0
 ;NS: 8 * n, total number of scans: NS * TD0
 ;DS: 4
 
+;cpd2:wvm:wuF19: cawurst_d-20(140 ppm, 2 ms)
 
 ;use gradient ratio:    gp 1 : gp 2
 ;                         31 :   11
