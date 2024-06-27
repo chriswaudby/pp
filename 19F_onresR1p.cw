@@ -1,5 +1,6 @@
 ;19F on-resonance R1rho relaxation
 ;based on Overbeck (2020)
+;with improved temperature compensation
 
 /*
 |
@@ -40,28 +41,31 @@ define list<power> list1 = <$VALIST>
 aqseq 312
 
 1 ze
- "p30 = plength.max"
 2 30m
 /*--------------------------------
 ; calculate SL delays
 ; -------------------------------*/
  "p32=plength[l2]"
- "p31=p30-p32"
-; ----------------------------------
+
+
+/* ---------------------------------
+; relaxation delay (d1)
+; --------------------------------*/
+ d1
+
 
 /* ---------------------------------
 ; heating compensation
 ; --------------------------------*/
+"p31=p30-p32*pow(10,(pl30 - list1)/10)"
+
 if "p31 > 0.0"
  {
- 1u fq=100(bf ppm):f1
- 1u list1:f1
+ 1u fq=cnst30(bf ppm):f1
+ 1u pl30:f1
  (p31 ph1):f1
  }
-; ----------------------------------
 
- d1
-;50u UNBLKGRAD
 
 /* ---------------------------------
 ; transfer to theta and SL
@@ -124,9 +128,9 @@ ph31=0 2 2 0 1 3 3 1
 ;ns: 8 * n
 ;ds: 128
 
-
-
-
+;p30: maximum SL length used for highest power (for T compensation)
+;pl30: maximum SL power (for T compensation)
+;cnst30: offset of SL in ppm (for T compensation) [250 ppm]
 
 
 
