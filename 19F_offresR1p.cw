@@ -57,9 +57,7 @@ aqseq 312
 ; dependent tip angle theta
 ; -------------------------------*/
 2 30m
-  "p30 = plength.max"
   "p32=plength[l2]"
-  "p31=p30-p32"
   "cnst28=fqlist"
   "p6 = ((cnst28)/((1/(p3*4))))"            ; spin lock offset / spin lock power
   "p7 = atan(p6)"                       ; arc tan from this ratio = angle in rad
@@ -67,20 +65,25 @@ aqseq 312
   "p4 = p1*(1-p8/90)"                                         ; new pulse length
 ; --------------------------------
 
-/* ---------------------------------
-;     heating compensation
-; --------------------------------*/
-if "p31 > 0.0"
-  {
-  1u fq=100(bf ppm):f1
-  1u pl25:f1
-  (p31 ph1):f1
-  ;print "heating compensation on"
-  }
-; ----------------------------------
 
-   d1
-;50u UNBLKGRAD
+/* ---------------------------------
+; relaxation delay (d1)
+; --------------------------------*/
+ d1
+
+
+/* ---------------------------------
+; heating compensation
+; --------------------------------*/
+"p31=p30-p32*pow(10,(pl30 - list1)/10)"
+
+if "p31 > 0.0"
+ {
+ 1u fq=cnst30(bf ppm):f1
+ 1u pl30:f1
+ (p31 ph1):f1
+ }
+
 
 /* ---------------------------------
 ;  transfer to theta and SL
@@ -179,3 +182,6 @@ ph31=0 0 2 2 2 2 0 0 1 1 3 3 3 3 1 1
 ;d11: delay for disk I/O    [30 msec]
 ;ns: 16 * n
 ;ds: > 128
+;p30: maximum SL length used for highest power (for T compensation)
+;pl30: maximum SL power (for T compensation)
+;cnst30: offset of SL in ppm (for T compensation) [250 ppm]
