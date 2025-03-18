@@ -57,8 +57,23 @@ prosol relations=<triple>
 # endif /*ONE_D*/
 
 # ifdef AMIDESEL
-  "spoff24=bf1*(cnst19/1000000)-o1"
+"cnst19=8.2"
+"spoff24=bf1*(cnst19/1000000)-o1"
+/*  REBURP (p40, sp24)   */
+"p40=2257*600.4/bf1" /* REBURP pulse length  */
+"spw24=plw1*(pow((p1*1.97/p40)/0.0798,2))"   /* REBURP power level  */
+"spoffs24=bf1*(cnst19/1000000)-o1" /* REBURP offset */
+"spoal24=0.5"
 # endif /*AMIDESEL*/
+
+/* 15N decoupling */
+"p62=300u"
+"plw26=plw3*(pow((p21/p62),2))"   /* CPD power level  */
+
+/* 1H purge (8 kHz) */
+"p6=32u"
+"plw8=plw1*(pow((p1/p6),2))"   /* 8 kHz power level  */
+
 
 aqseq 312
 
@@ -298,7 +313,7 @@ aqseq 312
   (p11:sp11 ph9:r):f1   ; flipback(-x), -y -> +z
   4u
   p19:gp5
-  d16 pl16:f3
+  d16 pl26:f3
   DELTA3
   4u BLKGRAD
 
@@ -329,15 +344,15 @@ ph31=0 2 2 0 2 0 0 2
 ;pl1 : f1 channel - power level for pulse (default)
 ;pl3 : f3 channel - power level for pulse (default)
 ;pl8: 1H purge power (ca. 10 kHz) 
-;pl16: f3 channel - power level for CPD/BB decoupling
-;sp1: f1 channel - shaped pulse  90 degree (flip-down)
-;sp11: f1 channel - shaped pulse  90 degree (flip-back)
+;pl26: f3 channel - power level for CPD/BB decoupling
+;sp1: f1 channel - shaped pulse  90 degree (sinc flip-down)
+;sp11: f1 channel - shaped pulse  90 degree (sinc flip-back)
 ;sp13: f2 channel - shaped pulse 180 degree (adiabatic)
 ;sp24: f1 channel - shaped pulse 180 degree (Reburp.1000)
 ;p1 : f1 channel -  90 degree high power pulse
 ;p2 : f1 channel - 180 degree high power pulse
 ;p8 : f2 channel - 180 degree shaped pulse for inversion (adiabatic)
-;p11: f1 channel -  90 degree shaped pulse
+;p11: f1 channel -  90 degree shaped pulse [1000 usec]
 ;p16: homospoil/gradient pulse
 ;p19: second homospoil/gradient pulse
 ;p21: f3 channel -  90 degree high power pulse
@@ -360,6 +375,7 @@ ph31=0 2 2 0 2 0 0 2
 ;td1: number of experiments
 ;FnMODE: States-TPPI, TPPI, States or QSEQ
 ;cpd3: decoupling according to sequence defined by cpdprg3
+;cpdprg3: garp4.p62
 ;pcpd3: f3 channel - 90 degree pulse for decoupling sequence
 
 
