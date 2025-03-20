@@ -60,12 +60,11 @@ define list<delay> t2delay = <$VDLIST>
 # endif /*ONE_D*/
 
 # ifdef AMIDESEL
-"cnst19=8.2"
-"spoff24=bf1*(cnst19/1000000)-o1"
 /*  REBURP (p40, sp24)   */
+"cnst19=8.2"
+"spoffs24=bf1*(cnst19/1000000)-o1"
 "p40=2257*600.4/bf1" /* REBURP pulse length  */
 "spw24=plw1*(pow((p1*1.97/p40)/0.0798,2))"   /* REBURP power level  */
-"spoffs24=bf1*(cnst19/1000000)-o1" /* REBURP offset */
 "spoal24=0.5"
 # endif /*AMIDESEL*/
 
