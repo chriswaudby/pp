@@ -32,6 +32,7 @@ prosol relations=<triple>
 #include <Grad.incl>
 #include <Delay.incl>
 
+define list<delay> vdlist = <$VDLIST>
 
 "p2=p1*2"
 "p22=p21*2"
@@ -118,7 +119,7 @@ aqseq 312
 
   4u BLKGRAD
   d12
-  "TAU=vd/4"
+  "TAU=vdlist/4"
 
   d1
 
@@ -319,7 +320,7 @@ aqseq 312
 
   go=2 ph31 cpd3:f3
   d11 do:f3 mc #0 to 2 
-	F1QF(ivd)
+	F1QF(vdlist.inc)
 	F2PH(ip3, id0)
 exit 
   
