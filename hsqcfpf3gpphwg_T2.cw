@@ -81,7 +81,7 @@ aqseq 312
 
 
 1 ze 
-  d11 pl16:f3
+  d11 pl26:f3
 2 d11 do:f3
 
 # ifdef LABEL_CN
