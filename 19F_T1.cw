@@ -1,11 +1,10 @@
-;19F hahn-echo
+;19F inversion recovery
 
 #include <Avance.incl>
 #include <Grad.incl>
 #include <Delay.incl>
 
-define delay vdMin
-"vdMin=2*p1*1.6366"
+
 
 "d11=30m"
 "d12=20u"
@@ -17,18 +16,15 @@ define delay vdMin
 baseopt_echo
 
 1 ze 
-  vdMin
   
 2 d1 
 
-  "DELTA1=vd*0.5-p1*1.6366"
-  "DELTA2=vd*0.5-p1"
+  "DELTA1=vd"
 
   4u pl1:f1
   p2 ph1
   DELTA1
   p1 ph2
-  DELTA2
   go=2 ph31 
   d1 mc #0 to 2 
      F1QF(ivd)
@@ -36,9 +32,9 @@ baseopt_echo
 exit 
   
 
-ph1 = 0 2
-ph2 = 0 0 1 1 2 2 3 3
-ph31= 0 2 2 0
+ph1 = 0 1 2 3
+ph2 = 0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
+ph31= 0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
 
 
 ;d1 : relaxation delay (excluding saturation time)
