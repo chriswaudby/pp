@@ -39,10 +39,11 @@ define list<frequency> fqlist = <$FQ1LIST>
 "l3=0"
 "cnst28=fqlist"
 
-#ifndef adiabatic_flg
-;"p3 = p1*pow(10,(10*log10(plw1) - 10*log10(plw25))/20)"       ;90 degree SL pulse
+#ifdef adiabatic_flg
+ 4u
+#else
+"p3 = p1*pow(10,(10*log10(plw1) - 10*log10(plw25))/20)"       ;90 degree SL pulse
 "p6 = ((cnst28)/((1/(p3*4))))"               ; spin lock offset / spin lock power
-;"p6 = (0/((1/(p3*4))))"               ; spin lock offset / spin lock power
 "p7 = atan(p6)"                          ; arc tan from this ratio = angle in rad
 "p8 = p7*360/(2*PI)"                                            ; angle in degree
 "p4 = p1*(1-p8/90)"                                            ; new pulse length
@@ -57,7 +58,9 @@ aqseq 312
 ; dependent tip angle theta
 ; -------------------------------*/
 2 30m
+  "p30 = plength.max"
   "p32=plength[l2]"
+  "p31=p30-p32"
   "cnst28=fqlist"
   "p6 = ((cnst28)/((1/(p3*4))))"            ; spin lock offset / spin lock power
   "p7 = atan(p6)"                       ; arc tan from this ratio = angle in rad
@@ -65,25 +68,20 @@ aqseq 312
   "p4 = p1*(1-p8/90)"                                         ; new pulse length
 ; --------------------------------
 
-
 /* ---------------------------------
-; relaxation delay (d1)
+;     heating compensation
 ; --------------------------------*/
- d1
-
-
-/* ---------------------------------
-; heating compensation
-; --------------------------------*/
-"p31=p30-p32*pow(10,(pl30 - list1)/10)"
-
 if "p31 > 0.0"
- {
- 1u fq=cnst30(bf ppm):f1
- 1u pl30:f1
- (p31 ph1):f1
- }
+  {
+  1u fq=100(bf ppm):f1
+  1u pl25:f1
+  (p31 ph1):f1
+  ;print "heating compensation on"
+  }
+; ----------------------------------
 
+   d1
+;50u UNBLKGRAD
 
 /* ---------------------------------
 ;  transfer to theta and SL
@@ -96,7 +94,7 @@ if "p31 > 0.0"
   p1 ph8
   if "p32 == 0.0"
   {
-    30m
+    1u
 #ifdef adiabatic_flg
       1u fq=fqlist:f1
       1u pl25:f1
@@ -108,7 +106,7 @@ if "p31 > 0.0"
 #endif
   }
   else {
-    30m
+    1u
 #ifdef adiabatic_flg
       1u fq=fqlist:f1
       1u pl25:f1
@@ -164,6 +162,32 @@ if "p31 > 0.0"
   F2QF(calclist(fqlist,1))
 exit
 
+HaltAcqu, 1m
+exit
+
+#ifdef FLIPUP
+ph1=0
+ph2=2 2 0 0
+ph3=0 0 0 0 2 2 2 2 1 1 1 1 3 3 3 3
+ph4=3
+ph5=1
+ph6=2
+ph7=0
+ph8=2
+ph31=0 0 2 2 2 2 0 0 1 1 3 3 3 3 1 1
+#else
+#ifdef FLIPDOWN
+ph1=0
+ph2=2 2 0 0
+ph3=0 0 0 0 2 2 2 2 1 1 1 1 3 3 3 3
+ph4=1
+ph5=3
+ph6=0
+ph7=0
+ph8=0
+ph31=0 0 2 2 2 2 0 0 1 1 3 3 3 3 1 1
+#else
+; regular experiment
 ph1=0
 ph2=2 2 0 0
 ph3=0 0 0 0 2 2 2 2 1 1 1 1 3 3 3 3
@@ -173,15 +197,12 @@ ph6=0 2
 ph7=0
 ph8=0 2
 ph31=0 0 2 2 2 2 0 0 1 1 3 3 3 3 1 1
-
+#endif
+#endif
 ;pl1 : f1 channel - power level for pulse (default)
 ;p1 : f1 channel -  90 degree high power pulse
 ;p2 : f1 channel - 180 degree high power pulse
-;p3 : f1 channel - 90 degree pulse at spin lock power
 ;d1 : relaxation delay; 1-5 * T1
 ;d11: delay for disk I/O    [30 msec]
 ;ns: 16 * n
 ;ds: > 128
-;p30: maximum SL length used for highest power (for T compensation)
-;pl30: maximum SL power (for T compensation)
-;cnst30: offset of SL in ppm (for T compensation) [250 ppm]
