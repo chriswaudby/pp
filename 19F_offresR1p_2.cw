@@ -37,7 +37,10 @@ define list<frequency> fqlist = <$FQ1LIST>
 "l3=0"
 "cnst28=fqlist"
 
-"p3 = p1*pow(10,(10*log10(plw1) - 10*log10(plw25))/20)"       ;90 degree SL pulse
+"p29=10*log10(plw25)"
+;"p3 = p1*pow(10,(10*log10(plw1) - 10*log10(plw25))/20)"       ;90 degree SL pulse
+"p3 = p1*pow(10,(10*log10(plw1) - p29)/20)"       ;90 degree SL pulse
+;"p3=9u"
 "p6 = ((cnst28)/((1/(p3*4))))"            ; spin lock offset / spin lock power
 "p7 = atan(p6)*180/PI"                    ; arc tan from this ratio = theta in deg
 "p4 = p1*(1-p7/90)"                                          ; theta pulse length
@@ -156,12 +159,9 @@ p5 ph2          ; thetabar(y)
 ; ----------------------------------
   go=2 ph31
   30m mc #0 to 2
-  F1I(iu1,4)
-  F1QF(calclc(l2,1))
-  F2QF(calclist(fqlist,1))
-exit
-
-HaltAcqu, 1m
+   F1I(iu1,4)
+   F1QF(calclc(l2,1))
+   F2QF(calclist(fqlist,1))
 exit
 
 
