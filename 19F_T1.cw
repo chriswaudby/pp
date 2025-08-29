@@ -1,4 +1,5 @@
 ;19F inversion recovery
+;PJS updated for TS4.4 (onwards)
 
 #include <Avance.incl>
 #include <Grad.incl>
@@ -15,11 +16,13 @@
 "acqt0=0"
 baseopt_echo
 
+define list<delay> t1_delay=<$VDLIST>	;UPDATED HERE
+
 1 ze 
   
 2 d1 
 
-  "DELTA1=vd"
+  "DELTA1=t1_delay"			;UPDATED HERE
 
   4u pl1:f1
   p2 ph1
@@ -27,7 +30,7 @@ baseopt_echo
   p1 ph2
   go=2 ph31 
   d1 mc #0 to 2 
-     F1QF(ivd)
+     F1QF(t1_delay.inc)			;UPDATED HERE
 
 exit 
   

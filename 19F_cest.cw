@@ -5,7 +5,7 @@
 #include <Delay.incl>
 
 
-define list<frequency> F19sat = <$FQ1LIST>
+define list<frequency> fqlist = <$FQ1LIST>
 
 "d11=30m"
 "d12=20u"
@@ -18,7 +18,7 @@ define list<frequency> F19sat = <$FQ1LIST>
 
   ; CEST period
   4u pl8:f1 
-  4u F19sat:f1
+  4u fq=fqlist:f1
   d18 cw:f1 ph11
   1u do:f1 
 
@@ -40,7 +40,7 @@ define list<frequency> F19sat = <$FQ1LIST>
 
   go=2 ph31 
   d1 mc #0 to 2 
-     F1QF(F19sat.inc)
+     F1QF(calclist(fqlist,1))
 
 exit 
   
